@@ -121,5 +121,26 @@ const Form = styled.div`
     a {
         font-family: 'Lato', sans-serif;
         color: white;
+        font-size: 20px;
+    }
+
+    @media (max-width: 800px) {
+        padding: 40px 22px;
+
+        form {
+            input {
+                height: 55px;
+                font-size: 22px;
+            }
+
+            button {
+                height: 55px;
+                font-size: 22px;
+            }
+        }
+
+        a {
+            font-size: 17px;
+        }
     }
 `;

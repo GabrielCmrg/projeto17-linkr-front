@@ -1,13 +1,14 @@
 import styled from "styled-components"
 
-import Header from "../componets/Header"
-import PublicationForm  from "../componets/PublicationForm.js";
+
+import Header from "../components/Header"
+import PublicationForm  from "../components/PublicationForm.js";
 
 export default function Timeline(){
     return(
         <TimelineContainer>
-            <Header ></Header>
-            <PublicationForm></PublicationForm>
+            <Header />
+            <PublicationForm />
         </TimelineContainer>
     );
 };

@@ -50,8 +50,8 @@ export default function PublicationForm(){
             <img src="https://upload.wikimedia.org/wikipedia/commons/8/83/Bra-Cos_%281%29_%28cropped%29.jpg" alt="" />
             <form onSubmit={sendForm}>
                 <h2>What are you going to share today?</h2>
-                <input disabled={actionDisabled} type="url" value={postLink} onChange={e => setPostLink(e.target.value)} placeholder="http://..."></input>
-                <textarea disabled={actionDisabled} value={content} onChange={e => setContent(e.target.value)}placeholder="Awesome article about #javascript"></textarea>
+                <input disabled={actionDisabled} type="url" value={postLink} onChange={e => setPostLink(e.target.value)} placeholder="http://..." />
+                <textarea disabled={actionDisabled} value={content} onChange={e => setContent(e.target.value)}placeholder="Awesome article about #javascript" />
                 <button disabled={actionDisabled} onClick={sendForm} >{actionDisabled ? "Publishing..." : "Publish"}</button>
             </form>
         </PublicaionContainer>

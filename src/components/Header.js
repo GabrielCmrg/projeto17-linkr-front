@@ -5,7 +5,7 @@ export default function Header(){
         <HeaderContainer>
             <h1>linkr</h1>
             <div>
-                <FiChevronDown color={"#FFFFFF"} size={"30"}></FiChevronDown>
+                <FiChevronDown color={"#FFFFFF"} size={"30"} />
                 <img src="https://upload.wikimedia.org/wikipedia/commons/8/83/Bra-Cos_%281%29_%28cropped%29.jpg" alt="" />
             </div>
             

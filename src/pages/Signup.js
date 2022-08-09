@@ -1,7 +1,38 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export default function Signup() {
+    const [email, setEmail] = React.useState("");
+    const [password, setPassword] = React.useState("");
+    const [name, setName] = React.useState("");
+    const [picUrl, setPicUrl] = React.useState("");
+
+    function createAlertMessage() {
+        let alertMessage = 'Please, fill up the fields:'
+        if (!email) {
+            alertMessage += '\ne-mail';
+        }
+        if (!password) {
+            alertMessage += '\npassword';
+        }
+        if (!name) {
+            alertMessage += '\nusername';
+        }
+        if (!picUrl) {
+            alertMessage += '\npicture url';
+        }
+        return alertMessage;
+    }
+
+    function register(e) {
+        e.preventDefault();
+
+        if (!email || !password || !name || !picUrl) {
+            alert(createAlertMessage());
+        }
+    }
+
     return (
         <Container>
             <Brand>
@@ -11,11 +42,35 @@ export default function Signup() {
                 </div>
             </Brand>
             <Form>
-                <form>
-                    <input type="email" placeholder="e-mail" id="email" />
-                    <input type="password" placeholder="password" id="password" />
-                    <input type="text" placeholder="username" id="username" />
-                    <input type="url" placeholder="picture url" id="url" />
+                <form onSubmit={register}>
+                    <input 
+                        type="email"
+                        placeholder="e-mail"
+                        id="email"
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
+                    />
+                    <input 
+                        type="password"
+                        placeholder="password"
+                        id="password"
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                    />
+                    <input
+                        type="text"
+                        placeholder="username"
+                        id="name"
+                        value={name}
+                        onChange={e => setName(e.target.value)}
+                    />
+                    <input
+                        type="url"
+                        placeholder="picture url"
+                        id="url"
+                        value={picUrl}
+                        onChange={e => setPicUrl(e.target.value)}
+                    />
                     <button type="submit">Sign Up</button>
                 </form>
                 <Link to="/">Switch back to log in</Link>

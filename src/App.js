@@ -1,5 +1,16 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import GlobalStyle from "./themes/GlobalStyle";
 export default function App(){
     return(
-        <h1>Teste</h1>
+        <>
+            <GlobalStyle />
+            <BrowserRouter>
+                <Routes>
+                    
+                </Routes>
+            </BrowserRouter>    
+            
+        </>
+        
     );
 };

@@ -23,4 +23,20 @@ const Brand = styled.div`
     background-color: #151515;
     height: 100%;
     width: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: 700;
+
+    h1 {
+        font-size: 106px;
+        font-family: 'Passion One', cursive;
+    }
+
+    h2 {
+        font-size: 43px;
+        font-family: 'Oswald', sans-serif;
+        width: 442px;
+    }
 `

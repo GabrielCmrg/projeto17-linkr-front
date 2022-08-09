@@ -9,6 +9,15 @@ export default function Signup() {
                     <h2>save, share and discover the best links on the web</h2>
                 </div>
             </Brand>
+            <div>
+                <form>
+                    <input type="email" placeholder="e-mail" id="email" />
+                    <input type="password" placeholder="password" id="password" />
+                    <input type="text" placeholder="username" id="username" />
+                    <input type="url" placeholder="picture url" id="url" />
+                    <button type="submit">Sign Up</button>
+                </form>
+            </div>
         </Container>
     );
 };

@@ -8,18 +8,17 @@ import resetCSS from "./resetCSS";
 
 const GlobalStyle = createGlobalStyle`
     ${resetCSS}
+    
+    *{
+        box-sizing: border-box;
+    }
     body {
         background-color: #333333;
     }
-    #root {
-        height: 100vh;
-        padding: 25px;
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+    #root{
+        
     }
-
+   
 `;
 
 export default GlobalStyle;

@@ -28,6 +28,10 @@ const Container = styled.div`
     width: 100vw;
     height: 100vh;
     display: flex;
+
+    @media (max-width: 800px) {
+        flex-direction: column;
+    }
 `;
 
 const Brand = styled.div`
@@ -50,6 +54,21 @@ const Brand = styled.div`
         font-size: 43px;
         font-family: 'Oswald', sans-serif;
         width: 442px;
+    }
+
+    @media (max-width: 800px) {
+        width: 100%;
+        height: initial;
+        padding: 27px;
+
+        h1 {
+            font-size: 76px;
+        }
+
+        h2 {
+            font-size: 23px;
+            width: 237px;
+        }
     }
 `;
 
@@ -91,7 +110,7 @@ const Form = styled.div`
             font-size: 27px;
             font-family: 'Oswald', sans-serif;
             margin-bottom: 14px;
-            
+
             :hover {
                 filter: brightness(1.2);
                 cursor: pointer;

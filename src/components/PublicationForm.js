@@ -61,9 +61,9 @@ export default function PublicationForm(){
 const PublicaionContainer = styled.div`
     background: #FFFFFF;
     display:flex;
-    margin-top: 100px;
+    margin: 100px auto;
     justify-content:space-between;
-    width: 611px;
+    max-width:611px;
     padding: 16px 18px;
     border-radius: 16px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -88,7 +88,7 @@ const PublicaionContainer = styled.div`
             border-radius: 5px;
             padding: 10px;
             font-family:'Lato', sans-serif;
-            disable
+        
         }
         input:focus{
             outline: none;
@@ -108,7 +108,7 @@ const PublicaionContainer = styled.div`
         }
         button{
             align-self: flex-end;
-            width:112px;
+            width:30%;
             height: 31px;
             background-color: #1877F2;
             color: #FFFFFF;
@@ -120,6 +120,22 @@ const PublicaionContainer = styled.div`
         }
         button:hover{
             filter: brightness(1.5);
-        }
+        };
     };
+    @media(max-width: 414px){
+        border-radius: 0;
+        justify-content:center;
+        img{
+            display: none;
+        };
+        form{
+            width:100%;
+            h2{
+                text-align: center;
+            };
+           
+        };
+        
+    };
+    
 `

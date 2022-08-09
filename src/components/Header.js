@@ -5,7 +5,7 @@ export default function Header(){
         <HeaderContainer>
             <h1>linkr</h1>
             <div>
-                <FiChevronDown color={"#FFFFFF"} size={"30"}></FiChevronDown>
+                <FiChevronDown color={"#FFFFFF"} size={"30"} />
                 <img src="https://upload.wikimedia.org/wikipedia/commons/8/83/Bra-Cos_%281%29_%28cropped%29.jpg" alt="" />
             </div>
             
@@ -17,7 +17,7 @@ const HeaderContainer = styled.div`
     top:0;
     z-index: 1;
     background-color: #151515;
-    padding: 0 20px;
+    padding: 0 2%;
     width:100%;
     height: 72px;
     display: flex;
@@ -31,10 +31,7 @@ const HeaderContainer = styled.div`
        display: flex;
        align-items: center;
        justify-content: center;
-       gap: 10px;
-
-        
-       img{
+    img{
         height: 53px;
         width: 53px;
         border-radius: 50%;

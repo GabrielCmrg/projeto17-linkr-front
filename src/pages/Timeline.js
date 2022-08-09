@@ -1,14 +1,19 @@
 import styled from "styled-components"
-import Header from "../componets/Header"
+
+
+import Header from "../components/Header"
+import PublicationForm  from "../components/PublicationForm.js";
+
 export default function Timeline(){
     return(
         <TimelineContainer>
-            <Header ></Header>
+            <Header />
+            <PublicationForm />
         </TimelineContainer>
     );
 };
 
 const TimelineContainer = styled.div`
     width: 100vw;
-    height: 100vh;
+    margin: auto;
 `

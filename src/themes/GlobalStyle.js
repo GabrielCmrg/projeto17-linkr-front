@@ -16,7 +16,7 @@ const GlobalStyle = createGlobalStyle`
         background-color: #333333;
     }
     #root{
-        
+        margin: auto;
     }
    
 `;

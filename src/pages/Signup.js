@@ -1,12 +1,15 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+
+import { signupRequest } from "../services/api";
 
 export default function Signup() {
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [name, setName] = React.useState("");
     const [picUrl, setPicUrl] = React.useState("");
+    const navigate = useNavigate();
 
     function createAlertMessage() {
         let alertMessage = 'Please, fill up the fields:'
@@ -28,9 +31,30 @@ export default function Signup() {
     function register(e) {
         e.preventDefault();
 
+        // alert if any field is missing and stop function
         if (!email || !password || !name || !picUrl) {
             alert(createAlertMessage());
+            return;
         }
+        
+        async function makeRequest() {
+            const code = await signupRequest(email, name, password, picUrl);
+            if (code === 409) {
+                alert("This e-mail is already in use.");
+                return;
+            }
+
+            if (code === 201) {
+                navigate("/");
+                return;
+            }
+
+            if (code === 422) {
+                alert("One or more fields are filled incorrectly.");
+                return;
+            }
+        }
+        makeRequest();
     }
 
     return (
@@ -56,6 +80,8 @@ export default function Signup() {
                         id="password"
                         value={password}
                         onChange={e => setPassword(e.target.value)}
+                        pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*!@$%^&(){}[\]:;<>,.?/~_+-=|]).{8,32}$"
+                        title="Passwords must have at least 8 characters, at most 32, have a lower case and a upper case letter and one of the following symbols: *!@$%^&(){}[\]:;<>,.?/~_+-=|"
                     />
                     <input
                         type="text"

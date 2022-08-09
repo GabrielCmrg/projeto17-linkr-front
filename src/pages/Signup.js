@@ -3,7 +3,12 @@ import styled from "styled-components";
 export default function Signup() {
     return (
         <Container>
-            <Brand />
+            <Brand>
+                <div>
+                    <h1>Linkr</h1>
+                    <h2>save, share and discover the best links on the web</h2>
+                </div>
+            </Brand>
         </Container>
     );
 };

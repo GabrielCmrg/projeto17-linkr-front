@@ -15,8 +15,6 @@ export default function App(){
                     <Route path="/sign-up" element={<Signup />} />
                 </Routes>
             </BrowserRouter>    
-            
         </>
-        
     );
 };

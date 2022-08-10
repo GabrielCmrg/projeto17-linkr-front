@@ -1,11 +1,11 @@
 import axios from "axios";
 
-const API_URL = 'http://localhost:4000';
+const { REACT_APP_API_URL } = process.env;
 
 export async function signupRequest(email, name, password, picUrl) {
     const body = { email, name, password, picUrl };
     try {
-        const response = await axios.post(`${API_URL}/sign-up`, body);
+        const response = await axios.post(`${REACT_APP_API_URL}/sign-up`, body);
         return response.status;
     } catch (error) {
         return error.response.status;
@@ -15,7 +15,7 @@ export async function signupRequest(email, name, password, picUrl) {
 export async function loginRequest(email, password) {
     const body = { email, password };
     try {
-        const response = await axios.post(`${API_URL}/login`, body);
+        const response = await axios.post(`${REACT_APP_API_URL}/login`, body);
         return response;
     } catch (error) {
         return error.response;

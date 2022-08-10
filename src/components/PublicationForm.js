@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+
+import ApplicationContext from "../contexts/ApplicationContext";
 
 import { sendPostRequest } from "../services/api";
 
@@ -10,12 +12,13 @@ export default function PublicationForm(){
     const [actionDisabled, setActionDisabled] = useState(false);
         
     const navigate = useNavigate()
-    const token = localStorage.getItem("token");
+    const { userToken } = useContext(ApplicationContext);
     const config = {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${userToken}`,
         }
     };
+
     async function sendForm (e) {
         e.preventDefault();
         setActionDisabled(true); 
@@ -34,12 +37,12 @@ export default function PublicationForm(){
             navigate("/timeline");
             return;
         }
-        
+
         alert("Houve um erro ao publicar seu link");
         setActionDisabled(false);
     };
 
-    return(
+    return (
         <PublicaionContainer>
             <img src="https://upload.wikimedia.org/wikipedia/commons/8/83/Bra-Cos_%281%29_%28cropped%29.jpg" alt="" />
             <form onSubmit={sendForm}>

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import axios from "axios";
 
+import { sendPostRequest } from "../services/api";
 
 export default function PublicationForm(){
     const [postLink, setPostLink] = useState("");
@@ -10,40 +10,34 @@ export default function PublicationForm(){
     const [actionDisabled, setActionDisabled] = useState(false);
         
     const navigate = useNavigate()
-    const URL = "https://linkr-hml.herokuapp.com/timeline";
     const token = localStorage.getItem("token");
     const config = {
         headers: {
           Authorization: `Bearer ${token}`,
         }
     };
-    function sendForm (e){
+    async function sendForm (e) {
         e.preventDefault();
         setActionDisabled(true); 
+
         if(!postLink){
             alert("url is required");
             return;
-        };
-        const data = {
-            postLink,
-            content
-        };
-        const promise = axios.post(URL,data,config);
+        }
 
-        promise
-            .then(response =>{
-                setActionDisabled(false);
-                setContent("");
-                setPostLink("");
-                navigate("\timeline");
-            })
-            .catch(error =>{
-                alert("Houve um erro ao publicar seu link");
-                setActionDisabled(false);
-            })
+        const response = await sendPostRequest(postLink, content, config);
+        const success = response.status >= 200 && response.status < 300;
+        if (success) {
+            setActionDisabled(false);
+            setContent("");
+            setPostLink("");
+            navigate("/timeline");
+            return;
+        }
         
-        
-    }
+        alert("Houve um erro ao publicar seu link");
+        setActionDisabled(false);
+    };
 
     return(
         <PublicaionContainer>

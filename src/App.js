@@ -4,6 +4,7 @@ import GlobalStyle from "./themes/GlobalStyle";
 
 import Timeline from "./pages/Timeline.js";
 import Signup from "./pages/Signup";
+import Login from "./pages/Login";
 
 export default function App(){
     return(
@@ -11,6 +12,7 @@ export default function App(){
             <GlobalStyle />
             <BrowserRouter>
                 <Routes>
+                    <Route path="/" element={<Login />} />
                     <Route path="/timeline" element={<Timeline />} />
                     <Route path="/sign-up" element={<Signup />} />
                 </Routes>

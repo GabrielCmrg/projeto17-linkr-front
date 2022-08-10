@@ -88,11 +88,10 @@ const PublicaionContainer = styled.div`
             border-radius: 5px;
             padding: 10px;
             font-family:'Lato', sans-serif;
-            disable
+            
         }
         input:focus{
             outline: none;
-            
         }
         textarea{
             border: none;

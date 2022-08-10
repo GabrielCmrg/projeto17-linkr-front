@@ -11,12 +11,13 @@ import Login from "./pages/Login";
 
 export default function App(){
     const [userToken, setUserToken] = React.useState(localStorage.getItem("token"));
+    const userImage = "https://upload.wikimedia.org/wikipedia/commons/8/83/Bra-Cos_%281%29_%28cropped%29.jpg";
     React.useEffect(() => {
         if (userToken) {
             localStorage.setItem("token", userToken);
         }
     }, [userToken])
-    const contextValue = { userToken, setUserToken };
+    const contextValue = { userToken, setUserToken, userImage };
 
     return(
         <ApplicationContext.Provider value={contextValue}>

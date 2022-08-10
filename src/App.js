@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import React, { useEffect } from "react";
+import React from "react";
 
 import ApplicationContext from "./contexts/ApplicationContext";
 
@@ -11,7 +11,7 @@ import Login from "./pages/Login";
 
 export default function App(){
     const [userToken, setUserToken] = React.useState(localStorage.getItem("token"));
-    useEffect(() => {
+    React.useEffect(() => {
         if (userToken) {
             localStorage.setItem("token", userToken);
         }

@@ -11,3 +11,13 @@ export async function signupRequest(email, name, password, picUrl) {
         return error.response.status;
     }
 };
+
+export async function loginRequest(email, password) {
+    const body = { email, password };
+    try {
+        const response = await axios.post(`${API_URL}/login`, body);
+        return response;
+    } catch (error) {
+        return error.response;
+    }
+};

@@ -50,8 +50,8 @@ export default function PublicationForm(){
             <img src="https://upload.wikimedia.org/wikipedia/commons/8/83/Bra-Cos_%281%29_%28cropped%29.jpg" alt="" />
             <form onSubmit={sendForm}>
                 <h2>What are you going to share today?</h2>
-                <input disabled={actionDisabled} type="url" value={postLink} onChange={e => setPostLink(e.target.value)} placeholder="http://..."></input>
-                <textarea disabled={actionDisabled} value={content} onChange={e => setContent(e.target.value)}placeholder="Awesome article about #javascript"></textarea>
+                <input disabled={actionDisabled} type="url" value={postLink} onChange={e => setPostLink(e.target.value)} placeholder="http://..." />
+                <textarea disabled={actionDisabled} value={content} onChange={e => setContent(e.target.value)}placeholder="Awesome article about #javascript" />
                 <button disabled={actionDisabled} onClick={sendForm} >{actionDisabled ? "Publishing..." : "Publish"}</button>
             </form>
         </PublicaionContainer>
@@ -61,9 +61,9 @@ export default function PublicationForm(){
 const PublicaionContainer = styled.div`
     background: #FFFFFF;
     display:flex;
-    margin-top: 100px;
+    margin: 100px auto;
     justify-content:space-between;
-    width: 611px;
+    max-width:611px;
     padding: 16px 18px;
     border-radius: 16px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -88,10 +88,11 @@ const PublicaionContainer = styled.div`
             border-radius: 5px;
             padding: 10px;
             font-family:'Lato', sans-serif;
-            
+        
         }
         input:focus{
             outline: none;
+            
         }
         textarea{
             border: none;
@@ -107,7 +108,7 @@ const PublicaionContainer = styled.div`
         }
         button{
             align-self: flex-end;
-            width:112px;
+            width:30%;
             height: 31px;
             background-color: #1877F2;
             color: #FFFFFF;
@@ -119,6 +120,22 @@ const PublicaionContainer = styled.div`
         }
         button:hover{
             filter: brightness(1.5);
-        }
+        };
     };
+    @media(max-width: 414px){
+        border-radius: 0;
+        justify-content:center;
+        img{
+            display: none;
+        };
+        form{
+            width:100%;
+            h2{
+                text-align: center;
+            };
+           
+        };
+        
+    };
+    
 `

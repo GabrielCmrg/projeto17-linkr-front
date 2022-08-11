@@ -29,7 +29,7 @@ export default function PublicationForm(){
         }
 
         const response = await sendPostRequest(postLink, content, config);
-        if (response.status = 201) {
+        if (response.status === 201) {
             setActionDisabled(false);
             setContent("");
             setPostLink("");

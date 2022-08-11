@@ -11,7 +11,7 @@ export default function Header(){
             <h1>linkr</h1>
             <div>
                 <FiChevronDown color={"#FFFFFF"} size={"30"} />
-                <img src={userImage} alt="" />
+                <img src={userImage} alt="User"/>
             </div>
             
         </HeaderContainer>

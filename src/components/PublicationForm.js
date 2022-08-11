@@ -29,7 +29,7 @@ export default function PublicationForm(){
         }
 
         const response = await sendPostRequest(postLink, content, config);
-        if (response.status = 201) {
+        if (response.status === 201) {
             setActionDisabled(false);
             setContent("");
             setPostLink("");
@@ -43,7 +43,7 @@ export default function PublicationForm(){
 
     return (
         <PublicaionContainer>
-            <img src={userImage} alt="" />
+            <img src={userImage} alt="User" />
             <form onSubmit={sendForm}>
                 <h2>What are you going to share today?</h2>
                 <input

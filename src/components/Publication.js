@@ -4,7 +4,7 @@ export default function Publication({ userImage, userName, postTitle, postLink, 
 
     return (
         <Post>
-            <img src={userImage} />
+            <img src={userImage} alt="User" />
             <div>
                 <UserName>{userName}</UserName>
                 <Content>{postTitle}</Content>
@@ -15,7 +15,7 @@ export default function Publication({ userImage, userName, postTitle, postLink, 
                             <LinkContent>{LinkSummary}</LinkContent>
                             <LinkUrl>{postLink}</LinkUrl>
                         </div>
-                        <img src={LinkImg} />
+                        <img src={LinkImg} alt="ImageLink" />
                     </Link>
                 </a>
             </div>

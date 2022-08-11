@@ -1,0 +1,33 @@
+import axios from "axios";
+
+const { REACT_APP_API_URL } = process.env;
+
+export async function signupRequest(email, name, password, picUrl) {
+    const body = { email, name, password, picUrl };
+    try {
+        const response = await axios.post(`${REACT_APP_API_URL}/sign-up`, body);
+        return response.status;
+    } catch (error) {
+        return error.response.status;
+    }
+};
+
+export async function loginRequest(email, password) {
+    const body = { email, password };
+    try {
+        const response = await axios.post(`${REACT_APP_API_URL}/login`, body);
+        return response;
+    } catch (error) {
+        return error.response;
+    }
+};
+
+export async function sendPostRequest(postLink, content, config) {
+    const body = { postLink, content };
+    try {
+        const response = await axios.post(`${REACT_APP_API_URL}/timeline`, body, config);
+        return response;
+    } catch (error) {
+        return error.response;
+    }
+};

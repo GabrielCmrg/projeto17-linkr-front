@@ -1,58 +1,66 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import axios from "axios";
 
+import ApplicationContext from "../contexts/ApplicationContext";
+
+import { sendPostRequest } from "../services/api";
 
 export default function PublicationForm(){
     const [postLink, setPostLink] = useState("");
-    const [content, setContent] =useState(""); 
+    const [content, setContent] = useState(""); 
     const [actionDisabled, setActionDisabled] = useState(false);
         
     const navigate = useNavigate()
-    const URL = "https://linkr-hml.herokuapp.com/timeline";
-    const token = localStorage.getItem("token");
+    const { userToken, userImage } = useContext(ApplicationContext);
     const config = {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${userToken}`,
         }
     };
-    function sendForm (e){
+
+    async function sendForm (e) {
         e.preventDefault();
         setActionDisabled(true); 
+
         if(!postLink){
-            alert("url is required");
+            alert("Url is required.");
             return;
-        };
-        const data = {
-            postLink,
-            content
-        };
-        const promise = axios.post(URL,data,config);
+        }
 
-        promise
-            .then(response =>{
-                setActionDisabled(false);
-                setContent("");
-                setPostLink("");
-                navigate("\timeline");
-            })
-            .catch(error =>{
-                alert("Houve um erro ao publicar seu link");
-                setActionDisabled(false);
-            })
-        
-        
-    }
+        const response = await sendPostRequest(postLink, content, config);
+        if (response.status = 201) {
+            setActionDisabled(false);
+            setContent("");
+            setPostLink("");
+            navigate("/timeline");
+            return;
+        }
 
-    return(
+        alert("There was a problem when publishing your link.");
+        setActionDisabled(false);
+    };
+
+    return (
         <PublicaionContainer>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/8/83/Bra-Cos_%281%29_%28cropped%29.jpg" alt="" />
+            <img src={userImage} alt="" />
             <form onSubmit={sendForm}>
                 <h2>What are you going to share today?</h2>
-                <input disabled={actionDisabled} type="url" value={postLink} onChange={e => setPostLink(e.target.value)} placeholder="http://..." />
-                <textarea disabled={actionDisabled} value={content} onChange={e => setContent(e.target.value)}placeholder="Awesome article about #javascript" />
-                <button disabled={actionDisabled} onClick={sendForm} >{actionDisabled ? "Publishing..." : "Publish"}</button>
+                <input
+                    disabled={actionDisabled}
+                    type="url" value={postLink}
+                    onChange={e => setPostLink(e.target.value)}
+                    placeholder="http://..."
+                />
+                <textarea
+                    disabled={actionDisabled}
+                    value={content}
+                    onChange={e => setContent(e.target.value)}
+                    placeholder="Awesome article about #javascript"
+                />
+                <button disabled={actionDisabled} onClick={sendForm} >
+                    {actionDisabled ? "Publishing..." : "Publish"}
+                </button>
             </form>
         </PublicaionContainer>
     );
@@ -138,4 +146,4 @@ const PublicaionContainer = styled.div`
         
     };
     
-`
+`;

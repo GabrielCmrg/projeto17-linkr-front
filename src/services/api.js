@@ -31,3 +31,12 @@ export async function sendPostRequest(postLink, content, config) {
         return error.response;
     }
 };
+
+export async function getAllPostRequest(){
+    try {
+        const response = await axios.get(`${REACT_APP_API_URL}/timeline`);
+        return response;
+    } catch (error) {
+        return error.response;
+    }
+};

@@ -40,3 +40,12 @@ export async function getAllPostRequest(config){
         return error.response;
     }
 };
+
+export async function getTrendingTags (){
+    try {
+        const response = await axios.get(`${REACT_APP_API_URL}/hashtag`);
+        return response;
+    } catch (error) {
+        return error.response;
+    }
+}

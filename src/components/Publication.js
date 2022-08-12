@@ -1,8 +1,10 @@
 import styled from "styled-components";
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
+import { IoMdTrash } from "react-icons/io";
+import { ImPencil } from "react-icons/im";
 
-export default function Publication({ userImage, userName, postTitle, postLink, LinkName, LinkSummary, LinkImg }) {
+export default function Publication({ userImage, userName, postTitle, postLink, LinkName, LinkSummary, LinkImg, userauthorship }) {
     const navigate = useNavigate();
 
     const tagStyle = {
@@ -26,6 +28,7 @@ export default function Publication({ userImage, userName, postTitle, postLink, 
             <img src={userImage} alt="User" />
             <div>
                 <UserName>{userName}</UserName>
+                <Buttons>{userauthorship ? <><ImPencil /><IoMdTrash /></> : ''}</Buttons>
                 <ReactTagify tagStyle={tagStyle} mentionStyle={{}} tagClicked={redirect}>
                     <Content>{postTitle}</Content>
                 </ReactTagify>
@@ -126,4 +129,13 @@ const LinkUrl = styled.span`
     color: #CECECE;
     font-weight: 400;
     font-size: 10px;
+`;
+
+const Buttons = styled.div`
+    color: #ffffff;
+    font-size:14px;
+    position: absolute;
+    top:22px;
+    right:22px;
+    display: flex;
 `;

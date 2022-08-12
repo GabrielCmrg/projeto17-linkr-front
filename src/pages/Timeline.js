@@ -6,6 +6,7 @@ import PublicationForm  from "../components/PublicationForm.js";
 import { getAllPostRequest } from "../services/api";
 import ApplicationContext from "../contexts/ApplicationContext.js";
 import Publication from "../components/Publication.js";
+import Trending from "../components/Trending";
 
 export default function Timeline() {
     const [posts, setPosts] = React.useState([]);
@@ -56,11 +57,15 @@ export default function Timeline() {
         <TimelineContainer>
             <Header />
             <Container>
-                <Title>timeline</Title>
-                <PublicationForm />
-                {renderPosts}
+                <div>
+                    <Title>timeline</Title>
+                    <PublicationForm />
+                    {renderPosts}
+                </div>
+                <div>
+                    <Trending /> 
+                </div>
             </Container>
-            
         </TimelineContainer>
     );
 };
@@ -71,8 +76,11 @@ const TimelineContainer = styled.div`
     
 `;
 const Container = styled.div`
-    max-width: 611px;
+    /* max-width: 611px; */
     margin: auto;
+    display: flex;
+    justify-content: center;
+    gap: 25px;
 `;
 const Title = styled.h1`
     margin-top: 100px;

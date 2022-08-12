@@ -1,13 +1,34 @@
 import styled from "styled-components";
+import { ReactTagify } from "react-tagify";
+import { useNavigate } from "react-router-dom";
 
 export default function Publication({ userImage, userName, postTitle, postLink, LinkName, LinkSummary, LinkImg }) {
+    const navigate = useNavigate();
+
+    const tagStyle = {
+        fontWeight: 700,
+        cursor: 'pointer',
+    };
+
+    function redirect(tag) {
+        if (tag.match(/(https?:\/\/[^\s]+)/g)) {
+            window.open(tag, '_blank');
+        }
+
+        if (tag.match(/#\w+/g)) {
+            const hashtagName = tag.match(/#\w+/g)[0].replace('#', '');
+            navigate(`/hashtag/${hashtagName}`);
+        }
+    }
 
     return (
         <Post>
             <img src={userImage} alt="User" />
             <div>
                 <UserName>{userName}</UserName>
-                <Content>{postTitle}</Content>
+                <ReactTagify tagStyle={tagStyle} mentionStyle={{}} tagClicked={redirect}>
+                    <Content>{postTitle}</Content>
+                </ReactTagify>
                 <a href={postLink}>
                     <Link>
                         <div>
@@ -20,7 +41,7 @@ export default function Publication({ userImage, userName, postTitle, postLink, 
                 </a>
             </div>
         </Post>
-    )
+    );
 }
 
 const Post = styled.div`
@@ -49,20 +70,20 @@ const Post = styled.div`
     a{
         text-decoration: none;
     }
-`
+`;
 
 const UserName = styled.h1`
     font-weight: 400;
     font-size: 19px;
     color: #FFFFFF;
-`
+`;
 
 const Content = styled.div`
     font-weight: 400;
     font-size: 17px;
     color: #B7B7B7;
     margin-top: 8px;
-`
+`;
 
 const Link = styled.div`
     border: 1px solid #4D4D4D;
@@ -85,25 +106,24 @@ const Link = styled.div`
         padding:19px;
         justify-content: center;
     }
-`
+`;
 
 const LinkTitle = styled.div`
     color: #CECECE;
     font-weight: 400;
     font-size: 16px;
-`
-
+`;
 
 const LinkContent = styled.span`
     margin-top: 10px;
     color: #9B9595;
     font-weight: 400;
     font-size: 10px;
-`
+`;
 
 const LinkUrl = styled.span`
     margin-top: 12px;
     color: #CECECE;
     font-weight: 400;
     font-size: 10px;
-`
+`;

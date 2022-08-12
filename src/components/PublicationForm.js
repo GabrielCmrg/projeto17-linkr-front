@@ -11,7 +11,7 @@ export default function PublicationForm(){
     const [content, setContent] = useState(""); 
     const [actionDisabled, setActionDisabled] = useState(false);
         
-    const navigate = useNavigate()
+    
     const { userToken, userImage } = useContext(ApplicationContext);
     const config = {
         headers: {
@@ -33,7 +33,7 @@ export default function PublicationForm(){
             setActionDisabled(false);
             setContent("");
             setPostLink("");
-            navigate("/timeline");
+            window.location.reload();
             return;
         }
 
@@ -69,7 +69,7 @@ export default function PublicationForm(){
 const PublicaionContainer = styled.div`
     background: #FFFFFF;
     display:flex;
-    margin: 100px auto;
+    margin: 40px auto 30px auto;
     justify-content:space-between;
     max-width:611px;
     padding: 16px 18px;
@@ -79,6 +79,7 @@ const PublicaionContainer = styled.div`
         height: 53px;
         width: 53px;
         border-radius: 50%;
+        object-fit: cover;
     };
     form{
         display: flex;

@@ -32,9 +32,9 @@ export async function sendPostRequest(postLink, content, config) {
     }
 };
 
-export async function getAllPostRequest(){
+export async function getAllPostRequest(config){
     try {
-        const response = await axios.get(`${REACT_APP_API_URL}/timeline`);
+        const response = await axios.get(`${REACT_APP_API_URL}/timeline`,config);
         return response;
     } catch (error) {
         return error.response;

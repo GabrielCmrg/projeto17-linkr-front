@@ -29,15 +29,22 @@ const Post = styled.div`
     padding: 16px 18px;
     background-color: #171717;
     border-radius: 16px;
-    width: 611px;
+    max-width: 611px;
     display:flex;
     justify-content:space-between;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    
+    margin: 16px auto;
     img{
         height: 53px;
         width: 53px;
         border-radius: 50%;
+        object-fit: cover;
+        @media(max-width: 414px){
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        };   
     };
     
     &>div{
@@ -49,12 +56,22 @@ const Post = styled.div`
     a{
         text-decoration: none;
     }
+    @media(max-width: 414px){
+    border-radius: 0;
+    justify-content:space-between;
+       
+    
+    };
+    
 `
 
 const UserName = styled.h1`
     font-weight: 400;
     font-size: 19px;
     color: #FFFFFF;
+    @media(max-width: 414px){
+        font-size: 17px;
+    }
 `
 
 const Content = styled.div`
@@ -62,6 +79,9 @@ const Content = styled.div`
     font-size: 17px;
     color: #B7B7B7;
     margin-top: 8px;
+    @media(max-width: 414px){
+        font-size: 15px;
+    }
 `
 
 const Link = styled.div`
@@ -74,16 +94,21 @@ const Link = styled.div`
     width: 100%;
 
     img{
-        width:155px;
+        width:40%;
         height: 155px;;
         border-radius: 0px 10px 10px 0px;
+        object-fit: cover;
     }
+
 
     &>div{
         display:flex;
         flex-direction:column;
         padding:19px;
         justify-content: center;
+        @media(max-width: 414px){
+        padding: 11px;
+    }
     }
 `
 
@@ -91,6 +116,9 @@ const LinkTitle = styled.div`
     color: #CECECE;
     font-weight: 400;
     font-size: 16px;
+    @media(max-width: 414px){
+        font-size: 11px;
+    }
 `
 
 
@@ -99,6 +127,9 @@ const LinkContent = styled.span`
     color: #9B9595;
     font-weight: 400;
     font-size: 10px;
+    @media(max-width: 414px){
+        font-size: 9px;
+    }
 `
 
 const LinkUrl = styled.span`
@@ -106,4 +137,7 @@ const LinkUrl = styled.span`
     color: #CECECE;
     font-weight: 400;
     font-size: 10px;
+    @media(max-width: 414px){
+        font-size: 9px;
+    }
 `

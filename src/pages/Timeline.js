@@ -9,7 +9,7 @@ import Publication from "../components/Publication.js";
 import Trending from "../components/Trending";
 
 export default function Timeline() {
-    const [posts, setPosts] = React.useState([]);
+    const [posts, setPosts] = React.useState(null);
     const { userToken } = React.useContext(ApplicationContext);
     
     const config = {
@@ -31,7 +31,13 @@ export default function Timeline() {
     },[]);
     
     function checkForPosts (){
-        if(posts.length === 0){
+        if(posts === null){
+            return(
+                <TextContainer>
+                    <h2>Loading...</h2>
+                </TextContainer>
+            );
+        }else if(posts.length === 0){
             return (
                 <TextContainer>
                     <h2>There are no posts yet</h2>

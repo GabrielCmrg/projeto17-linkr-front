@@ -10,7 +10,7 @@ export default function PublicationForm(){
     const [postLink, setPostLink] = useState("");
     const [content, setContent] = useState(""); 
     const [actionDisabled, setActionDisabled] = useState(false);
-        
+    let navigate = useNavigate();    
     
     const { userToken, userImage } = useContext(ApplicationContext);
     const config = {
@@ -33,7 +33,8 @@ export default function PublicationForm(){
             setActionDisabled(false);
             setContent("");
             setPostLink("");
-            window.location.reload();
+            // window.location.reload();
+            navigate("/timeline");
             return;
         }
 

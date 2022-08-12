@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 import Header from "../components/Header";
+import Publication from "../components/Publication";
 import PublicationForm  from "../components/PublicationForm.js";
 
 export default function Timeline() {
@@ -8,6 +9,7 @@ export default function Timeline() {
         <TimelineContainer>
             <Header />
             <PublicationForm />
+            <Publication userName='Júlio' userauthorship={true}/>
         </TimelineContainer>
     );
 };

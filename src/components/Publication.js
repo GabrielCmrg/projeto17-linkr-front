@@ -3,9 +3,11 @@ import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
 import { IoMdTrash } from "react-icons/io";
 import { ImPencil } from "react-icons/im";
+import React from "react";
 
 export default function Publication({ userImage, userName, postTitle, postLink, LinkName, LinkSummary, LinkImg, userauthorship }) {
     const navigate = useNavigate();
+    const [editing, setEditing] = React.useState(false);
 
     const tagStyle = {
         fontWeight: 700,
@@ -29,9 +31,11 @@ export default function Publication({ userImage, userName, postTitle, postLink, 
             <div>
                 <UserName>{userName}</UserName>
                 <Buttons>{userauthorship ? <><ImPencil /><IoMdTrash /></> : ''}</Buttons>
-                <ReactTagify tagStyle={tagStyle} mentionStyle={{}} tagClicked={redirect}>
+                {postTitle 
+                ? <ReactTagify tagStyle={tagStyle} mentionStyle={{}} tagClicked={redirect}>
                     <Content>{postTitle}</Content>
                 </ReactTagify>
+                : <></>}
                 <a href={postLink}>
                     <Link>
                         <div>

@@ -9,7 +9,7 @@ import Publication from "../components/Publication.js";
 
 export default function Timeline() {
     const [posts, setPosts] = React.useState([]);
-    const { userToken} = React.useContext(ApplicationContext);
+    const { userToken } = React.useContext(ApplicationContext);
     
     const config = {
         headers: {

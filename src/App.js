@@ -12,7 +12,7 @@ import Login from "./pages/Login";
 export default function App(){
     const [userToken, setUserToken] = React.useState(localStorage.getItem("token"));
     const [userImage, setUserImage] = React.useState(localStorage.getItem("image"));
-    const [updatePostList, setUpdatePostList] = React.useState(false);
+    
     React.useEffect(() => {
         if (userImage) {
             localStorage.setItem("image", userImage);
@@ -23,7 +23,7 @@ export default function App(){
             localStorage.setItem("token", userToken);
         }
     }, [userToken]);
-    const contextValue = { userToken, setUserToken, userImage, setUserImage, updatePostList, setUpdatePostList };
+    const contextValue = { userToken, setUserToken, userImage, setUserImage};
 
     return(
         <ApplicationContext.Provider value={contextValue}>

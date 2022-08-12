@@ -1,19 +1,35 @@
 import { useNavigate } from "react-router-dom";
+import React from "react";
 import styled from "styled-components";
 
-const hashtags = ["javascript","react", "react-native","material", "web-dev", "mobile", "css", "html", "node", "sql"];
+import { getTrendingTags } from "../services/api.js";
 
 export default function Trending(){
+    const [tags, setTags] = React.useState([]);
+
     let navigate = useNavigate();
 
     function redirectToRout(tagName){
         navigate(`/hashtag/${tagName}`);
     };
+
+    React.useEffect(() => {
+        async function data(){
+            const response = await getTrendingTags();
+            if(response.status === 200){
+                setTags([...response.data]);
+            }else{
+                alert("An error occured while trying to fetch the hashtags, please refresh the page")
+            };
+        };
+        data()
+    },[tags]);
+
     return (
         <TrendingContainer>
             <Title>trending</Title>
             <div></div>
-            <ul>{hashtags.map((tag,index)=><li key={index} onClick={()=>redirectToRout(tag)}> # {tag}</li>)}</ul>
+            <ul>{tags.map((tag,index)=><li key={index} onClick={()=>redirectToRout(tag)}> # {tag}</li>)}</ul>
         </TrendingContainer>
    );
 };

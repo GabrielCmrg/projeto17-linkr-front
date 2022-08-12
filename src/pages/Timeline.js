@@ -6,7 +6,6 @@ import PublicationForm  from "../components/PublicationForm.js";
 export default function Timeline() {
     return (
         <TimelineContainer>
-
             <Header />
             <PublicationForm />
         </TimelineContainer>

@@ -83,11 +83,14 @@ const TimelineContainer = styled.div`
     
 `;
 const Container = styled.div`
-    /* max-width: 611px; */
+    width: 100%;
     margin: auto;
     display: flex;
     justify-content: center;
     gap: 25px;
+    @media(max-width:960px){
+        gap:0;
+    };
 `;
 const Title = styled.h1`
     margin-top: 100px;

@@ -61,6 +61,9 @@ const TrendingContainer = styled.div`
         cursor: pointer;
         
     };
+    @media(max-width: 960px){
+        display: none;
+    }
 `;
 const Title = styled.h2`
     font: 700 27px 'Oswald', sans-serif;

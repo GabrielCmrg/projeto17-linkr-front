@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const { REACT_APP_API_URL } = process.env;
+const  REACT_APP_API_URL  = "http://localhost:4000";
+console.log(REACT_APP_API_URL);
 
 export async function signupRequest(email, name, password, picUrl) {
     const body = { email, name, password, picUrl };
@@ -43,7 +44,7 @@ export async function getAllPostRequest(config){
 
 export async function getTrendingTags (){
     try {
-        const response = await axios.get(`${REACT_APP_API_URL}/hashtag`);
+        const response = await axios.get(`${REACT_APP_API_URL}/hashtags`);
         return response;
     } catch (error) {
         return error.response;

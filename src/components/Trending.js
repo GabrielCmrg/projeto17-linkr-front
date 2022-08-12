@@ -10,26 +10,31 @@ export default function Trending(){
     let navigate = useNavigate();
 
     function redirectToRout(tagName){
-        navigate(`/hashtag/${tagName}`);
+        const name = tagName.replace("#","");
+        navigate(`/hashtag/${name}`);
+        
     };
 
     React.useEffect(() => {
         async function data(){
             const response = await getTrendingTags();
+            
             if(response.status === 200){
                 setTags([...response.data]);
+               
             }else{
+
                 alert("An error occured while trying to fetch the hashtags, please refresh the page")
             };
         };
         data()
-    },[tags]);
+    },[]);
 
     return (
         <TrendingContainer>
             <Title>trending</Title>
             <div></div>
-            <ul>{tags.map((tag,index)=><li key={index} onClick={()=>redirectToRout(tag)}> # {tag}</li>)}</ul>
+            <ul>{tags.map((tag,index)=><li key={index} onClick={()=>redirectToRout(tag.name)}> {tag.name}</li>)}</ul>
         </TrendingContainer>
    );
 };

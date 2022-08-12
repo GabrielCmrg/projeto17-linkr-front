@@ -21,13 +21,14 @@ export default function Timeline() {
         async function data(){
             const response = await getAllPostRequest(config);
             if(response.status === 200){
+                console.log(response.data);
                 setPosts([...response.data]);
             }else{
                 alert("An error occured while trying to fetch the posts, please refresh the page")
             };
         };
         data()
-    },[posts]);
+    },[]);
     
     function checkForPosts (){
         if(posts.length === 0){
@@ -43,7 +44,7 @@ export default function Timeline() {
                         key={index}
                         userImage={item.pic_url}
                         userName={item.name}
-                        postTitle={item.link_title}
+                        postTitle={item.content}
                         postLink={item.link_url}
                         LinkName={item.link_title}
                         LinkSummary={item.link_description}

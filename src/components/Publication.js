@@ -1,13 +1,35 @@
 import styled from "styled-components";
+import { ReactTagify } from "react-tagify";
+import { useNavigate } from "react-router-dom";
 
 export default function Publication({ userImage, userName, postTitle, postLink, LinkName, LinkSummary, LinkImg }) {
+    const navigate = useNavigate();
+
+    const tagStyle = {
+        fontWeight: 700,
+        cursor: 'pointer',
+        color: 'white',
+    };
+
+    function redirect(tag) {
+        if (tag.match(/(https?:\/\/[^\s]+)/g)) {
+            window.open(tag, '_blank');
+        }
+
+        if (tag.match(/#\w+/g)) {
+            const hashtagName = tag.match(/#\w+/g)[0].replace('#', '');
+            navigate(`/hashtag/${hashtagName}`);
+        }
+    }
 
     return (
         <Post>
             <img src={userImage} alt="User" />
             <div>
                 <UserName>{userName}</UserName>
-                <Content>{postTitle}</Content>
+                <ReactTagify tagStyle={tagStyle} mentionStyle={{}} tagClicked={redirect}>
+                    <Content>{postTitle}</Content>
+                </ReactTagify>
                 <a href={postLink}>
                     <Link>
                         <div>
@@ -20,7 +42,7 @@ export default function Publication({ userImage, userName, postTitle, postLink, 
                 </a>
             </div>
         </Post>
-    )
+    );
 }
 
 const Post = styled.div`
@@ -55,6 +77,7 @@ const Post = styled.div`
 
     a{
         text-decoration: none;
+        
     }
     @media(max-width: 414px){
     border-radius: 0;
@@ -63,7 +86,7 @@ const Post = styled.div`
     
     };
     
-`
+`;
 
 const UserName = styled.h1`
     font-weight: 400;
@@ -72,7 +95,8 @@ const UserName = styled.h1`
     @media(max-width: 414px){
         font-size: 17px;
     }
-`
+
+`;
 
 const Content = styled.div`
     font-weight: 400;
@@ -82,7 +106,7 @@ const Content = styled.div`
     @media(max-width: 414px){
         font-size: 15px;
     }
-`
+`;
 
 const Link = styled.div`
     border: 1px solid #4D4D4D;
@@ -110,7 +134,7 @@ const Link = styled.div`
         padding: 11px;
     }
     }
-`
+`;
 
 const LinkTitle = styled.div`
     color: #CECECE;
@@ -119,8 +143,7 @@ const LinkTitle = styled.div`
     @media(max-width: 414px){
         font-size: 11px;
     }
-`
-
+`;
 
 const LinkContent = styled.span`
     margin-top: 10px;
@@ -130,7 +153,7 @@ const LinkContent = styled.span`
     @media(max-width: 414px){
         font-size: 9px;
     }
-`
+`;
 
 const LinkUrl = styled.span`
     margin-top: 12px;
@@ -140,4 +163,4 @@ const LinkUrl = styled.span`
     @media(max-width: 414px){
         font-size: 9px;
     }
-`
+`;

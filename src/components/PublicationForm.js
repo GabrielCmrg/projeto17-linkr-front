@@ -33,8 +33,8 @@ export default function PublicationForm(){
             setActionDisabled(false);
             setContent("");
             setPostLink("");
-            // window.location.reload();
-            navigate("/timeline");
+            window.location.reload();
+            // navigate("/timeline");
             return;
         }
 
@@ -72,7 +72,7 @@ const PublicaionContainer = styled.div`
     display:flex;
     margin: 40px auto 30px auto;
     justify-content:space-between;
-    max-width:611px;
+    width:611px;
     padding: 16px 18px;
     border-radius: 16px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -131,6 +131,9 @@ const PublicaionContainer = styled.div`
         button:hover{
             filter: brightness(1.5);
         };
+    };
+    @media(max-width: 611px){
+        width:100%;
     };
     @media(max-width: 414px){
         border-radius: 0;

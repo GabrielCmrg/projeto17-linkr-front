@@ -40,3 +40,13 @@ export async function getAllPostRequest(){
         return error.response;
     }
 };
+
+export async function editPostRequest(postLink, content, config, postId) {
+    const body = { postLink, content };
+    try {
+        const response = await axios.post(`${REACT_APP_API_URL}/posts/${postId}`, body, config);
+        return response;
+    } catch (error) {
+        return error.response;
+    }
+};

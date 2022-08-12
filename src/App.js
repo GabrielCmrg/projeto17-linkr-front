@@ -23,7 +23,7 @@ export default function App(){
             localStorage.setItem("token", userToken);
         }
     }, [userToken]);
-    const contextValue = { userToken, setUserToken, userImage, setUserImage};
+    const contextValue = { userToken, setUserToken, userImage, setUserImage, };
 
     return(
         <ApplicationContext.Provider value={contextValue}>

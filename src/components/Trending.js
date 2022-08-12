@@ -1,13 +1,19 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const hashtags = ["javascript","react", "react-native","material", "web-dev", "mobile", "css", "html", "node", "sql"];
 
 export default function Trending(){
+    let navigate = useNavigate();
+
+    function redirectToRout(tagName){
+        navigate(`/hashtag/${tagName}`);
+    };
     return (
         <TrendingContainer>
             <Title>trending</Title>
             <div></div>
-            <ul>{hashtags.map((item,index)=><li key={index}> # {item}</li>)}</ul>
+            <ul>{hashtags.map((tag,index)=><li key={index} onClick={()=>redirectToRout(tag)}> # {tag}</li>)}</ul>
         </TrendingContainer>
    );
 };
@@ -27,9 +33,12 @@ const TrendingContainer = styled.div`
         padding: 22px 0 30px 16px;
     };
     li{
+        display: table;
         font: 700 19px 'Lato', sans-serif;
         color: #FFFFFF;
         padding: 4px 0;
+        cursor: pointer;
+        
     };
 `;
 const Title = styled.h2`

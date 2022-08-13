@@ -39,7 +39,7 @@ export default function UserPosts() {
             });
         };
         data()
-    },[]);
+    },[id]);
     
     function checkForPosts (){
         if(posts === null){

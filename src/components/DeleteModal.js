@@ -1,9 +1,19 @@
 import styled from "styled-components";
 import Modal from 'react-modal';
+import ApplicationContext from "../contexts/ApplicationContext";
+import { useContext } from "react";
+import { deletePostRequest } from "../services/api";
 
 Modal.setAppElement('#root');
 
-export default function DeleteModal({ deleteModalIsOpen, setDeleteModalIsOpen }) {
+export default function DeleteModal({ deleteModalIsOpen, setDeleteModalIsOpen, postId }) {
+    const { userToken } = useContext(ApplicationContext);
+    const config = {
+        headers: {
+            Authorization: `Bearer ${userToken}`,
+        }
+    }
+
     const customStyles = {
         content: {
             top: "50%",
@@ -21,14 +31,28 @@ export default function DeleteModal({ deleteModalIsOpen, setDeleteModalIsOpen })
             flexDirection: "column",
             fontFamily: 'Lato'
         }
+    };
+
+    async function deletePost() {
+        const response = await deletePostRequest(postId, config);
+        if (response.status === 200) {
+            setDeleteModalIsOpen(false);
+            window.location.reload();
+            return;
+        }
+        else {
+            setDeleteModalIsOpen(false);
+            alert("Could not delete post.");
+            return;
+        }
     }
-        ;
+
     return (
         <Modal isOpen={deleteModalIsOpen} style={customStyles}>
             <Title>Are you sure you want to delete this post?</Title>
             <CommandBar>
                 <QuitButton onClick={() => setDeleteModalIsOpen(false)}>No, go back</QuitButton>
-                <ConfirmButton>Yes, delete it </ConfirmButton>
+                <ConfirmButton onClick={() => deletePost()}>Yes, delete it </ConfirmButton>
             </CommandBar>
         </Modal>
     );

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { IoMdTrash } from "react-icons/io";
 import DeleteModal from "./DeleteModal"
 
-export default function Publication({ userImage, userName, postTitle, postLink, LinkName, LinkSummary, LinkImg, userauthorship }) {
+export default function Publication({ id, userImage, userName, postTitle, postLink, LinkName, LinkSummary, LinkImg, userauthorship }) {
     const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
     const navigate = useNavigate();
 
@@ -48,7 +48,7 @@ export default function Publication({ userImage, userName, postTitle, postLink, 
                     </a>
                 </div>
             </Post>
-            <DeleteModal deleteModalIsOpen={deleteModalIsOpen} setDeleteModalIsOpen={setDeleteModalIsOpen} />
+            <DeleteModal deleteModalIsOpen={deleteModalIsOpen} setDeleteModalIsOpen={setDeleteModalIsOpen} postId={id} />
         </>
     );
 }

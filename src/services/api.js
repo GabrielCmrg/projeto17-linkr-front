@@ -50,3 +50,12 @@ export async function getTrendingTags (){
         return error.response;
     }
 }
+
+export async function getUserPostsRequest(id, config){
+    try {
+        const response = await axios.get(`${REACT_APP_API_URL}/user/${id}`,config);
+        return response;
+    } catch (error) {
+        return error.response;
+    }
+};

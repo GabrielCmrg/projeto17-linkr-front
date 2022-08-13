@@ -59,3 +59,12 @@ export async function getUserPostsRequest(id, config){
         return error.response;
     }
 };
+
+export async function getTagPostsRequest(hashtag, config){
+    try {
+        const response = await axios.get(`${REACT_APP_API_URL}/hashtag/${hashtag}`,config);
+        return response;
+    } catch (error) {
+        return error.response;
+    }
+};

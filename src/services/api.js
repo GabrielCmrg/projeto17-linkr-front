@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const  {REACT_APP_API_URL}  = process.env;
-console.log(REACT_APP_API_URL);
+
 
 export async function signupRequest(email, name, password, picUrl) {
     const body = { email, name, password, picUrl };

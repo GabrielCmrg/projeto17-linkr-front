@@ -1,12 +1,13 @@
 import styled from "styled-components";
 import Modal from 'react-modal';
 import ApplicationContext from "../contexts/ApplicationContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { deletePostRequest } from "../services/api";
 
 Modal.setAppElement('#root');
 
 export default function DeleteModal({ deleteModalIsOpen, setDeleteModalIsOpen, postId }) {
+    const [actionDisabled, setActionDisabled] = useState(false);
     const { userToken } = useContext(ApplicationContext);
     const config = {
         headers: {
@@ -34,13 +35,16 @@ export default function DeleteModal({ deleteModalIsOpen, setDeleteModalIsOpen, p
     };
 
     async function deletePost() {
+        setActionDisabled(true);
         const response = await deletePostRequest(postId, config);
         if (response.status === 200) {
+            setActionDisabled(false)
             setDeleteModalIsOpen(false);
             window.location.reload();
             return;
         }
         else {
+            setActionDisabled(false)
             setDeleteModalIsOpen(false);
             alert("Could not delete post.");
             return;
@@ -51,8 +55,8 @@ export default function DeleteModal({ deleteModalIsOpen, setDeleteModalIsOpen, p
         <Modal isOpen={deleteModalIsOpen} style={customStyles}>
             <Title>Are you sure you want to delete this post?</Title>
             <CommandBar>
-                <QuitButton onClick={() => setDeleteModalIsOpen(false)}>No, go back</QuitButton>
-                <ConfirmButton onClick={() => deletePost()}>Yes, delete it </ConfirmButton>
+                <QuitButton disabled={actionDisabled} onClick={() => setDeleteModalIsOpen(false)}>No, go back</QuitButton>
+                <ConfirmButton disabled={actionDisabled} onClick={() => deletePost()}>{actionDisabled ? "Deleting..." : "Yes, delete it"}</ConfirmButton>
             </CommandBar>
         </Modal>
     );

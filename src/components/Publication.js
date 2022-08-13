@@ -37,7 +37,7 @@ export default function Publication({ postId, userImage, userName, postTitle, po
               </AvatarLinkContainer>
               <ContentContainer>
                   <UserName>{userName}</UserName>
-                  <Trash>{userauthorship ? <IoMdTrash onClick = {onClick={() => setDeleteModalIsOpen(true)}/> : ''}</Trash>
+                  <Trash>{userauthorship ? <IoMdTrash onClick = {() => setDeleteModalIsOpen(true)}/> : ''}</Trash>
                   <ReactTagify tagStyle={tagStyle} mentionStyle={{}} tagClicked={redirect}>
                       <ContentTitle>{postTitle}</ContentTitle>
                   </ReactTagify>

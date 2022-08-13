@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
+import { IoMdTrash } from "react-icons/io";
 
-export default function Publication({ userImage, userName, postTitle, postLink, LinkName, LinkSummary, LinkImg }) {
+export default function Publication({ userImage, userName, postTitle, postLink, LinkName, LinkSummary, LinkImg, userauthorship }) {
     const navigate = useNavigate();
 
     const tagStyle = {
@@ -27,6 +28,7 @@ export default function Publication({ userImage, userName, postTitle, postLink, 
             <img src={userImage} alt="User" />
             <div>
                 <UserName>{userName}</UserName>
+                <Trash>{userauthorship ? <IoMdTrash /> : ''}</Trash>
                 <ReactTagify tagStyle={tagStyle} mentionStyle={{}} tagClicked={redirect}>
                     <Content>{postTitle}</Content>
                 </ReactTagify>
@@ -56,6 +58,7 @@ const Post = styled.div`
     justify-content:space-between;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     margin: 16px auto;
+    position:relative;
     img{
         height: 53px;
         width: 53px;
@@ -164,3 +167,11 @@ const LinkUrl = styled.span`
         font-size: 9px;
     }
 `;
+
+const Trash = styled.div`
+    color: #ffffff;
+    font-size:14px;
+    position: absolute;
+    top:22px;
+    right:22px;
+`

@@ -63,6 +63,7 @@ export default function Timeline() {
     return (
         <TimelineContainer>
             <Header />
+
             <Container>
                 <div>
                     <Title>timeline</Title>

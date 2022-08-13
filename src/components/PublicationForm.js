@@ -1,5 +1,4 @@
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import ApplicationContext from "../contexts/ApplicationContext";
@@ -9,8 +8,7 @@ import { sendPostRequest } from "../services/api";
 export default function PublicationForm(){
     const [postLink, setPostLink] = useState("");
     const [content, setContent] = useState(""); 
-    const [actionDisabled, setActionDisabled] = useState(false);
-    let navigate = useNavigate();    
+    const [actionDisabled, setActionDisabled] = useState(false);   
     
     const { userToken, userImage } = useContext(ApplicationContext);
     const config = {
@@ -34,7 +32,6 @@ export default function PublicationForm(){
             setContent("");
             setPostLink("");
             window.location.reload();
-            // navigate("/timeline");
             return;
         }
 

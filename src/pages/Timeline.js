@@ -43,12 +43,11 @@ export default function Timeline() {
                     <h2>There are no posts yet</h2>
                 </TextContainer>
             );
-        } else {
-            return (
-                posts.map((item, index) => (
-                    < Publication
-                        key={index}
-                        id={item.id}
+        }else{
+            return(
+                posts.map(item=>(
+                    <Publication  
+                        key={item.id}
                         userImage={item.pic_url}
                         userName={item.name}
                         postTitle={item.content}

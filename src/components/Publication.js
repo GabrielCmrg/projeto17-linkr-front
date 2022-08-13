@@ -6,7 +6,7 @@ import {FiHeart} from "react-icons/fi";
 import { IoMdTrash } from "react-icons/io";
 import DeleteModal from "./DeleteModal"
 
-export default function Publication({ key, userImage, userName, postTitle, postLink, LinkName, LinkSummary, LinkImg, userauthorship }) {
+export default function Publication({ postId, userImage, userName, postTitle, postLink, LinkName, LinkSummary, LinkImg, userauthorship }) {
     const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
     const navigate = useNavigate();
 
@@ -37,7 +37,7 @@ export default function Publication({ key, userImage, userName, postTitle, postL
               </AvatarLinkContainer>
               <ContentContainer>
                   <UserName>{userName}</UserName>
-                  <Trash>{userauthorship ? <IoMdTrash /> : ''}</Trash>
+                  <Trash>{userauthorship ? <IoMdTrash onClick = {onClick={() => setDeleteModalIsOpen(true)}/> : ''}</Trash>
                   <ReactTagify tagStyle={tagStyle} mentionStyle={{}} tagClicked={redirect}>
                       <ContentTitle>{postTitle}</ContentTitle>
                   </ReactTagify>
@@ -51,7 +51,7 @@ export default function Publication({ key, userImage, userName, postTitle, postL
                   </LinkContainer>
               </ContentContainer>
           </Post>
-          <DeleteModal deleteModalIsOpen={deleteModalIsOpen} setDeleteModalIsOpen={setDeleteModalIsOpen} postId={key} />
+          <DeleteModal deleteModalIsOpen={deleteModalIsOpen} setDeleteModalIsOpen={setDeleteModalIsOpen} postId={postId} />
         </>
     );
 };
@@ -59,7 +59,7 @@ const Post = styled.div`
     background: #171717;
     display:flex;
     margin: 40px auto 30px auto;
-    justify-content:;
+    position: relative;
     width:611px;
     padding: 16px 18px;
     border-radius: 16px;

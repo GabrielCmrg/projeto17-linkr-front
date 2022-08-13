@@ -3,6 +3,7 @@ import React from "react";
 import { useParams } from 'react-router-dom';
 
 import Header from "../components/Header";
+import SearchBar from "../components/SearchBar";
 import { getTagPostsRequest } from "../services/api";
 import ApplicationContext from "../contexts/ApplicationContext.js";
 import Publication from "../components/Publication.js";
@@ -69,6 +70,7 @@ export default function Hashtag() {
     return (
         <TimelineContainer>
             <Header />
+            <SearchBar />
             <Container>
                 <div>
                     <Title># {hashtag}</Title>

@@ -2,6 +2,7 @@ import styled from "styled-components";
 import React from "react";
 
 import Header from "../components/Header";
+import SearchBar from "../components/SearchBar";
 import PublicationForm  from "../components/PublicationForm.js";
 import { getAllPostRequest } from "../services/api";
 import ApplicationContext from "../contexts/ApplicationContext.js";
@@ -21,7 +22,6 @@ export default function Timeline() {
         async function data(){
             const response = await getAllPostRequest(config);
             if(response.status === 200){
-                console.log(response.data);
                 setPosts([...response.data]);
             }else{
                 alert("An error occured while trying to fetch the posts, please refresh the page")
@@ -63,7 +63,7 @@ export default function Timeline() {
     return (
         <TimelineContainer>
             <Header />
-
+            <SearchBar />
             <Container>
                 <div>
                     <Title>timeline</Title>

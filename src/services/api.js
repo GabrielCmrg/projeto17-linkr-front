@@ -68,3 +68,12 @@ export async function getTagPostsRequest(hashtag, config){
         return error.response;
     }
 };
+
+export async function searchUserRequest(search){
+    try {
+        const response = await axios.post(`${REACT_APP_API_URL}/searchuser`, search);
+        return response;
+    } catch (error) {
+        return error.response;
+    }
+};

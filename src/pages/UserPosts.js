@@ -3,6 +3,7 @@ import React from "react";
 import { useParams } from 'react-router-dom';
 
 import Header from "../components/Header";
+import SearchBar from "../components/SearchBar";
 import { getUserPostsRequest } from "../services/api";
 import ApplicationContext from "../contexts/ApplicationContext.js";
 import Publication from "../components/Publication.js";
@@ -23,6 +24,7 @@ export default function UserPosts() {
         }
     };
     React.useEffect(() => {
+        setNotFound(false)
         async function data(){
             const response = getUserPostsRequest(id, config);
             response.then( res => {
@@ -74,7 +76,7 @@ export default function UserPosts() {
     return (
         <TimelineContainer>
             <Header />
-
+            <SearchBar />
             {notFound ? 
                 <h1>Usuário não encontrado</h1> 
                 :

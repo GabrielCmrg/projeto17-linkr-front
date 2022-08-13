@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const { REACT_APP_API_URL } = process.env;
+const  {REACT_APP_API_URL}  = process.env;
+
 
 export async function signupRequest(email, name, password, picUrl) {
     const body = { email, name, password, picUrl };
@@ -32,9 +33,9 @@ export async function sendPostRequest(postLink, content, config) {
     }
 };
 
-export async function getAllPostRequest(){
+export async function getAllPostRequest(config){
     try {
-        const response = await axios.get(`${REACT_APP_API_URL}/timeline`);
+        const response = await axios.get(`${REACT_APP_API_URL}/timeline`,config);
         return response;
     } catch (error) {
         return error.response;
@@ -45,6 +46,15 @@ export async function editPostRequest(postLink, content, config, postId) {
     const body = { postLink, content };
     try {
         const response = await axios.post(`${REACT_APP_API_URL}/posts/${postId}`, body, config);
+        return response;
+    } catch (error) {
+        return error.response;
+    }
+};
+
+export async function getTrendingTags (){
+    try {
+        const response = await axios.get(`${REACT_APP_API_URL}/hashtags`);
         return response;
     } catch (error) {
         return error.response;

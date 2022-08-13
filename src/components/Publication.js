@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
+import {FiHeart} from "react-icons/fi";
 import { IoMdTrash } from "react-icons/io";
 import { ImPencil } from "react-icons/im";
 import React from "react";
@@ -17,6 +18,7 @@ export default function Publication({ key, userImage, userName, postTitle, postL
     const tagStyle = {
         fontWeight: 700,
         cursor: 'pointer',
+        color: 'white',
     };
 
     function redirect(tag) {
@@ -48,8 +50,12 @@ export default function Publication({ key, userImage, userName, postTitle, postL
 
     return (
         <Post>
-            <img src={userImage} alt="User" />
-            <div>
+            <AvatarLinkContainer>
+                <Avatar src={userImage} alt="User" />
+                <FiHeart size={20} color="white"/>
+                <Likes>13 likes</Likes>
+            </AvatarLinkContainer>
+            <ContentContainer>
                 <div style={{display: 'flex', justifyContent: 'space-between'}}>
                     <UserName>{userName}</UserName>
                     <Buttons>
@@ -79,109 +85,128 @@ export default function Publication({ key, userImage, userName, postTitle, postL
                     <></>
                 }
                 <a href={postLink}>
-                    <Link>
+                    <LinkContainer>
                         <div>
                             <LinkTitle >{LinkName}</LinkTitle>
                             <LinkContent>{LinkSummary}</LinkContent>
                             <LinkUrl>{postLink}</LinkUrl>
                         </div>
                         <img src={LinkImg} alt="ImageLink" />
-                    </Link>
+                    </LinkContainer>
                 </a>
-            </div>
+                </ContentContainer>
         </Post>
+        
     );
-}
-
+};
 const Post = styled.div`
-    font-family: 'Lato';
-    margin-top: 29px;
-    padding: 16px 18px;
-    background-color: #171717;
-    border-radius: 16px;
-    width: 611px;
+    background: #171717;
     display:flex;
-    justify-content:space-between;
+    margin: 40px auto 30px auto;
+    width:611px;
+    padding: 16px 18px;
+    border-radius: 16px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    
-    img{
-        height: 53px;
-        width: 53px;
-        border-radius: 50%;
-    };
-    
-    &>div{
-        width: 85%;
-        display:flex;
-        flex-direction: column;
-    }
-
-    a{
-        text-decoration: none;
+    gap:20px;
+    @media(max-width: 611px ){
+        width:100%;
     }
 `;
 
-const UserName = styled.h1`
-    font-weight: 400;
-    font-size: 19px;
+const AvatarLinkContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+`;
+
+const Avatar = styled.img`
+    height: 53px;
+    width: 53px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 20px;
+`;
+
+const Likes = styled.p`
+    font: 400 10px 'Lato', sans-serif;
     color: #FFFFFF;
 `;
 
-const Content = styled.div`
-    font-weight: 400;
-    font-size: 17px;
-    color: #B7B7B7;
-    margin-top: 8px;
+const ContentContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap:10px;
+    width: 90%; 
 `;
 
-const Link = styled.div`
+const UserName = styled.p`
+    font: 400 19px 'Lato', sans-serif;
+    color: #FFFFFF;
+    @media(max-width: 414px){
+        font-size: 17px;
+    };
+`;
+
+const ContentTitle = styled.p`
+    font: 400 17px 'Lato', sans-serif;
+    color: #B7B7B7;
+    @media(max-width: 414px){
+        font-size: 17px;
+    };
+`;
+
+const LinkContainer = styled.div`
+    display: flex;
     border: 1px solid #4D4D4D;
     border-radius: 10px;
-    height: 155px;
-    margin-top: 8px;
-    display:flex;
-    justify-content: space-between;
-    width: 100%;
-
+    justify-content:space-between;
+    align-items: center;
+    width:100%;
+    height:155px;
+    cursor:pointer;
+    div{
+        display: flex;
+        flex-direction: column;
+        gap:10px;
+        padding: 24px 0 20px 20px;
+    }
     img{
-        width:155px;
-        height: 155px;;
-        border-radius: 0px 10px 10px 0px;
-    }
-
-    &>div{
-        display:flex;
-        flex-direction:column;
-        padding:19px;
-        justify-content: center;
-    }
+        height:100%;
+        width:40%;
+        border-radius: 0 10px 10px 0;
+    };
 `;
 
-const LinkTitle = styled.div`
+const LinkTitle = styled.p`
+    font: 400 16px 'Lato', sans-serif;
     color: #CECECE;
-    font-weight: 400;
-    font-size: 16px;
+    @media(max-width: 414px){
+        font-size: 11px;
+    };
 `;
 
-const LinkContent = styled.span`
-    margin-top: 10px;
+const LinkContent = styled.p`
+    font: 400 10px 'Lato', sans-serif;
     color: #9B9595;
-    font-weight: 400;
-    font-size: 10px;
+    @media(max-width: 414px){
+        font-size: 9px;
+    };
 `;
 
-const LinkUrl = styled.span`
-    margin-top: 12px;
+const LinkUrl = styled.p`
+    font: 400 10px 'Lato', sans-serif;
     color: #CECECE;
-    font-weight: 400;
-    font-size: 10px;
+    @media(max-width: 414px){
+        font-size: 9px;
+    };
 `;
 
 const Buttons = styled.div`
     color: #ffffff;
     font-size:14px;
-    top:22px;
-    right:22px;
     display: flex;
 
     svg {

@@ -1,9 +1,12 @@
 import styled from "styled-components";
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { IoMdTrash } from "react-icons/io";
+import DeleteModal from "./DeleteModal"
 
 export default function Publication({ userImage, userName, postTitle, postLink, LinkName, LinkSummary, LinkImg, userauthorship }) {
+    const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
     const navigate = useNavigate();
 
     const tagStyle = {
@@ -24,26 +27,29 @@ export default function Publication({ userImage, userName, postTitle, postLink, 
     }
 
     return (
-        <Post>
-            <img src={userImage} alt="User" />
-            <div>
-                <UserName>{userName}</UserName>
-                <Trash>{userauthorship ? <IoMdTrash /> : ''}</Trash>
-                <ReactTagify tagStyle={tagStyle} mentionStyle={{}} tagClicked={redirect}>
-                    <Content>{postTitle}</Content>
-                </ReactTagify>
-                <a href={postLink}>
-                    <Link>
-                        <div>
-                            <LinkTitle >{LinkName}</LinkTitle>
-                            <LinkContent>{LinkSummary}</LinkContent>
-                            <LinkUrl>{postLink}</LinkUrl>
-                        </div>
-                        <img src={LinkImg} alt="ImageLink" />
-                    </Link>
-                </a>
-            </div>
-        </Post>
+        <>
+            <Post>
+                <img src={userImage} alt="User" />
+                <div>
+                    <UserName>{userName}</UserName>
+                    <Trash>{userauthorship ? <IoMdTrash onClick={() => setDeleteModalIsOpen(true)} /> : ''}</Trash>
+                    <ReactTagify tagStyle={tagStyle} mentionStyle={{}} tagClicked={redirect}>
+                        <Content>{postTitle}</Content>
+                    </ReactTagify>
+                    <a href={postLink}>
+                        <Link>
+                            <div>
+                                <LinkTitle >{LinkName}</LinkTitle>
+                                <LinkContent>{LinkSummary}</LinkContent>
+                                <LinkUrl>{postLink}</LinkUrl>
+                            </div>
+                            <img src={LinkImg} alt="ImageLink" />
+                        </Link>
+                    </a>
+                </div>
+            </Post>
+            <DeleteModal deleteModalIsOpen={deleteModalIsOpen} setDeleteModalIsOpen={setDeleteModalIsOpen} />
+        </>
     );
 }
 

@@ -48,6 +48,7 @@ export default function Timeline() {
                 posts.map(item=>(
                     <Publication  
                         key={item.id}
+                        postId={item.id}
                         userImage={item.pic_url}
                         userName={item.name}
                         postTitle={item.content}

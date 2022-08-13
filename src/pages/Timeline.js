@@ -45,9 +45,9 @@ export default function Timeline() {
             );
         }else{
             return(
-                posts.map((item,index)=>(
+                posts.map(item=>(
                     <Publication  
-                        key={index}
+                        key={item.id}
                         userImage={item.pic_url}
                         userName={item.name}
                         postTitle={item.content}

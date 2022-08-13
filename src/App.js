@@ -6,6 +6,7 @@ import ApplicationContext from "./contexts/ApplicationContext";
 import GlobalStyle from "./themes/GlobalStyle";
 
 import Timeline from "./pages/Timeline.js";
+import UserPosts from "./pages/UserPosts.js";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 
@@ -33,6 +34,7 @@ export default function App(){
                     <Route path="/" element={<Login />} />
                     <Route path="/timeline" element={<Timeline />} />
                     <Route path="/sign-up" element={<Signup />} />
+                    <Route path="/user/:id" element={<UserPosts />} />
                 </Routes>
             </BrowserRouter>    
         </ApplicationContext.Provider>

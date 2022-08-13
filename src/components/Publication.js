@@ -2,8 +2,9 @@ import styled from "styled-components";
 import { ReactTagify } from "react-tagify";
 import { useNavigate} from "react-router-dom";
 import {FiHeart} from "react-icons/fi";
+import { IoMdTrash } from "react-icons/io";
 
-export default function Publication({ userImage, userName, postTitle, postLink, LinkName, LinkSummary, LinkImg }) {
+export default function Publication({ userImage, userName, postTitle, postLink, LinkName, LinkSummary, LinkImg, userauthorship }) {
     const navigate = useNavigate();
 
     const tagStyle = {
@@ -32,6 +33,7 @@ export default function Publication({ userImage, userName, postTitle, postLink, 
             </AvatarLinkContainer>
             <ContentContainer>
                 <UserName>{userName}</UserName>
+                <Trash>{userauthorship ? <IoMdTrash /> : ''}</Trash>
                 <ReactTagify tagStyle={tagStyle} mentionStyle={{}} tagClicked={redirect}>
                     <ContentTitle>{postTitle}</ContentTitle>
                 </ReactTagify>
@@ -153,3 +155,11 @@ const LinkUrl = styled.p`
         font-size: 9px;
     };
 `;
+
+const Trash = styled.div`
+    color: #ffffff;
+    font-size:14px;
+    position: absolute;
+    top:22px;
+    right:22px;
+`

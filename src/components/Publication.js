@@ -5,9 +5,14 @@ import { IoMdTrash } from "react-icons/io";
 import { ImPencil } from "react-icons/im";
 import React from "react";
 
-export default function Publication({ userImage, userName, postTitle, postLink, LinkName, LinkSummary, LinkImg, userauthorship }) {
+import { editPostRequest } from "../services/api";
+import ApplicationContext from "../contexts/ApplicationContext";
+
+export default function Publication({ key, userImage, userName, postTitle, postLink, LinkName, LinkSummary, LinkImg, userauthorship }) {
     const navigate = useNavigate();
     const [editing, setEditing] = React.useState(false);
+    const [postContent, setPostContent] = React.useState(postTitle);
+    const { userToken } = React.useContext(ApplicationContext);
 
     const tagStyle = {
         fontWeight: 700,
@@ -25,17 +30,54 @@ export default function Publication({ userImage, userName, postTitle, postLink, 
         }
     }
 
+    async function sendEditRequest(e) {
+        e.preventDefault();
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userToken}`,
+            },
+        };
+        const response = await editPostRequest(postLink, postContent, config, key);
+        if (response.status === 200) {
+            window.location.reload();
+            return;
+        }
+
+        alert("Something went wrong, try editing again in a few seconds or reload the page.");
+    }
+
     return (
         <Post>
             <img src={userImage} alt="User" />
             <div>
-                <UserName>{userName}</UserName>
-                <Buttons>{userauthorship ? <><ImPencil /><IoMdTrash /></> : ''}</Buttons>
-                {postTitle 
-                ? <ReactTagify tagStyle={tagStyle} mentionStyle={{}} tagClicked={redirect}>
-                    <Content>{postTitle}</Content>
-                </ReactTagify>
-                : <></>}
+                <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                    <UserName>{userName}</UserName>
+                    <Buttons>
+                        {userauthorship ? 
+                        <>
+                            <ImPencil onClick={() => setEditing(!editing)}/>
+                            <IoMdTrash />
+                        </> : 
+                        <></>}
+                    </Buttons>
+                </div>
+                {
+                    editing ?
+                    <form onSubmit={sendEditRequest}>
+                        <ContentInput
+                            value={postContent}
+                            onChange={e => setPostContent(e.target.value)}
+                        />
+                    </form> :
+                    <></>
+                }
+                {
+                    postTitle && !editing ?
+                    <ReactTagify tagStyle={tagStyle} mentionStyle={{}} tagClicked={redirect}>
+                        <Content>{postTitle}</Content>
+                    </ReactTagify>: 
+                    <></>
+                }
                 <a href={postLink}>
                     <Link>
                         <div>
@@ -138,8 +180,22 @@ const LinkUrl = styled.span`
 const Buttons = styled.div`
     color: #ffffff;
     font-size:14px;
-    position: absolute;
     top:22px;
     right:22px;
     display: flex;
+
+    svg {
+        margin: 0 5px;
+        cursor: pointer;
+    }
+`;
+
+const ContentInput = styled.input`
+    border: none;
+    background-color: #EFEFEF;
+    border-radius: 5px;
+    padding: 10px;
+    font-family:'Lato', sans-serif;
+    margin-top: 8px;
+    width: 100%;
 `;

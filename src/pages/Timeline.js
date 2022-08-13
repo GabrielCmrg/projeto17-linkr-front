@@ -9,7 +9,6 @@ export default function Timeline() {
         <TimelineContainer>
             <Header />
             <PublicationForm />
-            <Publication userName='Júlio' userauthorship={true}/>
         </TimelineContainer>
     );
 };

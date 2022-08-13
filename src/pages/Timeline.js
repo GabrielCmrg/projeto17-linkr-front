@@ -4,10 +4,11 @@ import React from "react";
 import Header from "../components/Header";
 import Publication from "../components/Publication";
 import PublicationForm  from "../components/PublicationForm.js";
-import { getAllPostRequest } from "../services/api";
-import ApplicationContext from "../contexts/ApplicationContext.js";
-import Publication from "../components/Publication.js";
 import Trending from "../components/Trending";
+
+import { getAllPostRequest } from "../services/api";
+
+import ApplicationContext from "../contexts/ApplicationContext.js";
 
 export default function Timeline() {
     const [posts, setPosts] = React.useState(null);
@@ -22,7 +23,6 @@ export default function Timeline() {
         async function data(){
             const response = await getAllPostRequest(config);
             if(response.status === 200){
-                console.log(response.data);
                 setPosts([...response.data]);
             }else{
                 alert("An error occured while trying to fetch the posts, please refresh the page")
@@ -49,6 +49,7 @@ export default function Timeline() {
                 posts.map(item=>(
                     <Publication  
                         key={item.id}
+                        postId={item.id}
                         userImage={item.pic_url}
                         userName={item.name}
                         postTitle={item.content}
@@ -56,6 +57,7 @@ export default function Timeline() {
                         LinkName={item.link_title}
                         LinkSummary={item.link_description}
                         LinkImg={item.link_image}
+                        userauthorship={item.userauthorship}
                     />))
             );
         };

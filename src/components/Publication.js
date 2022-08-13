@@ -9,7 +9,7 @@ import React from "react";
 import { editPostRequest } from "../services/api";
 import ApplicationContext from "../contexts/ApplicationContext";
 
-export default function Publication({ key, userImage, userName, postTitle, postLink, LinkName, LinkSummary, LinkImg, userauthorship }) {
+export default function Publication({ postId, userImage, userName, postTitle, postLink, LinkName, LinkSummary, LinkImg, userauthorship }) {
     const navigate = useNavigate();
     const [editing, setEditing] = React.useState(false);
     const [postContent, setPostContent] = React.useState(postTitle);
@@ -39,13 +39,34 @@ export default function Publication({ key, userImage, userName, postTitle, postL
                 Authorization: `Bearer ${userToken}`,
             },
         };
-        const response = await editPostRequest(postLink, postContent, config, key);
+        const response = await editPostRequest(postLink, postContent, config, postId);
         if (response.status === 200) {
             window.location.reload();
             return;
         }
 
         alert("Something went wrong, try editing again in a few seconds or reload the page.");
+    }
+
+    function postTitleArea() {
+        if (editing) {
+            return (
+                <form onSubmit={sendEditRequest}>
+                    <ContentInput
+                        value={postContent}
+                        onChange={e => setPostContent(e.target.value)}
+                    />
+                </form>
+            );
+        } else if(postTitle) {
+            return (
+                <ReactTagify tagStyle={tagStyle} mentionStyle={{}} tagClicked={redirect}>
+                    <ContentTitle>{postTitle}</ContentTitle>
+                </ReactTagify>
+            );
+        }
+
+        return (<></>);
     }
 
     return (
@@ -67,36 +88,17 @@ export default function Publication({ key, userImage, userName, postTitle, postL
                         <></>}
                     </Buttons>
                 </div>
-                {
-                    editing ?
-                    <form onSubmit={sendEditRequest}>
-                        <ContentInput
-                            value={postContent}
-                            onChange={e => setPostContent(e.target.value)}
-                        />
-                    </form> :
-                    <></>
-                }
-                {
-                    postTitle && !editing ?
-                    <ReactTagify tagStyle={tagStyle} mentionStyle={{}} tagClicked={redirect}>
-                        <Content>{postTitle}</Content>
-                    </ReactTagify>: 
-                    <></>
-                }
-                <a href={postLink}>
-                    <LinkContainer>
-                        <div>
-                            <LinkTitle >{LinkName}</LinkTitle>
-                            <LinkContent>{LinkSummary}</LinkContent>
-                            <LinkUrl>{postLink}</LinkUrl>
-                        </div>
-                        <img src={LinkImg} alt="ImageLink" />
-                    </LinkContainer>
-                </a>
-                </ContentContainer>
+                {postTitleArea()}
+                <LinkContainer>
+                    <div>
+                        <LinkTitle >{LinkName}</LinkTitle>
+                        <LinkContent>{LinkSummary}</LinkContent>
+                        <LinkUrl>{postLink}</LinkUrl>
+                    </div>
+                    <img src={LinkImg} alt="ImageLink" />
+                </LinkContainer>
+            </ContentContainer>
         </Post>
-        
     );
 };
 const Post = styled.div`

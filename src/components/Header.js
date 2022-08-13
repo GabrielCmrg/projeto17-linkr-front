@@ -22,7 +22,7 @@ const HeaderContainer = styled.div`
     top:0;
     z-index: 1;
     background-color: #151515;
-    padding: 0 2%;
+    padding: 20px;
     width:100%;
     height: 72px;
     display: flex;
@@ -31,6 +31,9 @@ const HeaderContainer = styled.div`
     h1{
         font: 700 49px 'Oswald', sans-serif;
         color: #FFFFFF;
+        @media(max-width: 414px){
+        font-size: 45px;
+        };
     };
     div{
        display: flex;
@@ -40,6 +43,13 @@ const HeaderContainer = styled.div`
         height: 53px;
         width: 53px;
         border-radius: 50%;
+        object-fit: cover;
+        @media(max-width: 414px){
+            height: 44px;
+            width: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+        };  
     };
     };
     

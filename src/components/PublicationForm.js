@@ -1,5 +1,4 @@
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import ApplicationContext from "../contexts/ApplicationContext";
@@ -9,9 +8,8 @@ import { sendPostRequest } from "../services/api";
 export default function PublicationForm(){
     const [postLink, setPostLink] = useState("");
     const [content, setContent] = useState(""); 
-    const [actionDisabled, setActionDisabled] = useState(false);
-        
-    const navigate = useNavigate()
+    const [actionDisabled, setActionDisabled] = useState(false);   
+    
     const { userToken, userImage } = useContext(ApplicationContext);
     const config = {
         headers: {
@@ -33,7 +31,7 @@ export default function PublicationForm(){
             setActionDisabled(false);
             setContent("");
             setPostLink("");
-            navigate("/timeline");
+            window.location.reload();
             return;
         }
 
@@ -69,9 +67,9 @@ export default function PublicationForm(){
 const PublicaionContainer = styled.div`
     background: #FFFFFF;
     display:flex;
-    margin: 100px auto;
+    margin: 40px auto 30px auto;
     justify-content:space-between;
-    max-width:611px;
+    width:611px;
     padding: 16px 18px;
     border-radius: 16px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -79,6 +77,7 @@ const PublicaionContainer = styled.div`
         height: 53px;
         width: 53px;
         border-radius: 50%;
+        object-fit: cover;
     };
     form{
         display: flex;
@@ -129,6 +128,9 @@ const PublicaionContainer = styled.div`
         button:hover{
             filter: brightness(1.5);
         };
+    };
+    @media(max-width: 611px){
+        width:100%;
     };
     @media(max-width: 414px){
         border-radius: 0;

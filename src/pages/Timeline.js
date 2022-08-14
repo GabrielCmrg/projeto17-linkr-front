@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import Header from "../components/Header";
 import PublicationForm  from "../components/PublicationForm.js";
@@ -8,10 +9,18 @@ import ApplicationContext from "../contexts/ApplicationContext.js";
 import Publication from "../components/Publication.js";
 import Trending from "../components/Trending";
 
+
 export default function Timeline() {
     const [posts, setPosts] = React.useState(null);
     const { userToken } = React.useContext(ApplicationContext);
+    const navigate = useNavigate()
     
+    
+    React.useEffect(()=>{
+        if(!userToken){
+            navigate("/",{replace:true});
+        }
+    },[])
     const config = {
         headers: {
           Authorization: `Bearer ${userToken}`,
@@ -21,14 +30,13 @@ export default function Timeline() {
         async function data(){
             const response = await getAllPostRequest(config);
             if(response.status === 200){
-                console.log(response.data);
                 setPosts([...response.data]);
             }else{
                 alert("An error occured while trying to fetch the posts, please refresh the page")
             };
         };
         data()
-    },[]);
+    },[posts]);
     
     function checkForPosts (){
         if(posts === null){

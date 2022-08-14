@@ -6,11 +6,23 @@ import {FiHeart} from "react-icons/fi";
 import { IoMdTrash } from "react-icons/io";
 
 import ApplicationContext from "../contexts/ApplicationContext";
-import { sendPostLikeRequest } from "../services/api.js";
+import { likeRequest, dislikeRequest } from "../services/api.js";
 
-export default function Publication({ postId, userImage, userName, postTitle, postLink, LinkName, LinkSummary, LinkImg, userauthorship }) {
+export default function Publication({
+    userLiked,
+    likesAmount,
+    postId, 
+    userImage, 
+    userName, 
+    postTitle, 
+    postLink, 
+    LinkName, 
+    LinkSummary, 
+    LinkImg, 
+    userauthorship }) {
     const navigate = useNavigate();
-    const [liked, setLiked] = React.useState(false);
+    const [liked, setLiked] = React.useState(userLiked);
+    const [totalLikes, setTotalLikes] = React.useState(parseInt(likesAmount));
     
     const { userToken } = React.useContext(ApplicationContext);
     const config = {
@@ -37,32 +49,40 @@ export default function Publication({ postId, userImage, userName, postTitle, po
     async function likePost (){
         if(!liked){
             setLiked(true);
-            const response =  await sendPostLikeRequest(config,postId);
-            if(response.status !== 201){
+            setTotalLikes( totalLikes +  1);
+            const response =  await likeRequest(config, postId);
+            if(response.status !== 200){
                 alert('Something went wrong when trying to like a post');
                 setLiked(false);
             };
 
         }else{
             setLiked(false);
+            setTotalLikes( totalLikes - 1);
+            const response = await dislikeRequest(config, postId);
+            if(response.status !== 200){
+                alert('Something went wrong when trying to like a post');
+                setLiked(true);
+            };
         };
     };
-    // function showLikes (){
-    //     if(){
-    //         return  "";
-    //     }else if(likes === 1){
-    //         return `${likes} like`
-    //     }else{
-    //         return `${likes} likes`
-    //     }
-    // };
-    const renderLikes = 0;
+    function countLikes (){
+        if(totalLikes === 0){
+            return "";
+        }else if( totalLikes === 1){
+            return `${totalLikes} like`
+        }else{
+            return `${totalLikes} likes`
+        };
+    };
+    const renderlikes = countLikes();
+    
     return (
         <Post>
             <AvatarLinkContainer>
                 <Avatar src={userImage} alt="User" />
                 <FiHeart onClick={likePost} size={20} color={liked?"red":"white"} fill={liked?"red":""}/>
-                <Likes>{renderLikes}</Likes>
+                <Likes>{renderlikes}</Likes>
             </AvatarLinkContainer>
             <ContentContainer>
                 <UserName>{userName}</UserName>

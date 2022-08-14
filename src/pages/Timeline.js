@@ -15,18 +15,16 @@ export default function Timeline() {
     const { userToken } = React.useContext(ApplicationContext);
     const navigate = useNavigate()
     
-    
-    React.useEffect(()=>{
-        if(!userToken){
-            navigate("/",{replace:true});
-        }
-    },[])
     const config = {
         headers: {
           Authorization: `Bearer ${userToken}`,
         }
     };
     React.useEffect(() => {
+        if(!userToken){
+            navigate("/",{replace:true});
+            return;
+        };
         async function data(){
             const response = await getAllPostRequest(config);
             if(response.status === 200){
@@ -36,7 +34,7 @@ export default function Timeline() {
             };
         };
         data()
-    },[posts]);
+    },[]);
     
     function checkForPosts (){
         if(posts === null){
@@ -56,6 +54,8 @@ export default function Timeline() {
                 posts.map(item=>(
                     <Publication  
                         key={item.id}
+                        userLiked={item.userliked}
+                        likesAmount={item.likes_amount}
                         postId={item.id}
                         userImage={item.pic_url}
                         userName={item.name}

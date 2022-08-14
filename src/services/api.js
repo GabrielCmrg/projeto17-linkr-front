@@ -51,10 +51,19 @@ export async function getTrendingTags (){
     }
 };
 
-export async function sendPostLikeRequest(config, postId) {
+export async function likeRequest(config, postId) {
     const body = {postId}
     try {
         const response = await axios.post(`${REACT_APP_API_URL}/like`,body ,config);
+        return response;
+    } catch (error) {
+        return error.response;
+    }
+};
+
+export async function dislikeRequest(config, postId) {
+    try {
+        const response = await axios.delete(`${REACT_APP_API_URL}/like/${postId}`,config);
         return response;
     } catch (error) {
         return error.response;

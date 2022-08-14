@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React from "react";
 
 import Header from "../components/Header";
-import PublicationForm  from "../components/PublicationForm.js";
+import PublicationForm from "../components/PublicationForm.js";
 import { getAllPostRequest } from "../services/api";
 import ApplicationContext from "../contexts/ApplicationContext.js";
 import Publication from "../components/Publication.js";
@@ -11,33 +11,33 @@ import Trending from "../components/Trending";
 export default function Timeline() {
     const [posts, setPosts] = React.useState(null);
     const { userToken } = React.useContext(ApplicationContext);
-    
+
     const config = {
         headers: {
-          Authorization: `Bearer ${userToken}`,
+            Authorization: `Bearer ${userToken}`,
         }
     };
     React.useEffect(() => {
-        async function data(){
+        async function data() {
             const response = await getAllPostRequest(config);
-            if(response.status === 200){
+            if (response.status === 200) {
                 console.log(response.data);
                 setPosts([...response.data]);
-            }else{
+            } else {
                 alert("An error occured while trying to fetch the posts, please refresh the page")
             };
         };
         data()
-    },[]);
-    
-    function checkForPosts (){
-        if(posts === null){
-            return(
+    }, []);
+
+    function checkForPosts() {
+        if (posts === null) {
+            return (
                 <TextContainer>
                     <h2>Loading...</h2>
                 </TextContainer>
             );
-        }else if(posts.length === 0){
+        } else if (posts.length === 0) {
             return (
                 <TextContainer>
                     <h2>There are no posts yet</h2>
@@ -48,6 +48,7 @@ export default function Timeline() {
                 posts.map(item=>(
                     <Publication  
                         key={item.id}
+                        postId={item.id}
                         userImage={item.pic_url}
                         userName={item.name}
                         postTitle={item.content}
@@ -55,6 +56,7 @@ export default function Timeline() {
                         LinkName={item.link_title}
                         LinkSummary={item.link_description}
                         LinkImg={item.link_image}
+                        userauthorship={item.userauthorship}
                     />))
             );
         };
@@ -71,7 +73,7 @@ export default function Timeline() {
                     {renderPosts}
                 </div>
                 <div>
-                    <Trending /> 
+                    <Trending />
                 </div>
             </Container>
         </TimelineContainer>

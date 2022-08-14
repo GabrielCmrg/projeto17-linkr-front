@@ -1,11 +1,13 @@
+import React from "react";
 import styled from "styled-components";
 import { ReactTagify } from "react-tagify";
 import { useNavigate} from "react-router-dom";
 import {FiHeart} from "react-icons/fi";
 import { IoMdTrash } from "react-icons/io";
 
-export default function Publication({ userImage, userName, postTitle, postLink, LinkName, LinkSummary, LinkImg, userauthorship }) {
+export default function Publication({ postId, userImage, userName, postTitle, postLink, LinkName, LinkSummary, LinkImg, userauthorship }) {
     const navigate = useNavigate();
+    const [liked, setLiked] = React.useState(false); 
 
     const tagStyle = {
         fontWeight: 700,
@@ -22,13 +24,20 @@ export default function Publication({ userImage, userName, postTitle, postLink, 
             const hashtagName = tag.match(/#\w+/g)[0].replace('#', '');
             navigate(`/hashtag/${hashtagName}`);
         }
+    };
+    function likePost (){
+        if(!liked){
+            setLiked(true);
+        }else{
+            setLiked(false);
+        }
+        
     }
-
     return (
         <Post>
             <AvatarLinkContainer>
                 <Avatar src={userImage} alt="User" />
-                <FiHeart size={20} color="white"/>
+                <FiHeart onClick={likePost} size={20} color={liked?"red":"white"} fill={liked?"red":""}/>
                 <Likes>13 likes</Likes>
             </AvatarLinkContainer>
             <ContentContainer>

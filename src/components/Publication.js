@@ -5,11 +5,19 @@ import { useNavigate} from "react-router-dom";
 import {FiHeart} from "react-icons/fi";
 import { IoMdTrash } from "react-icons/io";
 
+import ApplicationContext from "../contexts/ApplicationContext";
+import { sendPostLikeRequest } from "../services/api.js";
+
 export default function Publication({ postId, userImage, userName, postTitle, postLink, LinkName, LinkSummary, LinkImg, userauthorship }) {
     const navigate = useNavigate();
     const [liked, setLiked] = React.useState(false);
     
-
+    const { userToken } = React.useContext(ApplicationContext);
+    const config = {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        }
+    };
     const tagStyle = {
         fontWeight: 700,
         cursor: 'pointer',
@@ -26,9 +34,15 @@ export default function Publication({ postId, userImage, userName, postTitle, po
             navigate(`/hashtag/${hashtagName}`);
         }
     };
-    function likePost (){
+    async function likePost (){
         if(!liked){
             setLiked(true);
+            const response =  await sendPostLikeRequest(config,postId);
+            if(response.status !== 201){
+                alert('Something went wrong when trying to like a post');
+                setLiked(false);
+            };
+
         }else{
             setLiked(false);
         };
@@ -56,7 +70,7 @@ export default function Publication({ postId, userImage, userName, postTitle, po
                 <ReactTagify tagStyle={tagStyle} mentionStyle={{}} tagClicked={redirect}>
                     <ContentTitle>{postTitle}</ContentTitle>
                 </ReactTagify>
-                <LinkContainer>
+                <LinkContainer href={postLink} target="_blank" rel="noreferrer">
                     <div>
                         <LinkTitle >{LinkName}</LinkTitle>
                         <LinkContent>{LinkSummary}</LinkContent>
@@ -130,7 +144,7 @@ const ContentTitle = styled.p`
     };
 `;
 
-const LinkContainer = styled.div`
+const LinkContainer = styled.a`
     display: flex;
     border: 1px solid #4D4D4D;
     border-radius: 10px;

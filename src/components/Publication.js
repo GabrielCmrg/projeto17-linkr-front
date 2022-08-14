@@ -7,7 +7,8 @@ import { IoMdTrash } from "react-icons/io";
 
 export default function Publication({ postId, userImage, userName, postTitle, postLink, LinkName, LinkSummary, LinkImg, userauthorship }) {
     const navigate = useNavigate();
-    const [liked, setLiked] = React.useState(false); 
+    const [liked, setLiked] = React.useState(false);
+    
 
     const tagStyle = {
         fontWeight: 700,
@@ -30,15 +31,24 @@ export default function Publication({ postId, userImage, userName, postTitle, po
             setLiked(true);
         }else{
             setLiked(false);
-        }
-        
-    }
+        };
+    };
+    // function showLikes (){
+    //     if(){
+    //         return  "";
+    //     }else if(likes === 1){
+    //         return `${likes} like`
+    //     }else{
+    //         return `${likes} likes`
+    //     }
+    // };
+    const renderLikes = 0;
     return (
         <Post>
             <AvatarLinkContainer>
                 <Avatar src={userImage} alt="User" />
                 <FiHeart onClick={likePost} size={20} color={liked?"red":"white"} fill={liked?"red":""}/>
-                <Likes>13 likes</Likes>
+                <Likes>{renderLikes}</Likes>
             </AvatarLinkContainer>
             <ContentContainer>
                 <UserName>{userName}</UserName>
@@ -90,6 +100,7 @@ const Avatar = styled.img`
 `;
 
 const Likes = styled.p`
+    margin-top:5px;
     font: 400 10px 'Lato', sans-serif;
     color: #FFFFFF;
 `;

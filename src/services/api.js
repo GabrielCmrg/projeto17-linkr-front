@@ -49,4 +49,14 @@ export async function getTrendingTags (){
     } catch (error) {
         return error.response;
     }
-}
+};
+
+export async function sendPostLikeRequest(config, postId) {
+    const body = {postId}
+    try {
+        const response = await axios.post(`${REACT_APP_API_URL}/like`,body ,config);
+        return response;
+    } catch (error) {
+        return error.response;
+    }
+};

@@ -2,12 +2,20 @@ import styled from "styled-components";
 import { FiChevronDown } from "react-icons/fi";
 import { FiChevronUp } from "react-icons/fi";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import ApplicationContext from "../contexts/ApplicationContext";
 
 export default function Header(){
-    const { userImage } = React.useContext(ApplicationContext);
+    const { userImage, setUserToken } = React.useContext(ApplicationContext);
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+    const navigate = useNavigate();
+
+    function logout() {
+        setUserToken(null);
+        localStorage.clear();
+        navigate("/");
+    }
 
     return ( 
         <HeaderContainer>
@@ -20,7 +28,7 @@ export default function Header(){
             </MenuButton>
             {isMenuOpen ?
             <Menu>
-                <p>Logout</p>
+                <p onClick={logout}>Logout</p>
             </Menu> :
             <></>}
         </HeaderContainer>

@@ -130,10 +130,10 @@ const PublicaionContainer = styled.div`
         };
     };
     @media(max-width: 611px){
-        width:100%;
-    };
-    @media(max-width: 414px){
+        width:100vw;
         border-radius: 0;
+    };
+    @media(max-width: 414px){               
         justify-content:center;
         img{
             display: none;

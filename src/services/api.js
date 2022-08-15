@@ -61,6 +61,15 @@ export async function getTrendingTags() {
     }
 };
 
+export async function likeRequest(config, postId) {
+    const body = {postId}
+    try {
+        const response = await axios.post(`${REACT_APP_API_URL}/like`,body ,config);
+        return response;
+    } catch (error) {
+        return error.response;
+    }
+};
 
 export async function getUserPostsRequest(id, config){
     try {
@@ -80,6 +89,15 @@ export async function deletePostRequest(id, config) {
     }
 };
 
+export async function dislikeRequest(config, postId) {
+    try {
+        const response = await axios.delete(`${REACT_APP_API_URL}/like/${postId}`,config);
+        return response;
+    } catch (error) {
+        return error.response;
+    }
+}
+
 export async function getTagPostsRequest(hashtag, config){
     try {
         const response = await axios.get(`${REACT_APP_API_URL}/hashtag/${hashtag}`,config);
@@ -97,4 +115,3 @@ export async function searchUserRequest(search){
         return error.response;
     }
 };
-

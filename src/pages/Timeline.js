@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
@@ -14,6 +15,7 @@ import ApplicationContext from "../contexts/ApplicationContext.js";
 export default function Timeline() {
     const [posts, setPosts] = React.useState(null);
     const { userToken } = React.useContext(ApplicationContext);
+    const navigate = useNavigate();
 
     const config = {
         headers: {
@@ -21,9 +23,12 @@ export default function Timeline() {
         }
     };
     React.useEffect(() => {
-        async function data() {
+        if(!userToken){
+            navigate("/",{replace:true});
+            return;
+        };
+        async function data(){
             const response = await getAllPostRequest(config);
-
             if(response.status === 200) {
                 setPosts([...response.data]);
             } else {
@@ -53,6 +58,10 @@ export default function Timeline() {
                 posts.map(item=>(
                     <Publication  
                         key={item.id}
+                        userLiked={item.userliked}
+                        firstLike={item.firstlike}
+                        secondLike={item.secondlike}
+                        likesAmount={item.likes_amount}
                         postId={item.id}
                         userImage={item.pic_url}
                         userName={item.name}
@@ -87,12 +96,10 @@ export default function Timeline() {
 };
 
 const TimelineContainer = styled.div`
-    max-width: 100vw;
     margin: auto;
-    
 `;
 const Container = styled.div`
-    width: 100%;
+    max-width: 100vw;
     margin: auto;
     display: flex;
     justify-content: center;

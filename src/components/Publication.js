@@ -55,10 +55,11 @@ export default function Publication({
     async function likePost (){
         if(!liked){
             setLiked(true);
-            setTotalLikes( totalLikes +  1);
+            setTotalLikes( totalLikes + 1);
             const response =  await likeRequest(config, postId);
             if(response.status !== 200){
                 alert('Something went wrong when trying to like a post');
+                setTotalLikes( totalLikes - 1);
                 setLiked(false);
             };
 
@@ -68,6 +69,7 @@ export default function Publication({
             const response = await dislikeRequest(config, postId);
             if(response.status !== 200){
                 alert('Something went wrong when trying to like a post');
+                setTotalLikes( totalLikes + 1);
                 setLiked(true);
             };
         };

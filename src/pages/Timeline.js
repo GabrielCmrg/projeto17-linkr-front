@@ -29,6 +29,8 @@ export default function Timeline() {
             };
         };
         data()
+        
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);
     
     function checkForPosts (){

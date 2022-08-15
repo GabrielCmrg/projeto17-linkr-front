@@ -5,11 +5,11 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {FiHeart} from "react-icons/fi";
 import { IoMdTrash } from "react-icons/io";
-<<<<<<< HEAD
 import ReactTooltip from 'react-tooltip';
 
 import ApplicationContext from "../contexts/ApplicationContext";
 import { likeRequest, dislikeRequest } from "../services/api.js";
+import DeleteModal from "./DeleteModal"
 
 export default function Publication({
     userLiked,
@@ -23,12 +23,7 @@ export default function Publication({
     LinkSummary, 
     LinkImg, 
     userauthorship }) {
-=======
-import DeleteModal from "./DeleteModal"
-
-export default function Publication({ postId, userImage, userName, postTitle, postLink, LinkName, LinkSummary, LinkImg, userauthorship }) {
     const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
->>>>>>> 5e3e099d088ed260b36c9fb92a4617e397c3aef1
     const navigate = useNavigate();
     const [liked, setLiked] = React.useState(userLiked);
     const [totalLikes, setTotalLikes] = React.useState(parseInt(likesAmount));
@@ -87,57 +82,31 @@ export default function Publication({ postId, userImage, userName, postTitle, po
     const renderlikes = countLikes();
     
     return (
-<<<<<<< HEAD
-        <Post>
-            <AvatarLinkContainer>
-                <Avatar src={userImage} alt="User" />
-                <FiHeart onClick={likePost} size={20} color={liked?"red":"white"} fill={liked?"red":""}/>
-                <Likes>{renderlikes}</Likes>    
-                </AvatarLinkContainer>
-            <ContentContainer>
-                <UserName>{userName}</UserName>
-                <Trash>{userauthorship ? <IoMdTrash /> : ''}</Trash>
-                <ReactTagify tagStyle={tagStyle} mentionStyle={{}} tagClicked={redirect}>
-                    <ContentTitle>{postTitle}</ContentTitle>
-                </ReactTagify>
-                <LinkContainer href={postLink} target="_blank" rel="noreferrer">
-                    <div>
-                        <LinkTitle >{LinkName}</LinkTitle>
-                        <LinkContent>{LinkSummary}</LinkContent>
-                        <LinkUrl>{postLink}</LinkUrl>
-                    </div>
-                    <img src={LinkImg} alt="ImageLink" />
-                </LinkContainer>
-            </ContentContainer>
-        </Post>
-        
-=======
         <>
-          <Post>
-              <AvatarLinkContainer>
-                  <Avatar src={userImage} alt="User" />
-                  <FiHeart size={20} color="white"/>
-                  <Likes>13 likes</Likes>
-              </AvatarLinkContainer>
-              <ContentContainer>
-                  <UserName>{userName}</UserName>
-                  <Trash>{userauthorship ? <IoMdTrash onClick = {() => setDeleteModalIsOpen(true)}/> : ''}</Trash>
-                  <ReactTagify tagStyle={tagStyle} mentionStyle={{}} tagClicked={redirect}>
-                      <ContentTitle>{postTitle}</ContentTitle>
-                  </ReactTagify>
-                  <LinkContainer>
-                      <div>
-                          <LinkTitle >{LinkName}</LinkTitle>
-                          <LinkContent>{LinkSummary}</LinkContent>
-                          <LinkUrl>{postLink}</LinkUrl>
-                      </div>
-                      <img src={LinkImg} alt="ImageLink" />
-                  </LinkContainer>
-              </ContentContainer>
-          </Post>
-          <DeleteModal deleteModalIsOpen={deleteModalIsOpen} setDeleteModalIsOpen={setDeleteModalIsOpen} postId={postId} />
-        </>
->>>>>>> 5e3e099d088ed260b36c9fb92a4617e397c3aef1
+            <Post>
+                <AvatarLinkContainer>
+                    <Avatar src={userImage} alt="User" />
+                    <FiHeart onClick={likePost} size={20} color={liked?"red":"white"} fill={liked?"red":""}/>
+                    <Likes>{renderlikes}</Likes>    
+                </AvatarLinkContainer>
+                <ContentContainer>
+                    <UserName>{userName}</UserName>
+                    <Trash>{userauthorship ? <IoMdTrash onClick = {() => setDeleteModalIsOpen(true)}/> : ''}</Trash>
+                    <ReactTagify tagStyle={tagStyle} mentionStyle={{}} tagClicked={redirect}>
+                    <ContentTitle>{postTitle}</ContentTitle>
+                    </ReactTagify>
+                    <LinkContainer href={postLink} target="_blank" rel="noreferrer">
+                        <div>
+                            <LinkTitle >{LinkName}</LinkTitle>
+                            <LinkContent>{LinkSummary}</LinkContent>
+                            <LinkUrl>{postLink}</LinkUrl>
+                        </div>
+                        <img src={LinkImg} alt="ImageLink" />
+                    </LinkContainer>
+                </ContentContainer>
+            </Post>
+            <DeleteModal deleteModalIsOpen={deleteModalIsOpen} setDeleteModalIsOpen={setDeleteModalIsOpen} postId={postId} />
+        </>                
     );
 };
 const Post = styled.div`

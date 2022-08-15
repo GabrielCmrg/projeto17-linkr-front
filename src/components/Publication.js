@@ -12,8 +12,15 @@ import ApplicationContext from "../contexts/ApplicationContext";
 export default function Publication({ postId, userImage, userName, postTitle, postLink, LinkName, LinkSummary, LinkImg, userauthorship }) {
     const navigate = useNavigate();
     const [editing, setEditing] = React.useState(false);
+    const inputRef = React.useRef(null);
     const [postContent, setPostContent] = React.useState(postTitle);
     const { userToken } = React.useContext(ApplicationContext);
+
+    React.useEffect(() => {
+        if (editing) {
+            inputRef.current.focus();
+        }
+    }, [editing]);
 
     const tagStyle = {
         fontWeight: 700,
@@ -56,6 +63,7 @@ export default function Publication({ postId, userImage, userName, postTitle, po
                         value={postContent}
                         onChange={e => setPostContent(e.target.value)}
                         placeholder="Awesome article about #javascript"
+                        ref={inputRef}
                     />
                 </FormContainer>
             );

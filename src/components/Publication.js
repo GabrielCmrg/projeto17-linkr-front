@@ -39,6 +39,13 @@ export default function Publication({ postId, userImage, userName, postTitle, po
         }
     }
 
+    function escapeEditing(e) {
+        const ESC_KEY_CODE = 27;
+        if (e.keyCode === ESC_KEY_CODE) {
+            setEditing(false);
+        }
+    }
+
     async function sendEditRequest(e) {
         e.preventDefault();
         const config = {
@@ -64,6 +71,7 @@ export default function Publication({ postId, userImage, userName, postTitle, po
                         onChange={e => setPostContent(e.target.value)}
                         placeholder="Awesome article about #javascript"
                         ref={inputRef}
+                        onKeyDown={escapeEditing}
                     />
                 </FormContainer>
             );

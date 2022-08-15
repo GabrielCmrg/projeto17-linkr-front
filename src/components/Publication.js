@@ -15,6 +15,7 @@ export default function Publication({ postId, userImage, userName, postTitle, po
     const inputRef = React.useRef(null);
     const [postContent, setPostContent] = React.useState(postTitle);
     const { userToken } = React.useContext(ApplicationContext);
+    const [editLoading, setEditLoading] = React.useState(false);
 
     React.useEffect(() => {
         if (editing) {
@@ -48,6 +49,7 @@ export default function Publication({ postId, userImage, userName, postTitle, po
 
     async function sendEditRequest(e) {
         e.preventDefault();
+        setEditLoading(true);
         const config = {
             headers: {
                 Authorization: `Bearer ${userToken}`,
@@ -55,11 +57,12 @@ export default function Publication({ postId, userImage, userName, postTitle, po
         };
         const response = await editPostRequest(postLink, postContent, config, postId);
         if (response.status === 200) {
-            window.location.reload();
+            setEditLoading(false);
             return;
         }
 
         alert("Something went wrong, try editing again in a few seconds or reload the page.");
+        setEditLoading(false);
     }
 
     function postTitleArea() {
@@ -72,6 +75,7 @@ export default function Publication({ postId, userImage, userName, postTitle, po
                         placeholder="Awesome article about #javascript"
                         ref={inputRef}
                         onKeyDown={escapeEditing}
+                        disabled={editLoading}
                     />
                 </FormContainer>
             );
@@ -255,4 +259,9 @@ const ContentInput = styled.input`
     font-family:'Lato', sans-serif;
     margin-top: 8px;
     width: 100%;
+    
+    :disabled {
+        background-color: lightgray;
+        color: darkgray;
+    }
 `;

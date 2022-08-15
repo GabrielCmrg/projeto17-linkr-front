@@ -12,7 +12,8 @@ import ApplicationContext from "../contexts/ApplicationContext";
 
 import DeleteModal from "./DeleteModal"
 
-export default function Publication({ postId, userImage, userName, postTitle, postLink, LinkName, LinkSummary, LinkImg, userauthorship }) {
+
+export default function Publication({ postId, userImage, userName, authorId, postTitle, postLink, LinkName, LinkSummary, LinkImg, userauthorship }) {
     const [deleteModalIsOpen, setDeleteModalIsOpen] = React.useState(false);
     const navigate = useNavigate();
     const [editing, setEditing] = React.useState(false);
@@ -44,6 +45,12 @@ export default function Publication({ postId, userImage, userName, postTitle, po
             navigate(`/hashtag/${hashtagName}`);
         }
     }
+
+
+    function redirectToUserPage () {
+        navigate(`/user/${authorId}`)
+    }
+    
 
     function escapeEditing(e) {
         const ESC_KEY_CODE = 27;
@@ -95,19 +102,20 @@ export default function Publication({ postId, userImage, userName, postTitle, po
         }
 
         return (<></>);
+
     }
 
     return (
         <>
             <Post>
                 <AvatarLinkContainer>
-                    <Avatar src={userImage} alt="User" />
+                    <Avatar onClick={redirectToUserPage} src={userImage} alt="User" />
                     <FiHeart size={20} color="white"/>
                     <Likes>13 likes</Likes>
                 </AvatarLinkContainer>
                 <ContentContainer>
                     <PostTitle>
-                        <UserName>{userName}</UserName>
+                        <UserName onClick={redirectToUserPage}>{userName}</UserName>
                         <Buttons>
                             {userauthorship ? 
                             <>
@@ -129,6 +137,7 @@ export default function Publication({ postId, userImage, userName, postTitle, po
                 </ContentContainer>
             </Post>
             <DeleteModal deleteModalIsOpen={deleteModalIsOpen} setDeleteModalIsOpen={setDeleteModalIsOpen} postId={postId} />
+
         </>
     );
 };
@@ -160,6 +169,7 @@ const Avatar = styled.img`
     border-radius: 50%;
     object-fit: cover;
     margin-bottom: 20px;
+    cursor: pointer;
 `;
 
 const Likes = styled.p`
@@ -179,6 +189,7 @@ const ContentContainer = styled.div`
 const UserName = styled.p`
     font: 400 19px 'Lato', sans-serif;
     color: #FFFFFF;
+    cursor: pointer;
     @media(max-width: 414px){
         font-size: 17px;
     };

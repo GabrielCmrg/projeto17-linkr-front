@@ -18,7 +18,6 @@ export default function Trending(){
     React.useEffect(() => {
         async function data(){
             const response = await getTrendingTags();
-            console.log(response);
             if(response.status === 200){
                 setTags([...response.data]);
                

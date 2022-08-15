@@ -61,6 +61,7 @@ export default function UserPosts() {
                 posts.map(item=>(
                     <Publication  
                         key={item.id}
+                        postId={item.id}
                         userImage={item.pic_url}
                         userName={item.name}
                         postTitle={item.content}
@@ -68,6 +69,7 @@ export default function UserPosts() {
                         LinkName={item.link_title}
                         LinkSummary={item.link_description}
                         LinkImg={item.link_image}
+                        userauthorship={item.userauthorship}
                     />))
             );
         };

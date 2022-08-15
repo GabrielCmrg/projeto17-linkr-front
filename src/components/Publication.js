@@ -6,7 +6,7 @@ import {FiHeart} from "react-icons/fi";
 import { IoMdTrash } from "react-icons/io";
 import DeleteModal from "./DeleteModal"
 
-export default function Publication({ postId, userImage, userName, postTitle, postLink, LinkName, LinkSummary, LinkImg, userauthorship }) {
+export default function Publication({ postId, userImage, userName, authorId, postTitle, postLink, LinkName, LinkSummary, LinkImg, userauthorship }) {
     const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
     const navigate = useNavigate();
 
@@ -27,16 +27,20 @@ export default function Publication({ postId, userImage, userName, postTitle, po
         }
     }
 
+    function redirectToUserPage () {
+        navigate(`user/${authorId}`)
+    }
+
     return (
         <>
           <Post>
               <AvatarLinkContainer>
-                  <Avatar src={userImage} alt="User" />
+                  <Avatar src={userImage} alt="User" onClick={redirectToUserPage}/>
                   <FiHeart size={20} color="white"/>
                   <Likes>13 likes</Likes>
               </AvatarLinkContainer>
               <ContentContainer>
-                  <UserName>{userName}</UserName>
+                  <UserName onClick={redirectToUserPage}>{userName}</UserName>
                   <Trash>{userauthorship ? <IoMdTrash onClick = {() => setDeleteModalIsOpen(true)}/> : ''}</Trash>
                   <ReactTagify tagStyle={tagStyle} mentionStyle={{}} tagClicked={redirect}>
                       <ContentTitle>{postTitle}</ContentTitle>

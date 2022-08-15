@@ -58,6 +58,7 @@ export default function Hashtag() {
                         postId={item.id}
                         userImage={item.pic_url}
                         userName={item.name}
+                        authorId={item.author_id}
                         postTitle={item.content}
                         postLink={item.link_url}
                         LinkName={item.link_title}

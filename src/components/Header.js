@@ -7,12 +7,13 @@ import { useNavigate } from "react-router-dom";
 import ApplicationContext from "../contexts/ApplicationContext";
 
 export default function Header(){
-    const { userImage, setUserToken } = React.useContext(ApplicationContext);
+    const { userImage, setUserToken, setUserImage } = React.useContext(ApplicationContext);
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const navigate = useNavigate();
 
     function logout() {
         setUserToken(null);
+        setUserImage(null);
         localStorage.clear();
         navigate("/");
     }

@@ -6,17 +6,22 @@ import ApplicationContext from "../contexts/ApplicationContext";
 
 export default function Header(){
     const { userImage } = React.useContext(ApplicationContext);
+    const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+
     return ( 
         <HeaderContainer>
             <h1>linkr</h1>
-            <div>
+            <MenuButton onClick={() => setIsMenuOpen(!isMenuOpen)}>
                 <FiChevronDown color={"#FFFFFF"} size={"30"} />
                 <img src={userImage} alt="User"/>
-            </div>
-            
+            </MenuButton>
+            <Menu>
+                Logout
+            </Menu>
         </HeaderContainer>
     );
 };
+
 const HeaderContainer = styled.div`
     position: fixed;
     top:0;
@@ -35,15 +40,20 @@ const HeaderContainer = styled.div`
         font-size: 45px;
         };
     };
-    div{
-       display: flex;
-       align-items: center;
-       justify-content: center;
+`;
+ 
+const MenuButton = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
     img{
         height: 53px;
         width: 53px;
         border-radius: 50%;
         object-fit: cover;
+
         @media(max-width: 414px){
             height: 44px;
             width: 44px;
@@ -51,7 +61,20 @@ const HeaderContainer = styled.div`
             object-fit: cover;
         };  
     };
-    };
-    
 `;
- 
+
+const Menu = styled.div`
+    position: fixed;
+    top: 72px;
+    right: 0;
+    width: 110px;
+    font-family: 'Lato', sans-serif;
+    height: 48px;
+    background-color: #151515;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 17px;
+    border-radius: 0 0 0 20px;
+    color: white;
+`;

@@ -51,12 +51,13 @@ export default function Publication({ postId, userImage, userName, postTitle, po
     function postTitleArea() {
         if (editing) {
             return (
-                <form onSubmit={sendEditRequest}>
+                <FormContainer onSubmit={sendEditRequest}>
                     <ContentInput
                         value={postContent}
                         onChange={e => setPostContent(e.target.value)}
+                        placeholder="Awesome article about #javascript"
                     />
-                </form>
+                </FormContainer>
             );
         } else if(postTitle) {
             return (
@@ -223,6 +224,10 @@ const Buttons = styled.div`
 const PostTitle = styled.div`
     display: flex;
     justify-content: space-between;
+    width: 100%;
+`;
+
+const FormContainer = styled.form`
     width: 100%;
 `;
 

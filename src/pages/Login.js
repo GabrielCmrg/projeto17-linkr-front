@@ -39,7 +39,6 @@ export default function Signup() {
         }
         
         const response = await loginRequest(email, password);
-        console.log(response)
         if (response.status === 401) {
             alert(response.data);
             setIsLoading(false);

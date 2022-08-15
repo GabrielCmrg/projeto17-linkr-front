@@ -9,7 +9,6 @@ import ApplicationContext from "../contexts/ApplicationContext.js";
 import Publication from "../components/Publication.js";
 import Trending from "../components/Trending";
 
-
 export default function Timeline() {
     const [posts, setPosts] = React.useState(null);
     const { userToken } = React.useContext(ApplicationContext);
@@ -88,12 +87,10 @@ export default function Timeline() {
 };
 
 const TimelineContainer = styled.div`
-    max-width: 100vw;
     margin: auto;
-    
 `;
 const Container = styled.div`
-    width: 100%;
+    max-width: 100vw;
     margin: auto;
     display: flex;
     justify-content: center;

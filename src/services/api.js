@@ -42,6 +42,16 @@ export async function getAllPostRequest(config) {
     }
 };
 
+export async function editPostRequest(postLink, content, config, postId) {
+    const body = { postLink, content };
+    try {
+        const response = await axios.put(`${REACT_APP_API_URL}/posts/${postId}`, body, config);
+        return response;
+    } catch (error) {
+        return error.response;
+    }
+};
+
 export async function getTrendingTags() {
     try {
         const response = await axios.get(`${REACT_APP_API_URL}/hashtags`);
@@ -61,6 +71,15 @@ export async function likeRequest(config, postId) {
     }
 };
 
+export async function getUserPostsRequest(id, config){
+    try {
+        const response = await axios.get(`${REACT_APP_API_URL}/user/${id}`,config);
+        return response;
+    } catch (error) {
+        return error.response;
+    }
+};
+
 export async function deletePostRequest(id, config) {
     try {
         const response = await axios.delete(`${REACT_APP_API_URL}/posts/${id}`, config);
@@ -73,6 +92,24 @@ export async function deletePostRequest(id, config) {
 export async function dislikeRequest(config, postId) {
     try {
         const response = await axios.delete(`${REACT_APP_API_URL}/like/${postId}`,config);
+        return response;
+    } catch (error) {
+        return error.response;
+    }
+}
+
+export async function getTagPostsRequest(hashtag, config){
+    try {
+        const response = await axios.get(`${REACT_APP_API_URL}/hashtag/${hashtag}`,config);
+        return response;
+    } catch (error) {
+        return error.response;
+    }
+};
+
+export async function searchUserRequest(search){
+    try {
+        const response = await axios.post(`${REACT_APP_API_URL}/searchuser`, search);
         return response;
     } catch (error) {
         return error.response;

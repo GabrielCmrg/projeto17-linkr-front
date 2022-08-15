@@ -2,13 +2,16 @@ import React from "react";
 import styled from "styled-components";
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import {FiHeart} from "react-icons/fi";
 import { IoMdTrash } from "react-icons/io";
 import ReactTooltip from 'react-tooltip';
+import { ImPencil } from "react-icons/im";
+import React from "react";
+
+import { editPostRequest, likeRequest, dislikeRequest } from "../services/api";
 
 import ApplicationContext from "../contexts/ApplicationContext";
-import { likeRequest, dislikeRequest } from "../services/api.js";
+
 import DeleteModal from "./DeleteModal"
 
 export default function Publication({
@@ -24,18 +27,31 @@ export default function Publication({
     LinkName, 
     LinkSummary, 
     LinkImg, 
-    userauthorship }) {
+    userauthorship,
+    authorId }) {
     const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
     const navigate = useNavigate();
+    const [editing, setEditing] = React.useState(false);
+    const [editLoading, setEditLoading] = React.useState(false);
+    const [postContentInput, setPostContentInput] = React.useState(postTitle);
+    const [postContent, setPostContent] = React.useState(postTitle);
+    const inputRef = React.useRef(null);
     const [liked, setLiked] = React.useState(userLiked);
     const [totalLikes, setTotalLikes] = React.useState(parseInt(likesAmount));
     
+    React.useEffect(() => {
+        if (editing) {
+            inputRef.current.focus();
+        }
+    }, [editing]);
+
     const { userToken } = React.useContext(ApplicationContext);
     const config = {
         headers: {
           Authorization: `Bearer ${userToken}`,
         }
     };
+
     const tagStyle = {
         fontWeight: 700,
         cursor: 'pointer',
@@ -62,7 +78,6 @@ export default function Publication({
                 setTotalLikes( totalLikes - 1);
                 setLiked(false);
             };
-
         }else{
             setLiked(false);
             setTotalLikes( totalLikes - 1);
@@ -74,6 +89,7 @@ export default function Publication({
             };
         };
     };
+
     function countLikes (){
         if(totalLikes === 0){
             return 
@@ -110,26 +126,91 @@ export default function Publication({
         }
 
     }
+    
+    function redirectToUserPage () {
+        navigate(`/user/${authorId}`)
+    }
+    
+
+    function escapeEditing(e) {
+        const ESC_KEY_CODE = 27;
+        if (e.keyCode === ESC_KEY_CODE) {
+            setEditing(false);
+        }
+    }
+
+    async function sendEditRequest(e) {
+        e.preventDefault();
+        setEditLoading(true);
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userToken}`,
+            },
+        };
+        const response = await editPostRequest(postLink, postContentInput, config, postId);
+        if (response.status === 200) {
+            setEditLoading(false);
+            setEditing(false);
+            setPostContent(postContentInput);
+            return;
+        }
+
+        alert("Something went wrong, try editing again in a few seconds or reload the page.");
+        setEditLoading(false);
+    }
+
+    function postTitleArea() {
+        if (editing) {
+            return (
+                <FormContainer onSubmit={sendEditRequest}>
+                    <ContentInput
+                        value={postContentInput}
+                        onChange={e => setPostContentInput(e.target.value)}
+                        placeholder="Awesome article about #javascript"
+                        ref={inputRef}
+                        onKeyDown={escapeEditing}
+                        disabled={editLoading}
+                    />
+                </FormContainer>
+            );
+        } else if(postTitle) {
+            return (
+                <ReactTagify tagStyle={tagStyle} mentionStyle={{}} tagClicked={redirect}>
+                    <ContentTitle>{postContent}</ContentTitle>
+                </ReactTagify>
+            );
+        }
+
+        return (<></>);
+    }
+
     const renderAmountlikes = countLikes();
-    const renderWhoLiked = showWhoLiked();    
+    const renderWhoLiked = showWhoLiked();
+
     return (
         <>
             <Post>
                 <AvatarLinkContainer>
-                    <Avatar src={userImage} alt="User" />
+                    <Avatar onClick={redirectToUserPage} src={userImage} alt="User" />
                     <FiHeart onClick={likePost} size={20} color={liked?"red":"white"} fill={liked?"red":""}/>
                     <>
                     <Likes data-tip={renderWhoLiked} data-for="likes">{renderAmountlikes}</Likes>
                     <ReactTooltip place="bottom" type="light" id="likes" />
                     </>
-                    
                 </AvatarLinkContainer>
                 <ContentContainer>
-                    <UserName>{userName}</UserName>
-                    <Trash>{userauthorship ? <IoMdTrash onClick = {() => setDeleteModalIsOpen(true)}/> : ''}</Trash>
-                    <ReactTagify tagStyle={tagStyle} mentionStyle={{}} tagClicked={redirect}>
-                    <ContentTitle>{postTitle}</ContentTitle>
-                    </ReactTagify>
+                    <PostTitle>
+                        <UserName onClick={redirectToUserPage}>{userName}</UserName>
+                        <Buttons>
+                            {userauthorship ? 
+                            <>
+                                <ImPencil onClick={() => setEditing(!editing)}/>
+                                <IoMdTrash onClick = {() => setDeleteModalIsOpen(true)}/>
+                            </> : 
+                            <></>}
+                        </Buttons>
+                    </PostTitle>
+                    {postTitleArea()}
                     <LinkContainer href={postLink} target="_blank" rel="noreferrer">
                         <div>
                             <LinkTitle >{LinkName}</LinkTitle>
@@ -173,6 +254,7 @@ const Avatar = styled.img`
     border-radius: 50%;
     object-fit: cover;
     margin-bottom: 20px;
+    cursor: pointer;
 `;
 
 const Likes = styled.div`
@@ -193,6 +275,7 @@ const ContentContainer = styled.div`
 const UserName = styled.p`
     font: 400 19px 'Lato', sans-serif;
     color: #FFFFFF;
+    cursor: pointer;
     @media(max-width: 414px){
         font-size: 17px;
     };
@@ -215,6 +298,8 @@ const LinkContainer = styled.a`
     width:100%;
     height:155px;
     cursor:pointer;
+    text-decoration: none;
+
     div{
         display: flex;
         flex-direction: column;
@@ -225,6 +310,7 @@ const LinkContainer = styled.a`
         height:100%;
         width:40%;
         border-radius: 0 10px 10px 0;
+        font: inherit;
     };
 `;
 
@@ -252,10 +338,38 @@ const LinkUrl = styled.p`
     };
 `;
 
-const Trash = styled.div`
+const Buttons = styled.div`
     color: #ffffff;
     font-size:14px;
-    position: absolute;
-    top:22px;
-    right:22px;
-`
+    display: flex;
+
+    svg {
+        margin: 0 5px;
+        cursor: pointer;
+    }
+`;
+
+const PostTitle = styled.div`
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+`;
+
+const FormContainer = styled.form`
+    width: 100%;
+`;
+
+const ContentInput = styled.input`
+    border: none;
+    background-color: #EFEFEF;
+    border-radius: 5px;
+    padding: 10px;
+    font-family:'Lato', sans-serif;
+    margin-top: 8px;
+    width: 100%;
+    
+    :disabled {
+        background-color: lightgray;
+        color: darkgray;
+    }
+`;

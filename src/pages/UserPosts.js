@@ -1,53 +1,56 @@
 import styled from "styled-components";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 
 import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
-import PublicationForm  from "../components/PublicationForm.js";
-import Publication from "../components/Publication";
+import { getUserPostsRequest } from "../services/api";
+import ApplicationContext from "../contexts/ApplicationContext.js";
+import Publication from "../components/Publication.js";
 import Trending from "../components/Trending";
 
-import { getAllPostRequest } from "../services/api";
-
-import ApplicationContext from "../contexts/ApplicationContext.js";
-
-export default function Timeline() {
+export default function UserPosts() {
     const [posts, setPosts] = React.useState(null);
+    const [ notFound, setNotFound ] = React.useState(false);
+    const [username, setUsername] = React.useState("");
+    const [userPic, setUserPic] = React.useState("");
     const { userToken } = React.useContext(ApplicationContext);
-    const navigate = useNavigate();
 
+    const { id } = useParams()
+    
     const config = {
         headers: {
-            Authorization: `Bearer ${userToken}`,
+          Authorization: `Bearer ${userToken}`,
         }
     };
     React.useEffect(() => {
-        if(!userToken){
-            navigate("/",{replace:true});
-            return;
-        };
+        setNotFound(false)
         async function data(){
-            const response = await getAllPostRequest(config);
-            if(response.status === 200) {
-                setPosts([...response.data]);
-            } else {
+            const response = getUserPostsRequest(id, config);
+            response.then( res => {
+                if (res.status === 404) {
+                    setNotFound(true)
+                } else {
+                    setUsername(res.data.userName);
+                    setUserPic(res.data.userPicUrl);
+                    setPosts([...res.data.userPosts]);
+                }
+            });
+            response.catch( err => {
                 alert("An error occured while trying to fetch the posts, please refresh the page")
-            };
+            });
         };
         data()
-        
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[]);
+    },[id]);
     
     function checkForPosts (){
         if(posts === null){
-            return (
+            return(
                 <TextContainer>
                     <h2>Loading...</h2>
                 </TextContainer>
             );
-        } else if (posts.length === 0) {
+        }else if(posts.length === 0){
             return (
                 <TextContainer>
                     <h2>There are no posts yet</h2>
@@ -58,10 +61,6 @@ export default function Timeline() {
                 posts.map(item=>(
                     <Publication  
                         key={item.id}
-                        userLiked={item.userliked}
-                        firstLike={item.firstlike}
-                        secondLike={item.secondlike}
-                        likesAmount={item.likes_amount}
                         postId={item.id}
                         userImage={item.pic_url}
                         userName={item.name}
@@ -81,25 +80,41 @@ export default function Timeline() {
         <TimelineContainer>
             <Header />
             <SearchBar />
-            <Container>
-                <div>
-                    <Title>timeline</Title>
-                    <PublicationForm />
-                    {renderPosts}
-                </div>
-                <div>
-                    <Trending />
-                </div>
-            </Container>
+            {notFound ? 
+                <h1>Usuário não encontrado</h1> 
+                :
+                <Container>
+                    <div>
+                        <Title>
+                            <img src={userPic} alt="user profile pic" />
+                            {username}
+                        </Title>
+                        {renderPosts}
+                    </div>
+                    <div>
+                        <Trending /> 
+                    </div>
+                </Container>
+            }
         </TimelineContainer>
     );
 };
 
 const TimelineContainer = styled.div`
+    max-width: 100vw;
     margin: auto;
+
+    > h1 {
+        margin-top: 100px;
+        font: 700 42px 'Oswald', sans-serif;
+        color: #FFFFFF;
+        width: 100vw;
+        text-align: center;
+    }
+    
 `;
 const Container = styled.div`
-    max-width: 100vw;
+    width: 100%;
     margin: auto;
     display: flex;
     justify-content: center;
@@ -112,6 +127,15 @@ const Title = styled.h1`
     margin-top: 100px;
     font: 700 42px 'Oswald', sans-serif;
     color: #FFFFFF;
+    display: flex;
+    align-items: center;
+
+    img {
+        height: 53px;
+        width: 53px;
+        margin-right: 5%;
+        border-radius: 50%;
+    }
     @media(max-width: 414px){
         font-size: 33px;
         margin-left: 20px;
@@ -125,4 +149,4 @@ const TextContainer = styled.div`
         font: 400 20px 'Oswald', sans-serif;
         color: #FFFFFF;
     }
-`;
+`

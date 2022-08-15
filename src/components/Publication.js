@@ -1,9 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { ReactTagify } from "react-tagify";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import {FiHeart} from "react-icons/fi";
 import { IoMdTrash } from "react-icons/io";
+<<<<<<< HEAD
 import ReactTooltip from 'react-tooltip';
 
 import ApplicationContext from "../contexts/ApplicationContext";
@@ -21,6 +23,12 @@ export default function Publication({
     LinkSummary, 
     LinkImg, 
     userauthorship }) {
+=======
+import DeleteModal from "./DeleteModal"
+
+export default function Publication({ postId, userImage, userName, postTitle, postLink, LinkName, LinkSummary, LinkImg, userauthorship }) {
+    const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
+>>>>>>> 5e3e099d088ed260b36c9fb92a4617e397c3aef1
     const navigate = useNavigate();
     const [liked, setLiked] = React.useState(userLiked);
     const [totalLikes, setTotalLikes] = React.useState(parseInt(likesAmount));
@@ -79,6 +87,7 @@ export default function Publication({
     const renderlikes = countLikes();
     
     return (
+<<<<<<< HEAD
         <Post>
             <AvatarLinkContainer>
                 <Avatar src={userImage} alt="User" />
@@ -102,13 +111,40 @@ export default function Publication({
             </ContentContainer>
         </Post>
         
+=======
+        <>
+          <Post>
+              <AvatarLinkContainer>
+                  <Avatar src={userImage} alt="User" />
+                  <FiHeart size={20} color="white"/>
+                  <Likes>13 likes</Likes>
+              </AvatarLinkContainer>
+              <ContentContainer>
+                  <UserName>{userName}</UserName>
+                  <Trash>{userauthorship ? <IoMdTrash onClick = {() => setDeleteModalIsOpen(true)}/> : ''}</Trash>
+                  <ReactTagify tagStyle={tagStyle} mentionStyle={{}} tagClicked={redirect}>
+                      <ContentTitle>{postTitle}</ContentTitle>
+                  </ReactTagify>
+                  <LinkContainer>
+                      <div>
+                          <LinkTitle >{LinkName}</LinkTitle>
+                          <LinkContent>{LinkSummary}</LinkContent>
+                          <LinkUrl>{postLink}</LinkUrl>
+                      </div>
+                      <img src={LinkImg} alt="ImageLink" />
+                  </LinkContainer>
+              </ContentContainer>
+          </Post>
+          <DeleteModal deleteModalIsOpen={deleteModalIsOpen} setDeleteModalIsOpen={setDeleteModalIsOpen} postId={postId} />
+        </>
+>>>>>>> 5e3e099d088ed260b36c9fb92a4617e397c3aef1
     );
 };
 const Post = styled.div`
     background: #171717;
     display:flex;
     margin: 40px auto 30px auto;
-    justify-content:;
+    position: relative;
     width:611px;
     padding: 16px 18px;
     border-radius: 16px;

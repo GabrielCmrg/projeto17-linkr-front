@@ -89,7 +89,7 @@ export default function Publication({ postId, userImage, userName, postTitle, po
                     </Buttons>
                 </div>
                 {postTitleArea()}
-                <LinkContainer>
+                <LinkContainer href={postLink} target="_blank">
                     <div>
                         <LinkTitle >{LinkName}</LinkTitle>
                         <LinkContent>{LinkSummary}</LinkContent>
@@ -160,7 +160,7 @@ const ContentTitle = styled.p`
     };
 `;
 
-const LinkContainer = styled.div`
+const LinkContainer = styled.a`
     display: flex;
     border: 1px solid #4D4D4D;
     border-radius: 10px;
@@ -169,6 +169,8 @@ const LinkContainer = styled.div`
     width:100%;
     height:155px;
     cursor:pointer;
+    text-decoration: none;
+
     div{
         display: flex;
         flex-direction: column;
@@ -179,6 +181,7 @@ const LinkContainer = styled.div`
         height:100%;
         width:40%;
         border-radius: 0 10px 10px 0;
+        font: inherit;
     };
 `;
 

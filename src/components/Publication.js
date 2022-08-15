@@ -13,6 +13,7 @@ export default function Publication({ postId, userImage, userName, postTitle, po
     const navigate = useNavigate();
     const [editing, setEditing] = React.useState(false);
     const inputRef = React.useRef(null);
+    const [postContentInput, setPostContentInput] = React.useState(postTitle);
     const [postContent, setPostContent] = React.useState(postTitle);
     const { userToken } = React.useContext(ApplicationContext);
     const [editLoading, setEditLoading] = React.useState(false);
@@ -55,9 +56,11 @@ export default function Publication({ postId, userImage, userName, postTitle, po
                 Authorization: `Bearer ${userToken}`,
             },
         };
-        const response = await editPostRequest(postLink, postContent, config, postId);
+        const response = await editPostRequest(postLink, postContentInput, config, postId);
         if (response.status === 200) {
             setEditLoading(false);
+            setEditing(false);
+            setPostContent(postContentInput);
             return;
         }
 
@@ -70,8 +73,8 @@ export default function Publication({ postId, userImage, userName, postTitle, po
             return (
                 <FormContainer onSubmit={sendEditRequest}>
                     <ContentInput
-                        value={postContent}
-                        onChange={e => setPostContent(e.target.value)}
+                        value={postContentInput}
+                        onChange={e => setPostContentInput(e.target.value)}
                         placeholder="Awesome article about #javascript"
                         ref={inputRef}
                         onKeyDown={escapeEditing}
@@ -82,7 +85,7 @@ export default function Publication({ postId, userImage, userName, postTitle, po
         } else if(postTitle) {
             return (
                 <ReactTagify tagStyle={tagStyle} mentionStyle={{}} tagClicked={redirect}>
-                    <ContentTitle>{postTitle}</ContentTitle>
+                    <ContentTitle>{postContent}</ContentTitle>
                 </ReactTagify>
             );
         }

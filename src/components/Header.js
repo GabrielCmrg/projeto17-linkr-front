@@ -11,7 +11,9 @@ export default function Header(){
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const navigate = useNavigate();
 
-    function logout() {
+    function logout(e) {
+        e.stopPropagation();
+        setIsMenuOpen(false);
         setUserToken(null);
         setUserImage(null);
         localStorage.clear();
@@ -28,8 +30,10 @@ export default function Header(){
                 <img src={userImage} alt="User"/>
             </MenuButton>
             {isMenuOpen ?
-            <Menu>
-                <p onClick={logout}>Logout</p>
+            <Menu onClick={() => setIsMenuOpen(false)}>
+                <div>
+                    <p onClick={logout}>Logout</p>
+                </div>
             </Menu> :
             <></>}
         </HeaderContainer>
@@ -78,17 +82,28 @@ const MenuButton = styled.div`
 `;
 
 const Menu = styled.div`
+    height: 100vh;
+    width: 100vw;
     position: fixed;
-    top: 72px;
-    right: 0;
-    width: 110px;
-    font-family: 'Lato', sans-serif;
-    height: 48px;
-    background-color: #151515;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 17px;
-    border-radius: 0 0 0 20px;
-    color: white;
+    z-index: 1;
+
+    div {
+        position: fixed;
+        top: 72px;
+        right: 0;
+        width: 110px;
+        font-family: 'Lato', sans-serif;
+        height: 48px;
+        background-color: #151515;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 17px;
+        border-radius: 0 0 0 20px;
+        color: white;
+
+        p {
+            cursor: pointer;
+        }
+    }
 `;

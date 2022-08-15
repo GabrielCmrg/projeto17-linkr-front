@@ -7,9 +7,13 @@ import { ImPencil } from "react-icons/im";
 import React from "react";
 
 import { editPostRequest } from "../services/api";
+
 import ApplicationContext from "../contexts/ApplicationContext";
 
+import DeleteModal from "./DeleteModal"
+
 export default function Publication({ postId, userImage, userName, postTitle, postLink, LinkName, LinkSummary, LinkImg, userauthorship }) {
+    const [deleteModalIsOpen, setDeleteModalIsOpen] = React.useState(false);
     const navigate = useNavigate();
     const [editing, setEditing] = React.useState(false);
     const inputRef = React.useRef(null);
@@ -94,41 +98,45 @@ export default function Publication({ postId, userImage, userName, postTitle, po
     }
 
     return (
-        <Post>
-            <AvatarLinkContainer>
-                <Avatar src={userImage} alt="User" />
-                <FiHeart size={20} color="white"/>
-                <Likes>13 likes</Likes>
-            </AvatarLinkContainer>
-            <ContentContainer>
-                <PostTitle>
-                    <UserName>{userName}</UserName>
-                    <Buttons>
-                        {userauthorship ? 
-                        <>
-                            <ImPencil onClick={() => setEditing(!editing)}/>
-                            <IoMdTrash />
-                        </> : 
-                        <></>}
-                    </Buttons>
-                </PostTitle>
-                {postTitleArea()}
-                <LinkContainer href={postLink} target="_blank">
-                    <div>
-                        <LinkTitle >{LinkName}</LinkTitle>
-                        <LinkContent>{LinkSummary}</LinkContent>
-                        <LinkUrl>{postLink}</LinkUrl>
-                    </div>
-                    <img src={LinkImg} alt="ImageLink" />
-                </LinkContainer>
-            </ContentContainer>
-        </Post>
+        <>
+            <Post>
+                <AvatarLinkContainer>
+                    <Avatar src={userImage} alt="User" />
+                    <FiHeart size={20} color="white"/>
+                    <Likes>13 likes</Likes>
+                </AvatarLinkContainer>
+                <ContentContainer>
+                    <PostTitle>
+                        <UserName>{userName}</UserName>
+                        <Buttons>
+                            {userauthorship ? 
+                            <>
+                                <ImPencil onClick={() => setEditing(!editing)}/>
+                                <IoMdTrash onClick = {() => setDeleteModalIsOpen(true)}/>
+                            </> : 
+                            <></>}
+                        </Buttons>
+                    </PostTitle>
+                    {postTitleArea()}
+                    <LinkContainer href={postLink} target="_blank">
+                        <div>
+                            <LinkTitle >{LinkName}</LinkTitle>
+                            <LinkContent>{LinkSummary}</LinkContent>
+                            <LinkUrl>{postLink}</LinkUrl>
+                        </div>
+                        <img src={LinkImg} alt="ImageLink" />
+                    </LinkContainer>
+                </ContentContainer>
+            </Post>
+            <DeleteModal deleteModalIsOpen={deleteModalIsOpen} setDeleteModalIsOpen={setDeleteModalIsOpen} postId={postId} />
+        </>
     );
 };
 const Post = styled.div`
     background: #171717;
     display:flex;
     margin: 40px auto 30px auto;
+    position: relative;
     width:611px;
     padding: 16px 18px;
     border-radius: 16px;

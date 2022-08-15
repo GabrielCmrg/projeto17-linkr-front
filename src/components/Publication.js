@@ -6,7 +6,6 @@ import {FiHeart} from "react-icons/fi";
 import { IoMdTrash } from "react-icons/io";
 import ReactTooltip from 'react-tooltip';
 import { ImPencil } from "react-icons/im";
-import React from "react";
 
 import { editPostRequest, likeRequest, dislikeRequest } from "../services/api";
 

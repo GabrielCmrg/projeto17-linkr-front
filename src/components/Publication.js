@@ -48,7 +48,7 @@ export default function Publication({ postId, userImage, userName, authorId, pos
 
 
     function redirectToUserPage () {
-        navigate(`user/${authorId}`)
+        navigate(`/user/${authorId}`)
     }
     
 
@@ -169,6 +169,7 @@ const Avatar = styled.img`
     border-radius: 50%;
     object-fit: cover;
     margin-bottom: 20px;
+    cursor: pointer;
 `;
 
 const Likes = styled.p`
@@ -188,6 +189,7 @@ const ContentContainer = styled.div`
 const UserName = styled.p`
     font: 400 19px 'Lato', sans-serif;
     color: #FFFFFF;
+    cursor: pointer;
     @media(max-width: 414px){
         font-size: 17px;
     };

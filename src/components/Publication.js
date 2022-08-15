@@ -4,6 +4,7 @@ import { ReactTagify } from "react-tagify";
 import { useNavigate} from "react-router-dom";
 import {FiHeart} from "react-icons/fi";
 import { IoMdTrash } from "react-icons/io";
+import ReactTooltip from 'react-tooltip';
 
 import ApplicationContext from "../contexts/ApplicationContext";
 import { likeRequest, dislikeRequest } from "../services/api.js";
@@ -82,8 +83,8 @@ export default function Publication({
             <AvatarLinkContainer>
                 <Avatar src={userImage} alt="User" />
                 <FiHeart onClick={likePost} size={20} color={liked?"red":"white"} fill={liked?"red":""}/>
-                <Likes>{renderlikes}</Likes>
-            </AvatarLinkContainer>
+                <Likes>{renderlikes}</Likes>    
+                </AvatarLinkContainer>
             <ContentContainer>
                 <UserName>{userName}</UserName>
                 <Trash>{userauthorship ? <IoMdTrash /> : ''}</Trash>

@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { FiChevronDown } from "react-icons/fi"
+import { FiChevronDown } from "react-icons/fi";
+import { FiChevronUp } from "react-icons/fi";
 import React from "react";
 
 import ApplicationContext from "../contexts/ApplicationContext";
@@ -12,12 +13,16 @@ export default function Header(){
         <HeaderContainer>
             <h1>linkr</h1>
             <MenuButton onClick={() => setIsMenuOpen(!isMenuOpen)}>
-                <FiChevronDown color={"#FFFFFF"} size={"30"} />
+                {isMenuOpen ?
+                <FiChevronUp color={"#FFFFFF"} size={"30"} /> :
+                <FiChevronDown color={"#FFFFFF"} size={"30"} />}
                 <img src={userImage} alt="User"/>
             </MenuButton>
+            {isMenuOpen ?
             <Menu>
-                Logout
-            </Menu>
+                <p>Logout</p>
+            </Menu> :
+            <></>}
         </HeaderContainer>
     );
 };

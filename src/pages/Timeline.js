@@ -2,14 +2,14 @@ import styled from "styled-components";
 import React from "react";
 
 import Header from "../components/Header";
-
-
 import SearchBar from "../components/SearchBar";
 import PublicationForm  from "../components/PublicationForm.js";
-import { getAllPostRequest } from "../services/api";
-import ApplicationContext from "../contexts/ApplicationContext.js";
-import Publication from "../components/Publication.js";
+import Publication from "../components/Publication";
 import Trending from "../components/Trending";
+
+import { getAllPostRequest } from "../services/api";
+
+import ApplicationContext from "../contexts/ApplicationContext.js";
 
 export default function Timeline() {
     const [posts, setPosts] = React.useState(null);
@@ -23,17 +23,20 @@ export default function Timeline() {
     React.useEffect(() => {
         async function data() {
             const response = await getAllPostRequest(config);
-            if(response.status === 200){
+
+            if(response.status === 200) {
                 setPosts([...response.data]);
             } else {
                 alert("An error occured while trying to fetch the posts, please refresh the page")
             };
         };
         data()
-    }, []);
-
-    function checkForPosts() {
-        if (posts === null) {
+        
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[]);
+    
+    function checkForPosts (){
+        if(posts === null){
             return (
                 <TextContainer>
                     <h2>Loading...</h2>
@@ -115,4 +118,4 @@ const TextContainer = styled.div`
         font: 400 20px 'Oswald', sans-serif;
         color: #FFFFFF;
     }
-`
+`;

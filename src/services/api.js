@@ -42,6 +42,16 @@ export async function getAllPostRequest(config) {
     }
 };
 
+export async function editPostRequest(postLink, content, config, postId) {
+    const body = { postLink, content };
+    try {
+        const response = await axios.put(`${REACT_APP_API_URL}/posts/${postId}`, body, config);
+        return response;
+    } catch (error) {
+        return error.response;
+    }
+};
+
 export async function getTrendingTags() {
     try {
         const response = await axios.get(`${REACT_APP_API_URL}/hashtags`);
@@ -49,7 +59,7 @@ export async function getTrendingTags() {
     } catch (error) {
         return error.response;
     }
-}
+};
 
 
 export async function getUserPostsRequest(id, config){

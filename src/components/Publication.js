@@ -1,14 +1,33 @@
 import styled from "styled-components";
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import {FiHeart} from "react-icons/fi";
 import { IoMdTrash } from "react-icons/io";
+import { ImPencil } from "react-icons/im";
+import React from "react";
+
+import { editPostRequest } from "../services/api";
+
+import ApplicationContext from "../contexts/ApplicationContext";
+
 import DeleteModal from "./DeleteModal"
 
+
 export default function Publication({ postId, userImage, userName, authorId, postTitle, postLink, LinkName, LinkSummary, LinkImg, userauthorship }) {
-    const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
+    const [deleteModalIsOpen, setDeleteModalIsOpen] = React.useState(false);
     const navigate = useNavigate();
+    const [editing, setEditing] = React.useState(false);
+    const inputRef = React.useRef(null);
+    const [postContentInput, setPostContentInput] = React.useState(postTitle);
+    const [postContent, setPostContent] = React.useState(postTitle);
+    const { userToken } = React.useContext(ApplicationContext);
+    const [editLoading, setEditLoading] = React.useState(false);
+
+    React.useEffect(() => {
+        if (editing) {
+            inputRef.current.focus();
+        }
+    }, [editing]);
 
     const tagStyle = {
         fontWeight: 700,
@@ -27,35 +46,98 @@ export default function Publication({ postId, userImage, userName, authorId, pos
         }
     }
 
+
     function redirectToUserPage () {
         navigate(`user/${authorId}`)
+    }
+    
+
+    function escapeEditing(e) {
+        const ESC_KEY_CODE = 27;
+        if (e.keyCode === ESC_KEY_CODE) {
+            setEditing(false);
+        }
+    }
+
+    async function sendEditRequest(e) {
+        e.preventDefault();
+        setEditLoading(true);
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userToken}`,
+            },
+        };
+        const response = await editPostRequest(postLink, postContentInput, config, postId);
+        if (response.status === 200) {
+            setEditLoading(false);
+            setEditing(false);
+            setPostContent(postContentInput);
+            return;
+        }
+
+        alert("Something went wrong, try editing again in a few seconds or reload the page.");
+        setEditLoading(false);
+    }
+
+    function postTitleArea() {
+        if (editing) {
+            return (
+                <FormContainer onSubmit={sendEditRequest}>
+                    <ContentInput
+                        value={postContentInput}
+                        onChange={e => setPostContentInput(e.target.value)}
+                        placeholder="Awesome article about #javascript"
+                        ref={inputRef}
+                        onKeyDown={escapeEditing}
+                        disabled={editLoading}
+                    />
+                </FormContainer>
+            );
+        } else if(postTitle) {
+            return (
+                <ReactTagify tagStyle={tagStyle} mentionStyle={{}} tagClicked={redirect}>
+                    <ContentTitle>{postContent}</ContentTitle>
+                </ReactTagify>
+            );
+        }
+
+        return (<></>);
+
     }
 
     return (
         <>
-          <Post>
-              <AvatarLinkContainer>
-                  <Avatar src={userImage} alt="User" onClick={redirectToUserPage}/>
-                  <FiHeart size={20} color="white"/>
-                  <Likes>13 likes</Likes>
-              </AvatarLinkContainer>
-              <ContentContainer>
-                  <UserName onClick={redirectToUserPage}>{userName}</UserName>
-                  <Trash>{userauthorship ? <IoMdTrash onClick = {() => setDeleteModalIsOpen(true)}/> : ''}</Trash>
-                  <ReactTagify tagStyle={tagStyle} mentionStyle={{}} tagClicked={redirect}>
-                      <ContentTitle>{postTitle}</ContentTitle>
-                  </ReactTagify>
-                  <LinkContainer>
-                      <div>
-                          <LinkTitle >{LinkName}</LinkTitle>
-                          <LinkContent>{LinkSummary}</LinkContent>
-                          <LinkUrl>{postLink}</LinkUrl>
-                      </div>
-                      <img src={LinkImg} alt="ImageLink" />
-                  </LinkContainer>
-              </ContentContainer>
-          </Post>
-          <DeleteModal deleteModalIsOpen={deleteModalIsOpen} setDeleteModalIsOpen={setDeleteModalIsOpen} postId={postId} />
+            <Post>
+                <AvatarLinkContainer>
+                    <Avatar onClick={redirectToUserPage} src={userImage} alt="User" />
+                    <FiHeart size={20} color="white"/>
+                    <Likes>13 likes</Likes>
+                </AvatarLinkContainer>
+                <ContentContainer>
+                    <PostTitle>
+                        <UserName onClick={redirectToUserPage}>{userName}</UserName>
+                        <Buttons>
+                            {userauthorship ? 
+                            <>
+                                <ImPencil onClick={() => setEditing(!editing)}/>
+                                <IoMdTrash onClick = {() => setDeleteModalIsOpen(true)}/>
+                            </> : 
+                            <></>}
+                        </Buttons>
+                    </PostTitle>
+                    {postTitleArea()}
+                    <LinkContainer href={postLink} target="_blank">
+                        <div>
+                            <LinkTitle >{LinkName}</LinkTitle>
+                            <LinkContent>{LinkSummary}</LinkContent>
+                            <LinkUrl>{postLink}</LinkUrl>
+                        </div>
+                        <img src={LinkImg} alt="ImageLink" />
+                    </LinkContainer>
+                </ContentContainer>
+            </Post>
+            <DeleteModal deleteModalIsOpen={deleteModalIsOpen} setDeleteModalIsOpen={setDeleteModalIsOpen} postId={postId} />
+
         </>
     );
 };
@@ -119,7 +201,7 @@ const ContentTitle = styled.p`
     };
 `;
 
-const LinkContainer = styled.div`
+const LinkContainer = styled.a`
     display: flex;
     border: 1px solid #4D4D4D;
     border-radius: 10px;
@@ -128,6 +210,8 @@ const LinkContainer = styled.div`
     width:100%;
     height:155px;
     cursor:pointer;
+    text-decoration: none;
+
     div{
         display: flex;
         flex-direction: column;
@@ -138,6 +222,7 @@ const LinkContainer = styled.div`
         height:100%;
         width:40%;
         border-radius: 0 10px 10px 0;
+        font: inherit;
     };
 `;
 
@@ -165,10 +250,38 @@ const LinkUrl = styled.p`
     };
 `;
 
-const Trash = styled.div`
+const Buttons = styled.div`
     color: #ffffff;
     font-size:14px;
-    position: absolute;
-    top:22px;
-    right:22px;
-`
+    display: flex;
+
+    svg {
+        margin: 0 5px;
+        cursor: pointer;
+    }
+`;
+
+const PostTitle = styled.div`
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+`;
+
+const FormContainer = styled.form`
+    width: 100%;
+`;
+
+const ContentInput = styled.input`
+    border: none;
+    background-color: #EFEFEF;
+    border-radius: 5px;
+    padding: 10px;
+    font-family:'Lato', sans-serif;
+    margin-top: 8px;
+    width: 100%;
+    
+    :disabled {
+        background-color: lightgray;
+        color: darkgray;
+    }
+`;

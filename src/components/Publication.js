@@ -77,7 +77,7 @@ export default function Publication({ postId, userImage, userName, postTitle, po
                 <Likes>13 likes</Likes>
             </AvatarLinkContainer>
             <ContentContainer>
-                <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                <PostTitle>
                     <UserName>{userName}</UserName>
                     <Buttons>
                         {userauthorship ? 
@@ -87,7 +87,7 @@ export default function Publication({ postId, userImage, userName, postTitle, po
                         </> : 
                         <></>}
                     </Buttons>
-                </div>
+                </PostTitle>
                 {postTitleArea()}
                 <LinkContainer href={postLink} target="_blank">
                     <div>
@@ -218,6 +218,12 @@ const Buttons = styled.div`
         margin: 0 5px;
         cursor: pointer;
     }
+`;
+
+const PostTitle = styled.div`
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 `;
 
 const ContentInput = styled.input`

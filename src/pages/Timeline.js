@@ -12,19 +12,14 @@ import Trending from "../components/Trending";
 export default function Timeline() {
     const [posts, setPosts] = React.useState(null);
     const { userToken } = React.useContext(ApplicationContext);
-<<<<<<< HEAD
-    const navigate = useNavigate()
-    
-=======
+    const navigate = useNavigate();
 
->>>>>>> 5e3e099d088ed260b36c9fb92a4617e397c3aef1
     const config = {
         headers: {
             Authorization: `Bearer ${userToken}`,
         }
     };
     React.useEffect(() => {
-<<<<<<< HEAD
         if(!userToken){
             navigate("/",{replace:true});
             return;
@@ -32,12 +27,6 @@ export default function Timeline() {
         async function data(){
             const response = await getAllPostRequest(config);
             if(response.status === 200){
-=======
-        async function data() {
-            const response = await getAllPostRequest(config);
-            if (response.status === 200) {
-                console.log(response.data);
->>>>>>> 5e3e099d088ed260b36c9fb92a4617e397c3aef1
                 setPosts([...response.data]);
             } else {
                 alert("An error occured while trying to fetch the posts, please refresh the page")
@@ -64,11 +53,8 @@ export default function Timeline() {
                 posts.map(item=>(
                     <Publication  
                         key={item.id}
-<<<<<<< HEAD
                         userLiked={item.userliked}
                         likesAmount={item.likes_amount}
-=======
->>>>>>> 5e3e099d088ed260b36c9fb92a4617e397c3aef1
                         postId={item.id}
                         userImage={item.pic_url}
                         userName={item.name}

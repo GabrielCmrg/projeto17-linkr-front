@@ -28,7 +28,7 @@ export default function Publication({
     LinkImg, 
     userauthorship,
     authorId }) {
-    const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
+    const [deleteModalIsOpen, setDeleteModalIsOpen] = React.useState(false);
     const navigate = useNavigate();
     const [editing, setEditing] = React.useState(false);
     const [editLoading, setEditLoading] = React.useState(false);

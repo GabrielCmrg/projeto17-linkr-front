@@ -13,6 +13,8 @@ import DeleteModal from "./DeleteModal"
 
 export default function Publication({
     userLiked,
+    firstLike,
+    secondLike,
     likesAmount,
     postId, 
     userImage, 
@@ -72,14 +74,47 @@ export default function Publication({
     };
     function countLikes (){
         if(totalLikes === 0){
-            return "";
+            return 
         }else if( totalLikes === 1){
             return `${totalLikes} like`
         }else{
             return `${totalLikes} likes`
         };
     };
-    const renderlikes = countLikes();
+
+    function showWhoLiked (){
+        
+        
+        if(!userLiked){
+            if(totalLikes > 3){
+                return `${firstLike}, ${secondLike} e outras ${totalLikes - 2} pessoas}`;
+            }else if(totalLikes === 3){
+                return `${firstLike}, ${secondLike} e mais ${totalLikes - 2} pessoa}`;
+            }else if(totalLikes === 2){
+                return `${firstLike} e ${secondLike}`;
+            }else{
+                return `${firstLike}`;
+            }   
+        }else{
+            if(totalLikes > 3){
+                return `Você, ${secondLike} e outras ${totalLikes - 2} pessoas}`;
+            }else if(totalLikes === 3){
+                return `Você, ${secondLike} e mais ${totalLikes - 2} pessoa}`;
+            }else if(totalLikes === 2){
+                console.log("Tem que entrar nessa");
+                return (`Você, ${firstLike}`);
+            }else{
+                return `Você`;
+            }
+        }
+
+    }
+    const renderAmountlikes = countLikes();
+    const renderWhoLiked = showWhoLiked();
+    
+    console.log(userLiked);
+    console.log(totalLikes);
+    console.log(renderWhoLiked);
     
     return (
         <>
@@ -87,7 +122,12 @@ export default function Publication({
                 <AvatarLinkContainer>
                     <Avatar src={userImage} alt="User" />
                     <FiHeart onClick={likePost} size={20} color={liked?"red":"white"} fill={liked?"red":""}/>
-                    <Likes>{renderlikes}</Likes>    
+                    <div data-tip data-for="likes">
+                        <Likes>{renderAmountlikes}</Likes>
+                        <ReactTooltip place="bottom" type="light" id="likes">
+                            <p>{renderWhoLiked}</p>
+                        </ReactTooltip>
+                    </div>
                 </AvatarLinkContainer>
                 <ContentContainer>
                     <UserName>{userName}</UserName>

@@ -27,6 +27,7 @@ export default function Timeline() {
         async function data(){
             const response = await getAllPostRequest(config);
             if(response.status === 200){
+                console.log(response.data);
                 setPosts([...response.data]);
             } else {
                 alert("An error occured while trying to fetch the posts, please refresh the page")
@@ -54,6 +55,8 @@ export default function Timeline() {
                     <Publication  
                         key={item.id}
                         userLiked={item.userliked}
+                        firstLike={item.firstlike}
+                        secondLike={item.secondlike}
                         likesAmount={item.likes_amount}
                         postId={item.id}
                         userImage={item.pic_url}

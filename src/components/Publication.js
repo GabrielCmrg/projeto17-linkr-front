@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
 import {FiHeart} from "react-icons/fi";
-import { IoMdTrash } from "react-icons/io";
+import { IoMdTrash,IoMdRepeat } from "react-icons/io";
 import ReactTooltip from 'react-tooltip';
 import { ImPencil } from "react-icons/im";
 
@@ -191,11 +191,16 @@ export default function Publication({
             <Post>
                 <AvatarLinkContainer>
                     <Avatar onClick={redirectToUserPage} src={userImage} alt="User" />
-                    <FiHeart onClick={likePost} size={20} color={liked?"red":"white"} fill={liked?"red":""}/>
-                    <>
-                    <Likes data-tip={renderWhoLiked} data-for="likes">{renderAmountlikes}</Likes>
-                    <ReactTooltip place="bottom" type="light" id="likes" />
-                    </>
+                    <div>
+                        <FiHeart onClick={likePost} size={20} color={liked?"red":"white"} fill={liked?"red":"#171717"}/>
+                        <Text data-tip={renderWhoLiked} data-for="likes">{renderAmountlikes}</Text>
+                        <ReactTooltip place="bottom" type="light" id="likes" />
+                    </div>
+                    <div>
+                        <IoMdRepeat size={20} color="white"/>
+                        <Text>0 Re-posts</Text>
+                    </div>
+                    
                 </AvatarLinkContainer>
                 <ContentContainer>
                     <PostTitle>
@@ -245,6 +250,13 @@ const AvatarLinkContainer = styled.div`
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    gap: 18px;
+    div{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items:center;
+    };
 `;
 
 const Avatar = styled.img`
@@ -256,11 +268,12 @@ const Avatar = styled.img`
     cursor: pointer;
 `;
 
-const Likes = styled.div`
+const Text = styled.p`
     margin-top:5px;
     font: 400 10px 'Lato', sans-serif;
     color: #FFFFFF;
 `;
+
 
 const ContentContainer = styled.div`
     display: flex;

@@ -1,4 +1,5 @@
-import axios from "axios";
+import axios, { Axios } from "axios";
+import { Action } from "history";
 
 const { REACT_APP_API_URL } = process.env;
 
@@ -50,6 +51,15 @@ export async function editPostRequest(postLink, content, config, postId) {
     } catch (error) {
         return error.response;
     }
+};
+
+export async function sharePostRequest(config, postId) {
+    try {
+        const response = await Axios.post(`${REACT_APP_API_URL}/posts`, config);
+        return response;
+    } catch (error) {
+        return error.response;
+    };
 };
 
 export async function getTrendingTags() {

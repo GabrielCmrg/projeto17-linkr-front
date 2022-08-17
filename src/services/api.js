@@ -115,3 +115,21 @@ export async function searchUserRequest(search){
         return error.response;
     }
 };
+
+export async function followUserRequest(id, config){
+    try {
+        const response = await axios.post(`${REACT_APP_API_URL}/followuser/${id}`, null, config);
+        return response;
+    } catch (error) {
+        return error.response;
+    }
+};
+
+export async function followUserRequest(id, config){
+    try {
+        const response = await axios.delete(`${REACT_APP_API_URL}/unfollowuser/${id}`, config);
+        return response;
+    } catch (error) {
+        return error.response;
+    }
+};

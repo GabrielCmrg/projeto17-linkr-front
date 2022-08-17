@@ -17,9 +17,10 @@ import { FiRefreshCw } from "react-icons/fi";
 
 export default function Timeline() {
     const [posts, setPosts] = React.useState("");
-    const [visiblePosts, setVisiblePosts] = React.useState("");
+    const [numberVisiblePosts, setNumberVisiblePosts] = React.useState("");
     const { userToken } = React.useContext(ApplicationContext);
     const navigate = useNavigate();
+
 
     const config = {
         headers: {
@@ -34,7 +35,8 @@ export default function Timeline() {
         async function data() {
             const response = await getAllPostRequest(config);
             if (response.status === 200) {
-                setVisiblePosts([...response.data]);
+                setPosts([...response.data])
+                setNumberVisiblePosts(response.data.length);
             } else {
                 alert("An error occured while trying to fetch the posts, please refresh the page")
             };
@@ -51,14 +53,15 @@ export default function Timeline() {
         }
     }, 15000);
 
+
     function checkForPosts() {
-        if (!visiblePosts) {
+        if (!posts) {
             return (
                 <TextContainer>
                     <h2>Loading...</h2>
                 </TextContainer>
             );
-        } else if (visiblePosts.length === 0) {
+        } else if (numberVisiblePosts === 0) {
             return (
                 <TextContainer>
                     <h2>There are no posts yet</h2>
@@ -66,7 +69,7 @@ export default function Timeline() {
             );
         } else {
             return (
-                visiblePosts.map(item => (
+                posts.slice(posts.length - numberVisiblePosts).map(item => (
                     <Publication
                         key={item.id}
                         userLiked={item.userliked}
@@ -89,17 +92,17 @@ export default function Timeline() {
     };
 
     function renderLoadMoreButton() {
-        if (posts.length - visiblePosts.length > 1) {
+        if (posts.length - numberVisiblePosts > 1) {
             return (
-                <LoadMoreButton onClick={() => setVisiblePosts(posts)}>
-                    {`${posts.length - visiblePosts.length} new posts, load more!`}
+                <LoadMoreButton onClick={() => setNumberVisiblePosts(posts.length)}>
+                    {`${posts.length - numberVisiblePosts} new posts, load more!`}
                 </LoadMoreButton>
             )
         }
-        else if (posts.length - visiblePosts.length > 0) {
+        else if (posts.length - numberVisiblePosts > 0) {
             return (
-                <LoadMoreButton onClick={() => setVisiblePosts(posts)}>
-                    <span>{`${posts.length - visiblePosts.length} new posts, load more!`}</span>
+                <LoadMoreButton onClick={() => setNumberVisiblePosts(posts.length)}>
+                    <span>{`${posts.length - numberVisiblePosts} new post, load more!`}</span>
                     <FiRefreshCw />
                 </LoadMoreButton>
             )

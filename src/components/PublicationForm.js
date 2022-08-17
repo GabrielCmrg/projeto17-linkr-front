@@ -5,23 +5,23 @@ import ApplicationContext from "../contexts/ApplicationContext";
 
 import { sendPostRequest } from "../services/api";
 
-export default function PublicationForm(){
+export default function PublicationForm() {
     const [postLink, setPostLink] = useState("");
-    const [content, setContent] = useState(""); 
-    const [actionDisabled, setActionDisabled] = useState(false);   
-    
+    const [content, setContent] = useState("");
+    const [actionDisabled, setActionDisabled] = useState(false);
+
     const { userToken, userImage } = useContext(ApplicationContext);
     const config = {
         headers: {
-          Authorization: `Bearer ${userToken}`,
+            Authorization: `Bearer ${userToken}`,
         }
     };
 
-    async function sendForm (e) {
+    async function sendForm(e) {
         e.preventDefault();
-        setActionDisabled(true); 
+        setActionDisabled(true);
 
-        if(!postLink){
+        if (!postLink) {
             alert("Url is required.");
             return;
         }

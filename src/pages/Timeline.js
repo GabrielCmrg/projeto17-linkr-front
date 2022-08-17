@@ -30,6 +30,7 @@ export default function Timeline() {
         async function data(){
             const response = await getAllPostRequest(config);
             if(response.status === 200) {
+                console.log(response.data);
                 setPosts([...response.data]);
             } else {
                 alert("An error occured while trying to fetch the posts, please refresh the page")

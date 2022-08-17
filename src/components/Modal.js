@@ -6,7 +6,7 @@ import { deletePostRequest } from "../services/api";
 
 Modal.setAppElement('#root');
 
-export default function DeleteModal({ deleteModalIsOpen, setDeleteModalIsOpen, postId }) {
+export default function DeleteModal({ deleteModalIsOpen, setDeleteModalIsOpen, postId, action }) {
     const [actionDisabled, setActionDisabled] = useState(false);
     const { userToken } = useContext(ApplicationContext);
     const config = {
@@ -14,7 +14,7 @@ export default function DeleteModal({ deleteModalIsOpen, setDeleteModalIsOpen, p
             Authorization: `Bearer ${userToken}`,
         }
     }
-
+    console.log(action)
     const customStyles = {
         content: {
             top: "50%",

@@ -37,7 +37,7 @@ export default function Publication({
     const inputRef = React.useRef(null);
     const [liked, setLiked] = React.useState(userLiked);
     const [totalLikes, setTotalLikes] = React.useState(parseInt(likesAmount));
-    
+    const [reposts, setReposts] = React.useState(0);
     React.useEffect(() => {
         if (editing) {
             inputRef.current.focus();
@@ -185,7 +185,7 @@ export default function Publication({
 
     const renderAmountlikes = countLikes();
     const renderWhoLiked = showWhoLiked();
-
+    
     return (
         <>
             <Post>
@@ -198,7 +198,7 @@ export default function Publication({
                     </div>
                     <div>
                         <IoMdRepeat size={20} color="white"/>
-                        <Text>0 Re-posts</Text>
+                        <Text>{reposts} re-posts</Text>
                     </div>
                     
                 </AvatarLinkContainer>

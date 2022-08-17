@@ -11,7 +11,7 @@ import { editPostRequest, likeRequest, dislikeRequest } from "../services/api";
 
 import ApplicationContext from "../contexts/ApplicationContext";
 
-import DeleteModal from "./DeleteModal"
+import ModalAction from "./Modal"
 
 export default function Publication({
     userLiked,
@@ -28,7 +28,8 @@ export default function Publication({
     LinkImg, 
     userauthorship,
     authorId }) {
-    const [deleteModalIsOpen, setDeleteModalIsOpen] = React.useState(false);
+    const [ModalIsOpen, setModalIsOpen] = React.useState(false);
+    const [action, setAction] = React.useState("");
     const navigate = useNavigate();
     const [editing, setEditing] = React.useState(false);
     const [editLoading, setEditLoading] = React.useState(false);
@@ -181,8 +182,29 @@ export default function Publication({
         }
 
         return (<></>);
-    }
+    };
 
+    function actionModal(action){
+        
+        if(action==="delete"){
+            setModalIsOpen(true);
+            setAction("delete");
+        
+        }if( action === "repost"){
+            setModalIsOpen(true);
+            setAction("repost");
+        };
+
+    }
+    // let actionModal ="";
+    // function deleteModal(){
+    //     setModalIsOpen(true);
+    //     actionModal ="delete";
+    // };
+    // function repostModal(){
+    //     setModalIsOpen(true);
+    //     actionModal ="delete";
+    // }
     const renderAmountlikes = countLikes();
     const renderWhoLiked = showWhoLiked();
     
@@ -197,7 +219,7 @@ export default function Publication({
                         <ReactTooltip place="bottom" type="light" id="likes" />
                     </div>
                     <div>
-                        <IoMdRepeat size={20} color="white"/>
+                        <IoMdRepeat onClick={()=> actionModal("repost")} size={20} color="white"/>
                         <Text>{reposts} re-posts</Text>
                     </div>
                     
@@ -209,7 +231,7 @@ export default function Publication({
                             {userauthorship ? 
                             <>
                                 <ImPencil onClick={() => setEditing(!editing)}/>
-                                <IoMdTrash onClick = {() => setDeleteModalIsOpen(true)}/>
+                                <IoMdTrash onClick={()=> actionModal("delete")}/>
                             </> : 
                             <></>}
                         </Buttons>
@@ -225,7 +247,7 @@ export default function Publication({
                     </LinkContainer>
                 </ContentContainer>
             </Post>
-            <DeleteModal deleteModalIsOpen={deleteModalIsOpen} setDeleteModalIsOpen={setDeleteModalIsOpen} postId={postId} />
+            <ModalAction ModalIsOpen={ModalIsOpen} setModalIsOpen={setModalIsOpen} postId={postId} action={action}/>
         </>                
     );
 };

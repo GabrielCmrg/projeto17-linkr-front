@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Modal from 'react-modal';
 import ApplicationContext from "../contexts/ApplicationContext";
 import { useContext, useState } from "react";
-import { deletePostRequest } from "../services/api";
+import { deletePostRequest, sharePostRequest } from "../services/api";
 
 Modal.setAppElement('#root');
 
@@ -48,7 +48,21 @@ export default function ModalAction({ ModalIsOpen, setModalIsOpen, postId, actio
             return;
         }
     }
-    
+    async function sharePost (){
+        setActionDisabled(true);
+        const response = await sharePostRequest(postId, config);
+        if(response.status === 200) {
+            setModalIsOpen(false);
+            window.location.reload();
+            return;
+        
+        }else{
+            setActionDisabled(false)
+            setModalIsOpen(false);
+            alert("Could not delete post.");
+            return;
+        }
+    }
     return (
         <>
         {   action === "delete"? 
@@ -67,7 +81,7 @@ export default function ModalAction({ ModalIsOpen, setModalIsOpen, postId, actio
             <Title>Do you want to re-post this link?</Title>
             <CommandBar>
                 <QuitButton disabled={actionDisabled} onClick={() => setModalIsOpen(false)}>No, cancel</QuitButton>
-                <ConfirmButton disabled={actionDisabled} onClick={() => deletePost()}>{actionDisabled ? "sharing..." : "Yes, share!"}</ConfirmButton>
+                <ConfirmButton disabled={actionDisabled} onClick={() => sharePost()}>{actionDisabled ? "sharing..." : "Yes, share!"}</ConfirmButton>
             </CommandBar>
             </Modal>
             

@@ -6,7 +6,7 @@ import useInterval from "use-interval";
 import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
 import PublicationForm from "../components/PublicationForm.js";
-import PublicationList from "../components/Publication";
+import PublicationList from "../components/PublicationList.js";
 import Trending from "../components/Trending";
 
 import { getAllPostRequest } from "../services/api";

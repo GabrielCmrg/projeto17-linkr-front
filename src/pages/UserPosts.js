@@ -7,7 +7,7 @@ import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
 import { getUserPostsRequest } from "../services/api";
 import ApplicationContext from "../contexts/ApplicationContext.js";
-import PublicationList from "../components/Publication.js";
+import PublicationList from "../components/PublicationList.js";
 import Trending from "../components/Trending";
 
 export default function UserPosts() {

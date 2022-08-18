@@ -19,7 +19,7 @@ export default function Publication({
     firstLike,
     secondLike,
     likesAmount,
-    postId, 
+    postId,
     userImage, 
     userName, 
     postTitle, 
@@ -38,6 +38,7 @@ export default function Publication({
     const inputRef = React.useRef(null);
     const [liked, setLiked] = React.useState(userLiked);
     const [totalLikes, setTotalLikes] = React.useState(parseInt(likesAmount));
+    const [commenting, setCommenting] = React.useState(false);
     
     React.useEffect(() => {
         if (editing) {
@@ -186,18 +187,22 @@ export default function Publication({
 
     const renderAmountlikes = countLikes();
     const renderWhoLiked = showWhoLiked();
+    const sharedPost = false;
 
     return (
         <>
             <Post>
                 <AvatarLinkContainer>
                     <Avatar onClick={redirectToUserPage} src={userImage} alt="User" />
-                    <FiHeart onClick={likePost} size={20} color={liked?"red":"white"} fill={liked?"red":""}/>
-                    <>
-                    <Likes data-tip={renderWhoLiked} data-for="likes">{renderAmountlikes}</Likes>
-                    <ReactTooltip place="bottom" type="light" id="likes" />
-                    </>
-                    <AiOutlineComment size={20} color={"white"} />
+                    <Buttons disabled={sharedPost}>
+                        <FiHeart onClick={sharedPost ? null : likePost} size={20} color={liked?"red":"white"} fill={liked?"red":"#171717"}/>
+                        <Text data-tip={renderWhoLiked} data-for="likes">{renderAmountlikes}</Text>
+                        <ReactTooltip place="bottom" type="light" id="likes" />
+                    </Buttons>
+                    <Buttons >
+                        <AiOutlineComment onClick={sharedPost ? null : () => setCommenting(!commenting)} size={20} color={"white"} />
+                        <Text>comments</Text>
+                    </Buttons>
                 </AvatarLinkContainer>
                 <ContentContainer>
                     <PostTitle>
@@ -247,6 +252,13 @@ const AvatarLinkContainer = styled.div`
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    gap: 18px;
+    div{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items:center;
+    };
 `;
 
 const Avatar = styled.img`
@@ -258,7 +270,7 @@ const Avatar = styled.img`
     cursor: pointer;
 `;
 
-const Likes = styled.div`
+const Text = styled.p`
     margin-top:5px;
     font: 400 10px 'Lato', sans-serif;
     color: #FFFFFF;

@@ -236,7 +236,6 @@ export default function Publication({
 
 const Container = styled.div`
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    gap:20px;
     margin-bottom: 30px;
     border-radius: 16px;
     background-color: #1E1E1E;
@@ -245,6 +244,7 @@ const Container = styled.div`
 const Post = styled.div`
     background: #171717;
     display:flex;
+    gap:20px;
     margin: 40px auto 0 auto;
     width:611px;
     padding: 16px 18px;

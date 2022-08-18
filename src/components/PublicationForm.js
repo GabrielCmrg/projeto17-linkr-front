@@ -5,7 +5,7 @@ import ApplicationContext from "../contexts/ApplicationContext";
 
 import { sendPostRequest } from "../services/api";
 
-export default function PublicationForm() {
+export default function PublicationForm({ data }) {
     const [postLink, setPostLink] = useState("");
     const [content, setContent] = useState("");
     const [actionDisabled, setActionDisabled] = useState(false);
@@ -31,7 +31,7 @@ export default function PublicationForm() {
             setActionDisabled(false);
             setContent("");
             setPostLink("");
-            window.location.reload();
+            data();
             return;
         }
 

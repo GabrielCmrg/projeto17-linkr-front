@@ -6,13 +6,12 @@ import useInterval from "use-interval";
 import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
 import PublicationForm from "../components/PublicationForm.js";
-import Publication from "../components/Publication";
+import PublicationList from "../components/Publication";
 import Trending from "../components/Trending";
 
 import { getAllPostRequest } from "../services/api";
 
 import ApplicationContext from "../contexts/ApplicationContext.js";
-import { FiRefreshCw } from "react-icons/fi";
 
 
 export default function Timeline() {
@@ -27,19 +26,21 @@ export default function Timeline() {
             Authorization: `Bearer ${userToken}`,
         }
     };
+
+    async function data() {
+        const response = await getAllPostRequest(config);
+        if (response.status === 200) {
+            setPosts([...response.data])
+            setNumberVisiblePosts(response.data.length);
+        } else {
+            alert("An error occured while trying to fetch the posts, please refresh the page")
+        };
+    };
+
     React.useEffect(() => {
         if (!userToken) {
             navigate("/", { replace: true });
             return;
-        };
-        async function data() {
-            const response = await getAllPostRequest(config);
-            if (response.status === 200) {
-                setPosts([...response.data])
-                setNumberVisiblePosts(response.data.length);
-            } else {
-                alert("An error occured while trying to fetch the posts, please refresh the page")
-            };
         };
         data()
 
@@ -53,65 +54,6 @@ export default function Timeline() {
         }
     }, 15000);
 
-
-    function checkForPosts() {
-        if (!posts) {
-            return (
-                <TextContainer>
-                    <h2>Loading...</h2>
-                </TextContainer>
-            );
-        } else if (numberVisiblePosts === 0) {
-            return (
-                <TextContainer>
-                    <h2>There are no posts yet</h2>
-                </TextContainer>
-            );
-        } else {
-            return (
-                posts.slice(posts.length - numberVisiblePosts).map(item => (
-                    <Publication
-                        key={item.id}
-                        userLiked={item.userliked}
-                        firstLike={item.firstlike}
-                        secondLike={item.secondlike}
-                        likesAmount={item.likes_amount}
-                        postId={item.id}
-                        userImage={item.pic_url}
-                        userName={item.name}
-                        authorId={item.author_id}
-                        postTitle={item.content}
-                        postLink={item.link_url}
-                        LinkName={item.link_title}
-                        LinkSummary={item.link_description}
-                        LinkImg={item.link_image}
-                        userauthorship={item.userauthorship}
-                    />))
-            );
-        };
-    };
-
-    function renderLoadMoreButton() {
-        if (posts.length - numberVisiblePosts > 1) {
-            return (
-                <LoadMoreButton onClick={() => setNumberVisiblePosts(posts.length)}>
-                    {`${posts.length - numberVisiblePosts} new posts, load more!`}
-                </LoadMoreButton>
-            )
-        }
-        else if (posts.length - numberVisiblePosts > 0) {
-            return (
-                <LoadMoreButton onClick={() => setNumberVisiblePosts(posts.length)}>
-                    <span>{`${posts.length - numberVisiblePosts} new post, load more!`}</span>
-                    <FiRefreshCw />
-                </LoadMoreButton>
-            )
-        }
-        return ""
-    }
-
-    const renderPosts = checkForPosts();
-
     return (
         <TimelineContainer>
             <Header />
@@ -119,9 +61,8 @@ export default function Timeline() {
             <Container>
                 <div>
                     <Title>timeline</Title>
-                    <PublicationForm />
-                    {renderLoadMoreButton()}
-                    {renderPosts}
+                    <PublicationForm data={data} />
+                    <PublicationList posts={posts} numberVisiblePosts={numberVisiblePosts} setNumberVisiblePosts={setNumberVisiblePosts} />
                 </div>
                 <div>
                     <Trending />
@@ -151,34 +92,5 @@ const Title = styled.h1`
     @media(max-width: 414px){
         font-size: 33px;
         margin-left: 20px;
-    }
-`;
-const TextContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    h2{
-        font: 400 20px 'Oswald', sans-serif;
-        color: #FFFFFF;
-    }
-`;
-
-const LoadMoreButton = styled.button`
-    width:100%;
-    padding: 16px 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #1877F2;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 16px;
-    border: none;
-    font-weight: 400;
-    font-size: 16px;
-    font-family: 'Lato';
-    color: #FFFFFF;
-
-    span{
-        margin-right:10px;
     }
 `;

@@ -1,75 +1,59 @@
 import styled from "styled-components";
 import React from "react";
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import useInterval from "use-interval";
 
 import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
 import { getTagPostsRequest } from "../services/api";
 import ApplicationContext from "../contexts/ApplicationContext.js";
-import Publication from "../components/Publication.js";
+import PublicationList from "../components/Publication.js";
 import Trending from "../components/Trending";
 
 export default function Hashtag() {
-    const [posts, setPosts] = React.useState(null);
+    const [posts, setPosts] = React.useState("");
+    const [numberVisiblePosts, setNumberVisiblePosts] = React.useState("");
     const { userToken } = React.useContext(ApplicationContext);
+    const navigate = useNavigate();
 
     const { hashtag } = useParams()
-    
+
     const config = {
         headers: {
-          Authorization: `Bearer ${userToken}`,
+            Authorization: `Bearer ${userToken}`,
         }
     };
 
+    async function data() {
+        const response = getTagPostsRequest(hashtag, config);
+        response.then(res => {
+            if (res.status === 404) {
+            } else {
+                setPosts([...res.data.tagPosts]);
+                setNumberVisiblePosts(res.data.tagPosts.length);
+            }
+        });
+        response.catch(err => {
+            alert("An error occured while trying to fetch the posts, please refresh the page")
+        });
+    };
+
     React.useEffect(() => {
-        async function data(){
-            const response = getTagPostsRequest(hashtag, config);
-            response.then( res => {
-                if (res.status === 404) {
-                } else {
-                    setPosts([...res.data.tagPosts]);
-                }
-            });
-            response.catch( err => {
-                alert("An error occured while trying to fetch the posts, please refresh the page")
-            });
+        if (!userToken) {
+            navigate("/", { replace: true });
+            return;
         };
         data()
-    },[hashtag]);
-    
-    function checkForPosts (){
-        if(posts === null){
-            return(
-                <TextContainer>
-                    <h2>Loading...</h2>
-                </TextContainer>
-            );
-        }else if(posts.length === 0){
-            return (
-                <TextContainer>
-                    <h2>There are no posts yet</h2>
-                </TextContainer>
-            );
-        }else{
-            return(
-                posts.map(item=>(
-                    <Publication  
-                        key={item.id}
-                        postId={item.id}
-                        userImage={item.pic_url}
-                        userName={item.name}
-                        authorId={item.author_id}
-                        postTitle={item.content}
-                        postLink={item.link_url}
-                        LinkName={item.link_title}
-                        LinkSummary={item.link_description}
-                        LinkImg={item.link_image}
-                        userauthorship={item.userauthorship}
-                    />))
-            );
-        };
-    };
-    const renderPosts = checkForPosts();
+    }, [hashtag]);
+
+
+    useInterval(async () => {
+        const response = await getTagPostsRequest(hashtag, config);
+        if (response.status !== 404) {
+            setPosts([...response.data.tagPosts]);
+        }
+    }, 15000);
+
     return (
         <TimelineContainer>
             <Header />
@@ -77,10 +61,10 @@ export default function Hashtag() {
             <Container>
                 <div>
                     <Title># {hashtag}</Title>
-                    {renderPosts}
+                    <PublicationList posts={posts} numberVisiblePosts={numberVisiblePosts} setNumberVisiblePosts={setNumberVisiblePosts} />
                 </div>
                 <div>
-                    <Trending /> 
+                    <Trending />
                 </div>
             </Container>
         </TimelineContainer>
@@ -128,12 +112,3 @@ const Title = styled.h1`
         margin-left: 20px;
     }
 `;
-const TextContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    h2{
-        font: 400 20px 'Oswald', sans-serif;
-        color: #FFFFFF;
-    }
-`

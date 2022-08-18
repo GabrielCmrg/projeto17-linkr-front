@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
-import {FiHeart} from "react-icons/fi";
+import { FiHeart } from "react-icons/fi";
 import { IoMdTrash } from "react-icons/io";
 import ReactTooltip from 'react-tooltip';
 import { ImPencil } from "react-icons/im";
@@ -12,20 +12,21 @@ import { editPostRequest, likeRequest, dislikeRequest } from "../services/api";
 import ApplicationContext from "../contexts/ApplicationContext";
 
 import DeleteModal from "./DeleteModal"
+import { FiRefreshCw } from "react-icons/fi";
 
-export default function Publication({
+function Publication({
     userLiked,
     firstLike,
     secondLike,
     likesAmount,
-    postId, 
-    userImage, 
-    userName, 
-    postTitle, 
-    postLink, 
-    LinkName, 
-    LinkSummary, 
-    LinkImg, 
+    postId,
+    userImage,
+    userName,
+    postTitle,
+    postLink,
+    LinkName,
+    LinkSummary,
+    LinkImg,
     userauthorship,
     authorId }) {
     const [deleteModalIsOpen, setDeleteModalIsOpen] = React.useState(false);
@@ -37,7 +38,7 @@ export default function Publication({
     const inputRef = React.useRef(null);
     const [liked, setLiked] = React.useState(userLiked);
     const [totalLikes, setTotalLikes] = React.useState(parseInt(likesAmount));
-    
+
     React.useEffect(() => {
         if (editing) {
             inputRef.current.focus();
@@ -47,7 +48,7 @@ export default function Publication({
     const { userToken } = React.useContext(ApplicationContext);
     const config = {
         headers: {
-          Authorization: `Bearer ${userToken}`,
+            Authorization: `Bearer ${userToken}`,
         }
     };
 
@@ -67,69 +68,69 @@ export default function Publication({
             navigate(`/hashtag/${hashtagName}`);
         }
     };
-    async function likePost (){
-        if(!liked){
+    async function likePost() {
+        if (!liked) {
             setLiked(true);
-            setTotalLikes( totalLikes + 1);
-            const response =  await likeRequest(config, postId);
-            if(response.status !== 200){
+            setTotalLikes(totalLikes + 1);
+            const response = await likeRequest(config, postId);
+            if (response.status !== 200) {
                 alert('Something went wrong when trying to like a post');
-                setTotalLikes( totalLikes - 1);
+                setTotalLikes(totalLikes - 1);
                 setLiked(false);
             };
-        }else{
+        } else {
             setLiked(false);
-            setTotalLikes( totalLikes - 1);
+            setTotalLikes(totalLikes - 1);
             const response = await dislikeRequest(config, postId);
-            if(response.status !== 200){
+            if (response.status !== 200) {
                 alert('Something went wrong when trying to like a post');
-                setTotalLikes( totalLikes + 1);
+                setTotalLikes(totalLikes + 1);
                 setLiked(true);
             };
         };
     };
 
-    function countLikes (){
-        if(totalLikes === 0){
-            return 
-        }else if( totalLikes === 1){
+    function countLikes() {
+        if (totalLikes === 0) {
+            return
+        } else if (totalLikes === 1) {
             return `${totalLikes} like`
-        }else{
+        } else {
             return `${totalLikes} likes`
         };
     };
 
-    function showWhoLiked (){
-        
-        
-        if(!userLiked){
-            if(totalLikes > 3){
+    function showWhoLiked() {
+
+
+        if (!userLiked) {
+            if (totalLikes > 3) {
                 return `${firstLike}, ${secondLike} e outras ${totalLikes - 2} pessoas`;
-            }else if(totalLikes === 3){
+            } else if (totalLikes === 3) {
                 return `${firstLike}, ${secondLike} e mais ${totalLikes - 2} pessoa}`;
-            }else if(totalLikes === 2){
+            } else if (totalLikes === 2) {
                 return `${firstLike} e ${secondLike}`;
-            }else{
+            } else {
                 return `${firstLike}`;
-            }   
-        }else{
-            if(totalLikes > 3){
+            }
+        } else {
+            if (totalLikes > 3) {
                 return `Você, ${secondLike} e outras ${totalLikes - 2} pessoas`;
-            }else if(totalLikes === 3){
+            } else if (totalLikes === 3) {
                 return `Você, ${secondLike} e mais ${totalLikes - 2} pessoa}`;
-            }else if(totalLikes === 2){
-                return (`Você, ${firstLike===userName?secondLike:firstLike}`);
-            }else{
+            } else if (totalLikes === 2) {
+                return (`Você, ${firstLike === userName ? secondLike : firstLike}`);
+            } else {
                 return `Você`;
             }
         }
 
     }
-    
-    function redirectToUserPage () {
+
+    function redirectToUserPage() {
         navigate(`/user/${authorId}`)
     }
-    
+
 
     function escapeEditing(e) {
         const ESC_KEY_CODE = 27;
@@ -172,7 +173,7 @@ export default function Publication({
                     />
                 </FormContainer>
             );
-        } else if(postTitle) {
+        } else if (postTitle) {
             return (
                 <ReactTagify tagStyle={tagStyle} mentionStyle={{}} tagClicked={redirect}>
                     <ContentTitle>{postContent}</ContentTitle>
@@ -191,22 +192,22 @@ export default function Publication({
             <Post>
                 <AvatarLinkContainer>
                     <Avatar onClick={redirectToUserPage} src={userImage} alt="User" />
-                    <FiHeart onClick={likePost} size={20} color={liked?"red":"white"} fill={liked?"red":""}/>
+                    <FiHeart onClick={likePost} size={20} color={liked ? "red" : "white"} fill={liked ? "red" : ""} />
                     <>
-                    <Likes data-tip={renderWhoLiked} data-for="likes">{renderAmountlikes}</Likes>
-                    <ReactTooltip place="bottom" type="light" id="likes" />
+                        <Likes data-tip={renderWhoLiked} data-for="likes">{renderAmountlikes}</Likes>
+                        <ReactTooltip place="bottom" type="light" id="likes" />
                     </>
                 </AvatarLinkContainer>
                 <ContentContainer>
                     <PostTitle>
                         <UserName onClick={redirectToUserPage}>{userName}</UserName>
                         <Buttons>
-                            {userauthorship ? 
-                            <>
-                                <ImPencil onClick={() => setEditing(!editing)}/>
-                                <IoMdTrash onClick = {() => setDeleteModalIsOpen(true)}/>
-                            </> : 
-                            <></>}
+                            {userauthorship ?
+                                <>
+                                    <ImPencil onClick={() => setEditing(!editing)} />
+                                    <IoMdTrash onClick={() => setDeleteModalIsOpen(true)} />
+                                </> :
+                                <></>}
                         </Buttons>
                     </PostTitle>
                     {postTitleArea()}
@@ -221,9 +222,78 @@ export default function Publication({
                 </ContentContainer>
             </Post>
             <DeleteModal deleteModalIsOpen={deleteModalIsOpen} setDeleteModalIsOpen={setDeleteModalIsOpen} postId={postId} />
-        </>                
+        </>
     );
 };
+
+export default function PublicationList({ posts, numberVisiblePosts, setNumberVisiblePosts }) {
+    function checkForPosts() {
+        if (!posts) {
+            return (
+                <TextContainer>
+                    <h2>Loading...</h2>
+                </TextContainer>
+            );
+        } else if (numberVisiblePosts === 0) {
+            return (
+                <TextContainer>
+                    <h2>There are no posts yet</h2>
+                </TextContainer>
+            );
+        } else {
+            return (
+                posts.slice(posts.length - numberVisiblePosts).map(item => (
+                    <Publication
+                        key={Date.now() * item.id}
+                        userLiked={item.userliked}
+                        firstLike={item.firstlike}
+                        secondLike={item.secondlike}
+                        likesAmount={item.likes_amount}
+                        postId={item.id}
+                        userImage={item.pic_url}
+                        userName={item.name}
+                        authorId={item.author_id}
+                        postTitle={item.content}
+                        postLink={item.link_url}
+                        LinkName={item.link_title}
+                        LinkSummary={item.link_description}
+                        LinkImg={item.link_image}
+                        userauthorship={item.userauthorship}
+                    />))
+            );
+        };
+    };
+
+    function renderLoadMoreButton() {
+        if (posts.length - numberVisiblePosts > 1) {
+            return (
+                <LoadMoreButton onClick={() => setNumberVisiblePosts(posts.length)}>
+                    {`${posts.length - numberVisiblePosts} new posts, load more!`}
+                </LoadMoreButton>
+            )
+        }
+        else if (posts.length - numberVisiblePosts > 0) {
+            return (
+                <LoadMoreButton onClick={() => setNumberVisiblePosts(posts.length)}>
+                    <span>{`${posts.length - numberVisiblePosts} new post, load more!`}</span>
+                    <FiRefreshCw />
+                </LoadMoreButton>
+            )
+        }
+        return ""
+    }
+
+    const renderPosts = checkForPosts();
+    const loadMoreButton = renderLoadMoreButton();
+
+    return (
+        <>
+            {loadMoreButton}
+            {renderPosts}
+        </>
+    )
+};
+
 const Post = styled.div`
     background: #171717;
     display:flex;
@@ -370,5 +440,35 @@ const ContentInput = styled.input`
     :disabled {
         background-color: lightgray;
         color: darkgray;
+    }
+`;
+
+const LoadMoreButton = styled.button`
+    width:100%;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1877F2;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 16px;
+    border: none;
+    font-weight: 400;
+    font-size: 16px;
+    font-family: 'Lato';
+    color: #FFFFFF;
+
+    span{
+        margin-right:10px;
+    }
+`;
+
+const TextContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    h2{
+        font: 400 20px 'Oswald', sans-serif;
+        color: #FFFFFF;
     }
 `;

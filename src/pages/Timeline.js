@@ -70,6 +70,7 @@ export default function Timeline() {
                         userImage={item.pic_url}
                         authorName={item.name}
                         authorSharedName={item.name_author_shared}
+                        repostAmount={item.reposts}
                         authorId={item.author_id}
                         postTitle={item.content}
                         postLink={item.link_url}

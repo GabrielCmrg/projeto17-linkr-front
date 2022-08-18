@@ -30,7 +30,8 @@ export default function Publication({
     LinkImg, 
     userauthorship,
     authorId,
-    data,    
+    data,
+    repostAmount    
 }) {
     const [ModalIsOpen, setModalIsOpen] = React.useState(false);
     const [action, setAction] = React.useState("");
@@ -42,7 +43,7 @@ export default function Publication({
     const inputRef = React.useRef(null);
     const [liked, setLiked] = React.useState(userLiked);
     const [totalLikes, setTotalLikes] = React.useState(parseInt(likesAmount));
-    const [reposts, setReposts] = React.useState(0);
+    
     React.useEffect(() => {
         if (editing) {
             inputRef.current.focus();
@@ -104,6 +105,15 @@ export default function Publication({
         };
     };
 
+    
+    function countRepost (){
+        if(!authorSharedName){
+            return repostAmount;
+        };
+        return 0;
+    };
+     
+    ;
     function showWhoLiked (){
         
         
@@ -200,11 +210,12 @@ export default function Publication({
         };
 
     };
-    
+    const renderAmountRepost = countRepost();
     const renderAmountlikes = countLikes();
     const renderWhoLiked = showWhoLiked();
     const sharedPost = postId !== originalPostId;
     const sharedBy = authorSharedName === userName;
+
     return (
         <>
             <Repost>
@@ -236,7 +247,7 @@ export default function Publication({
                         <IoMdRepeat size={20} color="white"/>:
                         <IoMdRepeat onClick={()=> actionModal("repost")} size={20} color="white"/>
                         }
-                        <Text>{reposts} re-posts</Text>
+                        <Text>{renderAmountRepost} re-posts</Text>
                     </Buttons>
                     
                 </AvatarLinkContainer>

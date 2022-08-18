@@ -13,6 +13,7 @@ import { editPostRequest, likeRequest, dislikeRequest } from "../services/api";
 import ApplicationContext from "../contexts/ApplicationContext";
 
 import DeleteModal from "./DeleteModal"
+import CommentSection from "./CommentSection";
 
 export default function Publication({
     userLiked,
@@ -20,13 +21,13 @@ export default function Publication({
     secondLike,
     likesAmount,
     postId,
-    userImage, 
-    userName, 
-    postTitle, 
-    postLink, 
-    LinkName, 
-    LinkSummary, 
-    LinkImg, 
+    userImage,
+    userName,
+    postTitle,
+    postLink,
+    LinkName,
+    LinkSummary,
+    LinkImg,
     userauthorship,
     authorId }) {
     const [deleteModalIsOpen, setDeleteModalIsOpen] = React.useState(false);
@@ -190,7 +191,7 @@ export default function Publication({
     const sharedPost = false;
 
     return (
-        <>
+        <Container>
             <Post>
                 <AvatarLinkContainer>
                     <Avatar onClick={redirectToUserPage} src={userImage} alt="User" />
@@ -227,20 +228,28 @@ export default function Publication({
                     </LinkContainer>
                 </ContentContainer>
             </Post>
+            {commenting ? <CommentSection /> : <></>}
             <DeleteModal deleteModalIsOpen={deleteModalIsOpen} setDeleteModalIsOpen={setDeleteModalIsOpen} postId={postId} />
-        </>                
+        </Container>                
     );
 };
+
+const Container = styled.div`
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    gap:20px;
+    margin-bottom: 30px;
+    border-radius: 16px;
+    background-color: #1E1E1E;
+`;
+
 const Post = styled.div`
     background: #171717;
     display:flex;
-    margin: 40px auto 30px auto;
-    position: relative;
+    margin: 40px auto 0 auto;
     width:611px;
     padding: 16px 18px;
     border-radius: 16px;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    gap:20px;
+
     @media(max-width: 611px ){
         border-radius: 0;
         width:100vw;

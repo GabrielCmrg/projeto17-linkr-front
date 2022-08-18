@@ -18,16 +18,20 @@ export default function Publication({
     firstLike,
     secondLike,
     likesAmount,
-    postId, 
+    postId,
+    originalPostId, 
     userImage, 
-    userName, 
+    authorName, 
+    authorSharedName,
     postTitle, 
     postLink, 
     LinkName, 
     LinkSummary, 
     LinkImg, 
     userauthorship,
-    authorId }) {
+    authorId,
+    data,    
+}) {
     const [ModalIsOpen, setModalIsOpen] = React.useState(false);
     const [action, setAction] = React.useState("");
     const navigate = useNavigate();
@@ -45,13 +49,13 @@ export default function Publication({
         }
     }, [editing]);
 
-    const { userToken } = React.useContext(ApplicationContext);
+    const { userToken,userName } = React.useContext(ApplicationContext);
     const config = {
         headers: {
           Authorization: `Bearer ${userToken}`,
         }
     };
-
+   
     const tagStyle = {
         fontWeight: 700,
         cursor: 'pointer',
@@ -119,7 +123,7 @@ export default function Publication({
             }else if(totalLikes === 3){
                 return `Você, ${secondLike} e mais ${totalLikes - 2} pessoa}`;
             }else if(totalLikes === 2){
-                return (`Você, ${firstLike===userName?secondLike:firstLike}`);
+                return (`Você, ${firstLike===authorName?secondLike:firstLike}`);
             }else{
                 return `Você`;
             }
@@ -195,38 +199,50 @@ export default function Publication({
             setAction("repost");
         };
 
-    }
-    // let actionModal ="";
-    // function deleteModal(){
-    //     setModalIsOpen(true);
-    //     actionModal ="delete";
-    // };
-    // function repostModal(){
-    //     setModalIsOpen(true);
-    //     actionModal ="delete";
-    // }
+    };
+    
     const renderAmountlikes = countLikes();
     const renderWhoLiked = showWhoLiked();
-    
+    const sharedPost = postId !== originalPostId;
+    const sharedBy = authorSharedName === userName;
     return (
         <>
+            <Repost>
+                {sharedPost? 
+                    <PostHeader>
+                        <IoMdRepeat size={20} color="white"/>
+                        <p>Re-posted by <span>{sharedBy?"you":authorSharedName}</span></p>
+                    </PostHeader>
+                 :
+                 <>
+                 
+                 </>   
+                }
+        
             <Post>
+                
                 <AvatarLinkContainer>
                     <Avatar onClick={redirectToUserPage} src={userImage} alt="User" />
-                    <div>
+                    <Buttons disabled={sharedPost}>
+                        {sharedPost?
+                        <FiHeart size={20} color={liked?"red":"white"} fill={liked?"red":"#171717"}/>:
                         <FiHeart onClick={likePost} size={20} color={liked?"red":"white"} fill={liked?"red":"#171717"}/>
+                        }
                         <Text data-tip={renderWhoLiked} data-for="likes">{renderAmountlikes}</Text>
                         <ReactTooltip place="bottom" type="light" id="likes" />
-                    </div>
-                    <div>
+                    </Buttons>
+                    <Buttons >
+                        {sharedPost?
+                        <IoMdRepeat size={20} color="white"/>:
                         <IoMdRepeat onClick={()=> actionModal("repost")} size={20} color="white"/>
+                        }
                         <Text>{reposts} re-posts</Text>
-                    </div>
+                    </Buttons>
                     
                 </AvatarLinkContainer>
                 <ContentContainer>
                     <PostTitle>
-                        <UserName onClick={redirectToUserPage}>{userName}</UserName>
+                        <UserName onClick={redirectToUserPage}>{authorName}</UserName>
                         <Buttons>
                             {userauthorship ? 
                             <>
@@ -247,14 +263,15 @@ export default function Publication({
                     </LinkContainer>
                 </ContentContainer>
             </Post>
-            <ModalAction ModalIsOpen={ModalIsOpen} setModalIsOpen={setModalIsOpen} postId={postId} action={action}/>
+            </Repost>
+            <ModalAction ModalIsOpen={ModalIsOpen} setModalIsOpen={setModalIsOpen} postId={postId} action={action} data={data}/>
         </>                
     );
 };
 const Post = styled.div`
-    background: #171717;
+    background-color: #171717;
     display:flex;
-    margin: 40px auto 30px auto;
+    margin: 0 auto 30px auto;
     position: relative;
     width:611px;
     padding: 16px 18px;
@@ -266,7 +283,18 @@ const Post = styled.div`
         width:100vw;
     }
 `;
-
+const Repost = styled.div`
+    background-color: #1E1E1E;
+    border-radius: 16px;
+    
+`;
+const PostHeader = styled.div`
+    font: 400 11px 'Lato', sans-serif;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    padding: 7px 10px;
+`
 const AvatarLinkContainer = styled.div`
     display: flex;
     flex-direction: column;

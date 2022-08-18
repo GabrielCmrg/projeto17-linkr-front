@@ -22,20 +22,21 @@ export default function Timeline() {
             Authorization: `Bearer ${userToken}`,
         }
     };
+    async function data(){
+        const response = await getAllPostRequest(config);
+        if(response.status === 200) {
+            console.log(response.data);
+            setPosts([...response.data]);
+        } else {
+            alert("An error occured while trying to fetch the posts, please refresh the page")
+        };
+    };
     React.useEffect(() => {
         if(!userToken){
             navigate("/",{replace:true});
             return;
         };
-        async function data(){
-            const response = await getAllPostRequest(config);
-            if(response.status === 200) {
-                console.log(response.data);
-                setPosts([...response.data]);
-            } else {
-                alert("An error occured while trying to fetch the posts, please refresh the page")
-            };
-        };
+
         data()
         
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -59,13 +60,16 @@ export default function Timeline() {
                 posts.map(item=>(
                     <Publication  
                         key={item.id}
+                        data={data}
                         userLiked={item.userliked}
                         firstLike={item.firstlike}
                         secondLike={item.secondlike}
                         likesAmount={item.likes_amount}
                         postId={item.id}
+                        originalPostId={item.original_post_id}
                         userImage={item.pic_url}
-                        userName={item.name}
+                        authorName={item.name}
+                        authorSharedName={item.name_author_shared}
                         authorId={item.author_id}
                         postTitle={item.content}
                         postLink={item.link_url}

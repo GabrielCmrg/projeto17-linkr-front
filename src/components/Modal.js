@@ -6,14 +6,15 @@ import { deletePostRequest, sharePostRequest } from "../services/api";
 
 Modal.setAppElement('#root');
 
-export default function ModalAction({ ModalIsOpen, setModalIsOpen, postId, action }) {
+export default function ModalAction({ ModalIsOpen, setModalIsOpen, postId, action, data }) {
     const [actionDisabled, setActionDisabled] = useState(false);
     const { userToken } = useContext(ApplicationContext);
     const config = {
         headers: {
             Authorization: `Bearer ${userToken}`,
         }
-    }
+    };
+   
     const customStyles = {
         content: {
             top: "50%",
@@ -51,15 +52,17 @@ export default function ModalAction({ ModalIsOpen, setModalIsOpen, postId, actio
     async function sharePost (){
         setActionDisabled(true);
         const response = await sharePostRequest(postId, config);
-        if(response.status === 200) {
+        console.log(response);
+        if(response.status === 201) {
             setModalIsOpen(false);
-            window.location.reload();
+            data();
             return;
         
         }else{
+            console.log(response)
             setActionDisabled(false)
             setModalIsOpen(false);
-            alert("Could not delete post.");
+            alert("Could not share post.");
             return;
         }
     }
@@ -81,7 +84,7 @@ export default function ModalAction({ ModalIsOpen, setModalIsOpen, postId, actio
             <Title>Do you want to re-post this link?</Title>
             <CommandBar>
                 <QuitButton disabled={actionDisabled} onClick={() => setModalIsOpen(false)}>No, cancel</QuitButton>
-                <ConfirmButton disabled={actionDisabled} onClick={() => sharePost()}>{actionDisabled ? "sharing..." : "Yes, share!"}</ConfirmButton>
+                <ConfirmButton disabled={actionDisabled} onClick={sharePost}>{actionDisabled ? "sharing..." : "Yes, share!"}</ConfirmButton>
             </CommandBar>
             </Modal>
             

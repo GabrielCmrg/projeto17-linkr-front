@@ -1,5 +1,5 @@
 import axios, { Axios } from "axios";
-import { Action } from "history";
+
 
 const { REACT_APP_API_URL } = process.env;
 
@@ -53,9 +53,11 @@ export async function editPostRequest(postLink, content, config, postId) {
     }
 };
 
-export async function sharePostRequest(config, postId) {
+export async function sharePostRequest(postId, config) {
+    const body = {postId}
+    console.log(config);
     try {
-        const response = await Axios.post(`${REACT_APP_API_URL}/posts`, config);
+        const response = await axios.post(`${REACT_APP_API_URL}/posts/share`, body , config);
         return response;
     } catch (error) {
         return error.response;

@@ -6,6 +6,7 @@ import {FiHeart} from "react-icons/fi";
 import { IoMdTrash } from "react-icons/io";
 import ReactTooltip from 'react-tooltip';
 import { ImPencil } from "react-icons/im";
+import { AiOutlineComment } from "react-icons/ai";
 
 import { editPostRequest, likeRequest, dislikeRequest } from "../services/api";
 
@@ -196,6 +197,7 @@ export default function Publication({
                     <Likes data-tip={renderWhoLiked} data-for="likes">{renderAmountlikes}</Likes>
                     <ReactTooltip place="bottom" type="light" id="likes" />
                     </>
+                    <AiOutlineComment size={20} color={"white"} />
                 </AvatarLinkContainer>
                 <ContentContainer>
                     <PostTitle>

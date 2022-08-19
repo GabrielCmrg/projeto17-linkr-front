@@ -108,13 +108,6 @@ export default function Publication({
         };
     };
 
-    function countRepost (){
-        if(!authorSharedName){
-            return repostAmount;
-        };
-        return 0;
-    };
-     
     function showWhoLiked() {
         if (!userLiked) {
             if (totalLikes > 3) {
@@ -209,7 +202,6 @@ export default function Publication({
         };
 
     };
-    const renderAmountRepost = countRepost();
     const renderAmountlikes = countLikes();
     const renderWhoLiked = showWhoLiked();
     const sharedPost = (postId !== originalPostId );
@@ -238,7 +230,7 @@ export default function Publication({
                     </Buttons>
                     <Buttons >
                         <IoMdRepeat onClick={sharedPost ? null : ()=> actionModal("repost")} size={20} color="white"/>
-                        <Text>{renderAmountRepost} re-posts</Text>
+                        <Text>{repostAmount} re-posts</Text>
                     </Buttons>
                 </AvatarLinkContainer>
                 <ContentContainer>

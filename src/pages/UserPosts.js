@@ -34,14 +34,15 @@ export default function UserPosts() {
         const response = await getUserPostsRequest(id, config);
         if (response.status === 404) {
             setNotFound(true);
-            return;
+            
         }
-
+        console.log(response)
         if (response.status === 200) {
             setUsername(response.data.userName);
             setUserPic(response.data.userPicUrl);
-            setPosts([...response.data.userPosts]);
+            setPosts([...response.data.userPosts.filter(post => post.id===post.original_post_id)]);
             setNumberVisiblePosts(response.data.userPosts.length);
+            return
         }
 
         alert("An error occured while trying to fetch the posts, please refresh the page")

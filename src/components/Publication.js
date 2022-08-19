@@ -9,7 +9,9 @@ import { ImPencil } from "react-icons/im";
 import { AiOutlineComment } from "react-icons/ai";
 
 import { editPostRequest, likeRequest, dislikeRequest } from "../services/api";
+
 import ApplicationContext from "../contexts/ApplicationContext";
+
 import ModalAction from "./Modal"
 import CommentSection from "./CommentSection";
 
@@ -19,15 +21,15 @@ export default function Publication({
     secondLike,
     likesAmount,
     postId,
-    originalPostId, 
-    userImage, 
+    originalPostId,
+    userImage,
     authorName, 
     authorSharedName,
-    postTitle, 
-    postLink, 
-    LinkName, 
-    LinkSummary, 
-    LinkImg, 
+    postTitle,
+    postLink,
+    LinkName,
+    LinkSummary,
+    LinkImg,
     userauthorship,
     authorId,
     data,
@@ -44,7 +46,7 @@ export default function Publication({
     const [liked, setLiked] = React.useState(userLiked);
     const [totalLikes, setTotalLikes] = React.useState(parseInt(likesAmount));
     const [commenting, setCommenting] = React.useState(false);
-    
+
     React.useEffect(() => {
         if (editing) {
             inputRef.current.focus();
@@ -74,39 +76,38 @@ export default function Publication({
             navigate(`/hashtag/${hashtagName}`);
         }
     };
-    async function likePost (){
-        if(!liked){
+    async function likePost() {
+        if (!liked) {
             setLiked(true);
-            setTotalLikes( totalLikes + 1);
-            const response =  await likeRequest(config, postId);
-            if(response.status !== 200){
+            setTotalLikes(totalLikes + 1);
+            const response = await likeRequest(config, postId);
+            if (response.status !== 200) {
                 alert('Something went wrong when trying to like a post');
-                setTotalLikes( totalLikes - 1);
+                setTotalLikes(totalLikes - 1);
                 setLiked(false);
             };
-        }else{
+        } else {
             setLiked(false);
-            setTotalLikes( totalLikes - 1);
+            setTotalLikes(totalLikes - 1);
             const response = await dislikeRequest(config, postId);
-            if(response.status !== 200){
+            if (response.status !== 200) {
                 alert('Something went wrong when trying to like a post');
-                setTotalLikes( totalLikes + 1);
+                setTotalLikes(totalLikes + 1);
                 setLiked(true);
             };
         };
     };
 
-    function countLikes (){
-        if(totalLikes === 0){
-            return 
-        }else if( totalLikes === 1){
+    function countLikes() {
+        if (totalLikes === 0) {
+            return
+        } else if (totalLikes === 1) {
             return `${totalLikes} like`
-        }else{
+        } else {
             return `${totalLikes} likes`
         };
     };
 
-    
     function countRepost (){
         if(!authorSharedName){
             return repostAmount;
@@ -114,38 +115,35 @@ export default function Publication({
         return 0;
     };
      
-    ;
-    function showWhoLiked (){
-        
-        
-        if(!userLiked){
-            if(totalLikes > 3){
+    function showWhoLiked() {
+        if (!userLiked) {
+            if (totalLikes > 3) {
                 return `${firstLike}, ${secondLike} e outras ${totalLikes - 2} pessoas`;
-            }else if(totalLikes === 3){
+            } else if (totalLikes === 3) {
                 return `${firstLike}, ${secondLike} e mais ${totalLikes - 2} pessoa}`;
-            }else if(totalLikes === 2){
+            } else if (totalLikes === 2) {
                 return `${firstLike} e ${secondLike}`;
-            }else{
+            } else {
                 return `${firstLike}`;
-            }   
-        }else{
-            if(totalLikes > 3){
+            }
+        } else {
+            if (totalLikes > 3) {
                 return `Você, ${secondLike} e outras ${totalLikes - 2} pessoas`;
-            }else if(totalLikes === 3){
+            } else if (totalLikes === 3) {
                 return `Você, ${secondLike} e mais ${totalLikes - 2} pessoa}`;
-            }else if(totalLikes === 2){
-                return (`Você, ${firstLike===authorName?secondLike:firstLike}`);
+            } else if (totalLikes === 2) {
+                return (`Você, ${firstLike === authorName ? secondLike : firstLike}`);
             }else{
                 return `Você`;
             }
         }
 
     }
-    
-    function redirectToUserPage () {
+
+    function redirectToUserPage() {
         navigate(`/user/${authorId}`)
     }
-    
+
 
     function escapeEditing(e) {
         const ESC_KEY_CODE = 27;
@@ -188,7 +186,7 @@ export default function Publication({
                     />
                 </FormContainer>
             );
-        } else if(postTitle) {
+        } else if (postTitle) {
             return (
                 <ReactTagify tagStyle={tagStyle} mentionStyle={{}} tagClicked={redirect}>
                     <ContentTitle>{postContent}</ContentTitle>
@@ -239,7 +237,7 @@ export default function Publication({
                         <Text>comments</Text>
                     </Buttons>
                     <Buttons >
-                        <IoMdRepeat onClick={sharedPost ? null:()=> actionModal("repost")} size={20} color="white"/>
+                        <IoMdRepeat onClick={sharedPost ? null : ()=> actionModal("repost")} size={20} color="white"/>
                         <Text>{renderAmountRepost} re-posts</Text>
                     </Buttons>
                 </AvatarLinkContainer>
@@ -278,6 +276,7 @@ const Container = styled.div`
     border-radius: 16px;
     background-color: #1E1E1E;
 `;
+
 const Post = styled.div`
     background-color: #171717;
     display:flex;

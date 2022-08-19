@@ -1,86 +1,67 @@
 import styled from "styled-components";
 import React from "react";
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import useInterval from "use-interval";
 
 import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
 import { getUserPostsRequest, followUserRequest, unfollowUserRequest } from "../services/api";
 import ApplicationContext from "../contexts/ApplicationContext.js";
-import Publication from "../components/Publication.js";
+import PublicationList from "../components/PublicationList.js";
 import Trending from "../components/Trending";
 
 export default function UserPosts() {
-    const [posts, setPosts] = React.useState(null);
-    const [ notFound, setNotFound ] = React.useState(false);
+    const [posts, setPosts] = React.useState("");
+    const [numberVisiblePosts, setNumberVisiblePosts] = React.useState("");
+    const [notFound, setNotFound] = React.useState(false);
     const [username, setUsername] = React.useState("");
     const [userPic, setUserPic] = React.useState("");
     const [followStatus, setFollowStatus] = React.useState(false);
     const [isOwner, setIsOwner] = React.useState(true);
     const { userToken } = React.useContext(ApplicationContext);
+    const navigate = useNavigate();
     const [loading, setLoading] = React.useState(false);
 
     const { id } = useParams()
-    
+
     const config = {
         headers: {
-          Authorization: `Bearer ${userToken}`,
+            Authorization: `Bearer ${userToken}`,
         }
     };
-    React.useEffect(() => {
-        setNotFound(false)
-        async function data(){
-            const response = getUserPostsRequest(id, config);
-            response.then( res => {
-                if (res.status === 404) {
-                    setNotFound(true)
-                } else {
-                    setUsername(res.data.userName);
-                    setIsOwner(res.data.accountOwner);
-                    setFollowStatus(res.data.followStatus);
-                    setUserPic(res.data.userPicUrl);
-                    setPosts([...res.data.userPosts]);
-                }
-            });
-            response.catch( err => {
-                alert("An error occured while trying to fetch the posts, please refresh the page")
-            });
-        };
-        data()
-    },[id]);
-    
-    function checkForPosts (){
-        if(posts === null){
-            return(
-                <TextContainer>
-                    <h2>Loading...</h2>
-                </TextContainer>
-            );
-        }else if(posts.length === 0){
-            return (
-                <TextContainer>
-                    <h2>There are no posts yet</h2>
-                </TextContainer>
-            );
-        }else{
-            return(
-                posts.map(item=>(
-                    <Publication  
-                        key={item.id}
-                        postId={item.id}
-                        userImage={item.pic_url}
-                        userName={item.name}
-                        authorId={item.author_id}
-                        postTitle={item.content}
-                        postLink={item.link_url}
-                        LinkName={item.link_title}
-                        LinkSummary={item.link_description}
-                        LinkImg={item.link_image}
-                        userauthorship={item.userauthorship}
-                    />))
-            );
-        };
+
+    async function data() {
+        const response = await getUserPostsRequest(id, config);
+        if (response.status === 404) {
+            setNotFound(true);
+            return;
+        }
+
+        if (response.status === 200) {
+            setUsername(response.data.userName);
+            setUserPic(response.data.userPicUrl);
+            setPosts([...response.data.userPosts]);
+            setNumberVisiblePosts(response.data.userPosts.length);
+        }
+
+        alert("An error occured while trying to fetch the posts, please refresh the page")
     };
-    const renderPosts = checkForPosts();
+
+    React.useEffect(() => {
+        if (!userToken) {
+            navigate("/", { replace: true });
+            return;
+        };
+        setNotFound(false)
+        data()
+    }, [id]);
+
+    useInterval(async () => {
+        const response = await getUserPostsRequest(id, config);
+        if (response.status !== 404) {
+            setPosts([...response.data.userPosts]);
+        }
+    }, 15000);
 
     function displayFollowButton () {
         if (isOwner) {
@@ -99,7 +80,6 @@ export default function UserPosts() {
             )
         }
     }
-    const renderButton = displayFollowButton ()
 
     function changeFollowStatus () {
         setLoading(true)
@@ -135,12 +115,15 @@ export default function UserPosts() {
         }
 
     }
+
+    const renderButton = displayFollowButton();
+
     return (
         <TimelineContainer>
             <Header />
             <SearchBar />
-            {notFound ? 
-                <h1>Usuário não encontrado</h1> 
+            {notFound ?
+                <h1>Usuário não encontrado</h1>
                 :
                 <Container>
                     <div>
@@ -148,10 +131,10 @@ export default function UserPosts() {
                             <img src={userPic} alt="user profile pic" />
                             {username}
                         </Title>
-                        {renderPosts}
+                        <PublicationList posts={posts} numberVisiblePosts={numberVisiblePosts} setNumberVisiblePosts={setNumberVisiblePosts} />
                     </div>
                     <div>
-                        <Trending /> 
+                        <Trending />
                     </div>
                     {renderButton}
                 </Container>
@@ -237,4 +220,4 @@ const FollowButton = styled.button`
     :disabled {
         opacity: 0.6;
     }
-`
+`;

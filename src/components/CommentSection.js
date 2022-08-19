@@ -1,16 +1,18 @@
 import styled from "styled-components";
 import React from "react";
+import { IoPaperPlaneOutline } from "react-icons/io5";
 
 import ApplicationContext from "../contexts/ApplicationContext";
 
 export default function CommentSection() {
-    const { userImage, userToken } = React.useContext(ApplicationContext);
+    const { userImage } = React.useContext(ApplicationContext);
 
     return (
         <Background>
             <CommentBox>
                 <Avatar src={userImage} alt="User" />
                 <Input placeholder="write a comment..." />
+                <IoPaperPlaneOutline size={16} color="white"/>
             </CommentBox>
         </Background>
     );
@@ -24,8 +26,16 @@ const Background = styled.div`
 
 const CommentBox = styled.div`
     display: flex;
+    align-items: center;
     padding: 5px;
     gap: 15px;
+    position: relative;
+
+    svg {
+        position: absolute;
+        right: 20px;
+        cursor: pointer;
+    }
 `;
 
 const Avatar = styled.img`

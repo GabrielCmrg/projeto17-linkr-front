@@ -42,7 +42,7 @@ export default function Signup() {
             setIsLoading(false);
             return;
         }
-        
+
         const code = await signupRequest(email, name, password, picUrl);
         if (code === 409) {
             alert("This e-mail is already in use.");
@@ -66,9 +66,9 @@ export default function Signup() {
     return (
         <Container>
             <Brand />
-            <Form>
+            <Form marked={isLoading}>
                 <form onSubmit={register}>
-                    <input 
+                    <input
                         type="email"
                         placeholder="e-mail"
                         id="email"
@@ -76,7 +76,7 @@ export default function Signup() {
                         onChange={e => setEmail(e.target.value)}
                         disabled={isLoading}
                     />
-                    <input 
+                    <input
                         type="password"
                         placeholder="password"
                         id="password"

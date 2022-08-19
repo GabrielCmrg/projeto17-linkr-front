@@ -9,11 +9,9 @@ import { ImPencil } from "react-icons/im";
 import { AiOutlineComment } from "react-icons/ai";
 
 import { editPostRequest, likeRequest, dislikeRequest } from "../services/api";
-
 import ApplicationContext from "../contexts/ApplicationContext";
-
 import ModalAction from "./Modal"
-
+import CommentSection from "./CommentSection";
 
 export default function Publication({
     userLiked,
@@ -56,7 +54,7 @@ export default function Publication({
     const { userToken,userName } = React.useContext(ApplicationContext);
     const config = {
         headers: {
-          Authorization: `Bearer ${userToken}`,
+            Authorization: `Bearer ${userToken}`,
         }
     };
    
@@ -218,7 +216,6 @@ export default function Publication({
     const renderWhoLiked = showWhoLiked();
     const sharedPost = (postId !== originalPostId );
     const sharedBy = authorSharedName === userName;
-
     
     return (
         <Container>
@@ -269,10 +266,10 @@ export default function Publication({
                     </LinkContainer>
                 </ContentContainer>
             </Post>
-            
+            {commenting ? <CommentSection postId={postId} /> : <></>}
             <ModalAction ModalIsOpen={ModalIsOpen} setModalIsOpen={setModalIsOpen} postId={postId} action={action} data={data}/>
         </Container>          
-    );
+   );
 };
 
 const Container = styled.div`

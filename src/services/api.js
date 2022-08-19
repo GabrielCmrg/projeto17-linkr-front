@@ -127,3 +127,13 @@ export async function searchUserRequest(search){
         return error.response;
     }
 };
+
+export async function sendCommentRequest(postId, comment, config) {
+    const body = { postId, comment };
+    try {
+        const response = await axios.post(`${REACT_APP_API_URL}/comments`, body, config);
+        return response;
+    } catch (error) {
+        return error.response;
+    }
+};

@@ -13,7 +13,7 @@ export default function Signup() {
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [isLoading, setIsLoading] = React.useState(false);
-    const { setUserToken, setUserImage } = React.useContext(ApplicationContext);
+    const { setUserToken, setUserImage,setUserName } = React.useContext(ApplicationContext);
     const navigate = useNavigate();
 
     function createAlertMessage() {
@@ -49,6 +49,7 @@ export default function Signup() {
             setIsLoading(false);
             setUserToken(response.data.token);
             setUserImage(response.data.image);
+            setUserName(response.data.name);
             navigate("/timeline");
             return;
         }

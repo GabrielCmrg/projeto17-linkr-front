@@ -4,15 +4,37 @@ import { IoPaperPlaneOutline } from "react-icons/io5";
 
 import ApplicationContext from "../contexts/ApplicationContext";
 
-export default function CommentSection() {
-    const { userImage } = React.useContext(ApplicationContext);
+import { sendCommentRequest } from "../services/api";
+
+export default function CommentSection({ postId }) {
+    const { userImage, userToken } = React.useContext(ApplicationContext);
+    const [comment, setComment] = React.useState("");
+    const config = {
+        headers: {
+            Authorization: `Bearer ${userToken}`,
+        }
+    };
+
+    async function makeComment() {
+        const response = await sendCommentRequest(postId, comment, config);
+        if (response.status === 201) {
+            alert("Comment made!");
+            return;
+        }
+
+        alert("Something is wrong!");
+    }
 
     return (
         <Background>
             <CommentBox>
                 <Avatar src={userImage} alt="User" />
-                <Input placeholder="write a comment..." />
-                <IoPaperPlaneOutline size={16} color="white"/>
+                <Input
+                    placeholder="write a comment..."
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                />
+                <IoPaperPlaneOutline onClick={makeComment} size={16} color="white" />
             </CommentBox>
         </Background>
     );

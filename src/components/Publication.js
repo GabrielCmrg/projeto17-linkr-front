@@ -50,7 +50,7 @@ export default function Publication({
     const { userToken } = React.useContext(ApplicationContext);
     const config = {
         headers: {
-          Authorization: `Bearer ${userToken}`,
+            Authorization: `Bearer ${userToken}`,
         }
     };
 
@@ -228,7 +228,7 @@ export default function Publication({
                     </LinkContainer>
                 </ContentContainer>
             </Post>
-            {commenting ? <CommentSection /> : <></>}
+            {commenting ? <CommentSection postId={postId} /> : <></>}
             <DeleteModal deleteModalIsOpen={deleteModalIsOpen} setDeleteModalIsOpen={setDeleteModalIsOpen} postId={postId} />
         </Container>                
     );

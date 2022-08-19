@@ -1,13 +1,11 @@
 import styled from "styled-components";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-
 import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
 import PublicationForm  from "../components/PublicationForm.js";
 import Publication from "../components/Publication";
 import Trending from "../components/Trending";
-
 import { getAllPostRequest } from "../services/api";
 
 import ApplicationContext from "../contexts/ApplicationContext.js";

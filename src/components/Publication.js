@@ -3,16 +3,14 @@ import styled from "styled-components";
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
 import {FiHeart} from "react-icons/fi";
-import { IoMdTrash } from "react-icons/io";
+import { IoMdTrash,IoMdRepeat } from "react-icons/io";
 import ReactTooltip from 'react-tooltip';
 import { ImPencil } from "react-icons/im";
 import { AiOutlineComment } from "react-icons/ai";
 
 import { editPostRequest, likeRequest, dislikeRequest } from "../services/api";
-
 import ApplicationContext from "../contexts/ApplicationContext";
-
-import DeleteModal from "./DeleteModal"
+import ModalAction from "./Modal"
 import CommentSection from "./CommentSection";
 
 export default function Publication({
@@ -21,16 +19,22 @@ export default function Publication({
     secondLike,
     likesAmount,
     postId,
-    userImage,
-    userName,
-    postTitle,
-    postLink,
-    LinkName,
-    LinkSummary,
-    LinkImg,
+    originalPostId, 
+    userImage, 
+    authorName, 
+    authorSharedName,
+    postTitle, 
+    postLink, 
+    LinkName, 
+    LinkSummary, 
+    LinkImg, 
     userauthorship,
-    authorId }) {
-    const [deleteModalIsOpen, setDeleteModalIsOpen] = React.useState(false);
+    authorId,
+    data,
+    repostAmount    
+}) {
+    const [ModalIsOpen, setModalIsOpen] = React.useState(false);
+    const [action, setAction] = React.useState("");
     const navigate = useNavigate();
     const [editing, setEditing] = React.useState(false);
     const [editLoading, setEditLoading] = React.useState(false);
@@ -47,13 +51,13 @@ export default function Publication({
         }
     }, [editing]);
 
-    const { userToken } = React.useContext(ApplicationContext);
+    const { userToken,userName } = React.useContext(ApplicationContext);
     const config = {
         headers: {
             Authorization: `Bearer ${userToken}`,
         }
     };
-
+   
     const tagStyle = {
         fontWeight: 700,
         cursor: 'pointer',
@@ -102,6 +106,15 @@ export default function Publication({
         };
     };
 
+    
+    function countRepost (){
+        if(!authorSharedName){
+            return repostAmount;
+        };
+        return 0;
+    };
+     
+    ;
     function showWhoLiked (){
         
         
@@ -121,7 +134,7 @@ export default function Publication({
             }else if(totalLikes === 3){
                 return `Você, ${secondLike} e mais ${totalLikes - 2} pessoa}`;
             }else if(totalLikes === 2){
-                return (`Você, ${firstLike===userName?secondLike:firstLike}`);
+                return (`Você, ${firstLike===authorName?secondLike:firstLike}`);
             }else{
                 return `Você`;
             }
@@ -184,18 +197,39 @@ export default function Publication({
         }
 
         return (<></>);
-    }
+    };
 
+    function actionModal(action){
+        
+        if(action==="delete"){
+            setModalIsOpen(true);
+            setAction("delete");
+        
+        }if( action === "repost"){
+            setModalIsOpen(true);
+            setAction("repost");
+        };
+
+    };
+    const renderAmountRepost = countRepost();
     const renderAmountlikes = countLikes();
     const renderWhoLiked = showWhoLiked();
-    const sharedPost = false;
-
+    const sharedPost = (postId !== originalPostId );
+    const sharedBy = authorSharedName === userName;
+    
     return (
         <Container>
+            {sharedPost?
+                <PostHeader>
+                    <IoMdRepeat size={20} color="white"/>
+                    <p>Re-posted by <span>{sharedBy?"you":authorSharedName}</span></p>
+                </PostHeader>:
+                <></>
+            }
             <Post>
-                <AvatarLinkContainer>
+               <AvatarLinkContainer>
                     <Avatar onClick={redirectToUserPage} src={userImage} alt="User" />
-                    <Buttons disabled={sharedPost}>
+                    <Buttons>
                         <FiHeart onClick={sharedPost ? null : likePost} size={20} color={liked?"red":"white"} fill={liked?"red":"#171717"}/>
                         <Text data-tip={renderWhoLiked} data-for="likes">{renderAmountlikes}</Text>
                         <ReactTooltip place="bottom" type="light" id="likes" />
@@ -204,15 +238,19 @@ export default function Publication({
                         <AiOutlineComment onClick={sharedPost ? null : () => setCommenting(!commenting)} size={20} color={"white"} />
                         <Text>comments</Text>
                     </Buttons>
+                    <Buttons >
+                        <IoMdRepeat onClick={sharedPost ? null:()=> actionModal("repost")} size={20} color="white"/>
+                        <Text>{renderAmountRepost} re-posts</Text>
+                    </Buttons>
                 </AvatarLinkContainer>
                 <ContentContainer>
                     <PostTitle>
-                        <UserName onClick={redirectToUserPage}>{userName}</UserName>
+                        <UserName onClick={redirectToUserPage}>{authorName}</UserName>
                         <Buttons>
-                            {userauthorship ? 
+                            {userauthorship && authorSharedName === null? 
                             <>
                                 <ImPencil onClick={() => setEditing(!editing)}/>
-                                <IoMdTrash onClick = {() => setDeleteModalIsOpen(true)}/>
+                                <IoMdTrash onClick={()=> actionModal("delete")}/>
                             </> : 
                             <></>}
                         </Buttons>
@@ -229,9 +267,9 @@ export default function Publication({
                 </ContentContainer>
             </Post>
             {commenting ? <CommentSection postId={postId} /> : <></>}
-            <DeleteModal deleteModalIsOpen={deleteModalIsOpen} setDeleteModalIsOpen={setDeleteModalIsOpen} postId={postId} />
-        </Container>                
-    );
+            <ModalAction ModalIsOpen={ModalIsOpen} setModalIsOpen={setModalIsOpen} postId={postId} action={action} data={data}/>
+        </Container>          
+   );
 };
 
 const Container = styled.div`
@@ -240,28 +278,32 @@ const Container = styled.div`
     border-radius: 16px;
     background-color: #1E1E1E;
 `;
-
 const Post = styled.div`
-    background: #171717;
+    background-color: #171717;
     display:flex;
     gap:20px;
-    margin: 40px auto 0 auto;
+    margin: 0 auto 0 auto;
     width:611px;
     padding: 16px 18px;
     border-radius: 16px;
-
     @media(max-width: 611px ){
         border-radius: 0;
         width:100vw;
     }
 `;
-
+const PostHeader = styled.div`
+    font: 400 11px 'Lato', sans-serif;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    padding: 7px 10px;
+`
 const AvatarLinkContainer = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    gap: 18px;
+    gap: 10px;
     div{
         display: flex;
         flex-direction: column;
@@ -275,7 +317,7 @@ const Avatar = styled.img`
     width: 53px;
     border-radius: 50%;
     object-fit: cover;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     cursor: pointer;
 `;
 
@@ -284,6 +326,7 @@ const Text = styled.p`
     font: 400 10px 'Lato', sans-serif;
     color: #FFFFFF;
 `;
+
 
 const ContentContainer = styled.div`
     display: flex;

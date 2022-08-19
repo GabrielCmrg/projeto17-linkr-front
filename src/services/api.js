@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 const { REACT_APP_API_URL } = process.env;
 
 
@@ -50,6 +51,17 @@ export async function editPostRequest(postLink, content, config, postId) {
     } catch (error) {
         return error.response;
     }
+};
+
+export async function sharePostRequest(postId, config) {
+    const body = {postId}
+    console.log(config);
+    try {
+        const response = await axios.post(`${REACT_APP_API_URL}/posts/share`, body , config);
+        return response;
+    } catch (error) {
+        return error.response;
+    };
 };
 
 export async function getTrendingTags() {

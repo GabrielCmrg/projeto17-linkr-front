@@ -30,12 +30,14 @@ export default function CommentSection({ postId }) {
 
     React.useEffect(() => {
         populateComments();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     async function makeComment() {
         const response = await sendCommentRequest(postId, comment, config);
         if (response.status === 201) {
-            alert("Comment made!");
+            populateComments();
             return;
         }
 
@@ -47,7 +49,8 @@ export default function CommentSection({ postId }) {
             {comments.map(cmnt => (
                 <>
                     <Comment
-                        commentAuthorImage={cmnt.pic_ul}
+                        key={cmnt.id}
+                        commentAuthorImage={cmnt.pic_url}
                         commentAuthor={cmnt.name}
                         isFollowing={cmnt.is_followed}
                         isAuthor={cmnt.authorship}

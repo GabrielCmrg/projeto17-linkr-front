@@ -38,7 +38,8 @@ export default function CommentSection({ postId, totalComments, setTotalComments
         const response = await sendCommentRequest(postId, comment, config);
         if (response.status === 201) {
             populateComments();
-            setTotalComments(totalComments + 1);
+            setTotalComments(parseInt(totalComments) + 1);
+            setComment("");
             return;
         }
 

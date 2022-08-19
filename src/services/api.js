@@ -107,9 +107,27 @@ export async function getTagPostsRequest(hashtag, config){
     }
 };
 
-export async function searchUserRequest(search){
+export async function searchUserRequest(search, config){
     try {
-        const response = await axios.post(`${REACT_APP_API_URL}/searchuser`, search);
+        const response = await axios.post(`${REACT_APP_API_URL}/searchuser`, search, config);
+        return response;
+    } catch (error) {
+        return error.response;
+    }
+};
+
+export async function followUserRequest(id, config){
+    try {
+        const response = await axios.post(`${REACT_APP_API_URL}/followuser/${id}`, null, config);
+        return response;
+    } catch (error) {
+        return error.response;
+    }
+};
+
+export async function unfollowUserRequest(id, config){
+    try {
+        const response = await axios.delete(`${REACT_APP_API_URL}/unfollowuser/${id}`, config);
         return response;
     } catch (error) {
         return error.response;

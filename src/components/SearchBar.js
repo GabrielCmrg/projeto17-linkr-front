@@ -61,6 +61,7 @@ export default function SearchBar(){
                         userId={item.id}
                         userImage={item.pic_url}
                         userName={item.name}
+                        followStatus={item.follow_status}
                         setSearch={setSearch}
                     />))
             );

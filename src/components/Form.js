@@ -15,7 +15,7 @@ const Form = styled.div`
             height: 65px;
             border-radius: 6px;
             border: none;
-            background-color: white;
+            background-color: ${props => props.marked ? "#d5d5d5" : "#ffffff"};
             color: black;
             font-size: 27px;
             font-family: 'Oswald', sans-serif;
@@ -33,7 +33,7 @@ const Form = styled.div`
             height: 65px;
             border-radius: 6px;
             border: none;
-            background-color: #1877F2;
+            background-color: ${props => props.marked ? "#0b56b7" : "#1877F2"};
             color: white;
             font-size: 27px;
             font-family: 'Oswald', sans-serif;

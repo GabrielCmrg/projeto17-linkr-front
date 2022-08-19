@@ -13,7 +13,7 @@ export default function Signup() {
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [isLoading, setIsLoading] = React.useState(false);
-    const { setUserToken, setUserImage,setUserName } = React.useContext(ApplicationContext);
+    const { setUserToken, setUserImage, setUserName } = React.useContext(ApplicationContext);
     const navigate = useNavigate();
 
     function createAlertMessage() {
@@ -37,7 +37,7 @@ export default function Signup() {
             setIsLoading(false);
             return;
         }
-        
+
         const response = await loginRequest(email, password);
         if (response.status === 401) {
             alert(response.data);
@@ -64,9 +64,9 @@ export default function Signup() {
     return (
         <Container>
             <Brand />
-            <Form>
+            <Form marked={isLoading}>
                 <form onSubmit={register}>
-                    <input 
+                    <input
                         type="email"
                         placeholder="e-mail"
                         id="email"
@@ -74,7 +74,7 @@ export default function Signup() {
                         onChange={e => setEmail(e.target.value)}
                         disabled={isLoading}
                     />
-                    <input 
+                    <input
                         type="password"
                         placeholder="password"
                         id="password"

@@ -33,7 +33,8 @@ export default function Publication({
     userauthorship,
     authorId,
     data,
-    repostAmount    
+    repostAmount,
+    commentsAmount
 }) {
     const [ModalIsOpen, setModalIsOpen] = React.useState(false);
     const [action, setAction] = React.useState("");
@@ -46,6 +47,7 @@ export default function Publication({
     const [liked, setLiked] = React.useState(userLiked);
     const [totalLikes, setTotalLikes] = React.useState(parseInt(likesAmount));
     const [commenting, setCommenting] = React.useState(false);
+    const [totalComments, setTotalComments] = React.useState(commentsAmount);
 
     React.useEffect(() => {
         if (editing) {
@@ -226,7 +228,7 @@ export default function Publication({
                     </Buttons>
                     <Buttons >
                         <AiOutlineComment onClick={sharedPost ? null : () => setCommenting(!commenting)} size={20} color={"white"} />
-                        <Text>comments</Text>
+                        <Text>{totalComments} comments</Text>
                     </Buttons>
                     <Buttons >
                         <IoMdRepeat onClick={sharedPost ? null : ()=> actionModal("repost")} size={20} color="white"/>
@@ -256,7 +258,7 @@ export default function Publication({
                     </LinkContainer>
                 </ContentContainer>
             </Post>
-            {commenting ? <CommentSection postId={postId} /> : <></>}
+            {commenting ? <CommentSection postId={postId} totalComments={totalComments} setTotalComments={setTotalComments} /> : <></>}
             <ModalAction ModalIsOpen={ModalIsOpen} setModalIsOpen={setModalIsOpen} postId={postId} action={action} data={data}/>
         </Container>          
    );
@@ -267,6 +269,8 @@ const Container = styled.div`
     margin-bottom: 30px;
     border-radius: 16px;
     background-color: #1E1E1E;
+    max-width: 611px;
+    width: 100%;
 `;
 
 const Post = styled.div`
@@ -274,7 +278,7 @@ const Post = styled.div`
     display:flex;
     gap:20px;
     margin: 0 auto 0 auto;
-    width:611px;
+    width: 100%;
     padding: 16px 18px;
     border-radius: 16px;
     @media(max-width: 611px ){
@@ -295,6 +299,7 @@ const AvatarLinkContainer = styled.div`
     justify-content: flex-start;
     align-items: center;
     gap: 10px;
+    width: 70px;
     div{
         display: flex;
         flex-direction: column;

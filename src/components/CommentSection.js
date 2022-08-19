@@ -4,10 +4,13 @@ import { IoPaperPlaneOutline } from "react-icons/io5";
 
 import ApplicationContext from "../contexts/ApplicationContext";
 
-import { sendCommentRequest } from "../services/api";
+import { sendCommentRequest, getPostComments } from "../services/api";
 
-export default function CommentSection({ postId }) {
+import Comment from './Comment';
+
+export default function CommentSection({ postId, totalComments, setTotalComments }) {
     const { userImage, userToken } = React.useContext(ApplicationContext);
+    const [comments, setComments] = React.useState([]);
     const [comment, setComment] = React.useState("");
     const config = {
         headers: {
@@ -15,10 +18,28 @@ export default function CommentSection({ postId }) {
         }
     };
 
+    async function populateComments() {
+        const response = await getPostComments(config, postId);
+        if (response.status === 200) {
+            setComments(response.data);
+            return;
+        }
+
+        alert("Can't access the comments. Please try logging in again.")
+    }
+
+    React.useEffect(() => {
+        populateComments();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     async function makeComment() {
         const response = await sendCommentRequest(postId, comment, config);
         if (response.status === 201) {
-            alert("Comment made!");
+            populateComments();
+            setTotalComments(parseInt(totalComments) + 1);
+            setComment("");
             return;
         }
 
@@ -27,6 +48,19 @@ export default function CommentSection({ postId }) {
 
     return (
         <Background>
+            {comments.map(cmnt => (
+                <>
+                    <Comment
+                        key={cmnt.id}
+                        commentAuthorImage={cmnt.pic_url}
+                        commentAuthor={cmnt.name}
+                        isFollowing={cmnt.is_followed}
+                        isAuthor={cmnt.authorship}
+                        comment={cmnt.comment}
+                    />
+                    <Separator />
+                </>
+            ))}
             <CommentBox>
                 <Avatar src={userImage} alt="User" />
                 <Input
@@ -82,4 +116,10 @@ const Input = styled.input`
         font-size: 14px;
         color: #575757;
     }
+`;
+
+const Separator = styled.div`
+    width: 100%;
+    border: 1px solid #353535;
+    margin: 10px 0;
 `;

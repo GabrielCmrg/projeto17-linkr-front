@@ -155,3 +155,12 @@ export async function sendCommentRequest(postId, comment, config) {
         return error.response;
     }
 };
+
+export async function getPostComments(config, postId) {
+    try {
+        const response = await axios.get(`${REACT_APP_API_URL}/comments?postId=${postId}`, config);
+        return response;
+    } catch (error) {
+        return error.response;
+    }
+};

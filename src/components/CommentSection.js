@@ -6,6 +6,8 @@ import ApplicationContext from "../contexts/ApplicationContext";
 
 import { sendCommentRequest } from "../services/api";
 
+import Comment from './Comment';
+
 export default function CommentSection({ postId }) {
     const { userImage, userToken } = React.useContext(ApplicationContext);
     const [comment, setComment] = React.useState("");
@@ -82,4 +84,10 @@ const Input = styled.input`
         font-size: 14px;
         color: #575757;
     }
+`;
+
+const Separator = styled.div`
+    width: 100%;
+    border: 1px solid #353535;
+    margin: 10px 0;
 `;

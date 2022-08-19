@@ -267,6 +267,8 @@ const Container = styled.div`
     margin-bottom: 30px;
     border-radius: 16px;
     background-color: #1E1E1E;
+    max-width: 611px;
+    width: 100%;
 `;
 
 const Post = styled.div`
@@ -274,7 +276,7 @@ const Post = styled.div`
     display:flex;
     gap:20px;
     margin: 0 auto 0 auto;
-    width:611px;
+    width: 100%;
     padding: 16px 18px;
     border-radius: 16px;
     @media(max-width: 611px ){

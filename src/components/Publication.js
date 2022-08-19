@@ -299,6 +299,7 @@ const AvatarLinkContainer = styled.div`
     justify-content: flex-start;
     align-items: center;
     gap: 10px;
+    width: 70px;
     div{
         display: flex;
         flex-direction: column;

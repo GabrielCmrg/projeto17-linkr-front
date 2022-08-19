@@ -4,18 +4,33 @@ import { IoPaperPlaneOutline } from "react-icons/io5";
 
 import ApplicationContext from "../contexts/ApplicationContext";
 
-import { sendCommentRequest } from "../services/api";
+import { sendCommentRequest, getPostComments } from "../services/api";
 
 import Comment from './Comment';
 
 export default function CommentSection({ postId }) {
     const { userImage, userToken } = React.useContext(ApplicationContext);
+    const [comments, setComments] = React.useState([]);
     const [comment, setComment] = React.useState("");
     const config = {
         headers: {
             Authorization: `Bearer ${userToken}`,
         }
     };
+
+    async function populateComments() {
+        const response = await getPostComments(config, postId);
+        if (response.status === 200) {
+            setComments(response.data);
+            return;
+        }
+
+        alert("Can't access the comments. Please try logging in again.")
+    }
+
+    React.useEffect(() => {
+        populateComments();
+    }, []);
 
     async function makeComment() {
         const response = await sendCommentRequest(postId, comment, config);
@@ -29,6 +44,18 @@ export default function CommentSection({ postId }) {
 
     return (
         <Background>
+            {comments.map(cmnt => (
+                <>
+                    <Comment
+                        commentAuthorImage={cmnt.pic_ul}
+                        commentAuthor={cmnt.name}
+                        isFollowing={cmnt.is_followed}
+                        isAuthor={cmnt.authorship}
+                        comment={cmnt.comment}
+                    />
+                    <Separator />
+                </>
+            ))}
             <CommentBox>
                 <Avatar src={userImage} alt="User" />
                 <Input

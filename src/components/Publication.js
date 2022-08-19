@@ -6,26 +6,28 @@ import {FiHeart} from "react-icons/fi";
 import { IoMdTrash } from "react-icons/io";
 import ReactTooltip from 'react-tooltip';
 import { ImPencil } from "react-icons/im";
+import { AiOutlineComment } from "react-icons/ai";
 
 import { editPostRequest, likeRequest, dislikeRequest } from "../services/api";
 
 import ApplicationContext from "../contexts/ApplicationContext";
 
 import DeleteModal from "./DeleteModal"
+import CommentSection from "./CommentSection";
 
 export default function Publication({
     userLiked,
     firstLike,
     secondLike,
     likesAmount,
-    postId, 
-    userImage, 
-    userName, 
-    postTitle, 
-    postLink, 
-    LinkName, 
-    LinkSummary, 
-    LinkImg, 
+    postId,
+    userImage,
+    userName,
+    postTitle,
+    postLink,
+    LinkName,
+    LinkSummary,
+    LinkImg,
     userauthorship,
     authorId }) {
     const [deleteModalIsOpen, setDeleteModalIsOpen] = React.useState(false);
@@ -37,6 +39,7 @@ export default function Publication({
     const inputRef = React.useRef(null);
     const [liked, setLiked] = React.useState(userLiked);
     const [totalLikes, setTotalLikes] = React.useState(parseInt(likesAmount));
+    const [commenting, setCommenting] = React.useState(false);
     
     React.useEffect(() => {
         if (editing) {
@@ -47,7 +50,7 @@ export default function Publication({
     const { userToken } = React.useContext(ApplicationContext);
     const config = {
         headers: {
-          Authorization: `Bearer ${userToken}`,
+            Authorization: `Bearer ${userToken}`,
         }
     };
 
@@ -185,17 +188,22 @@ export default function Publication({
 
     const renderAmountlikes = countLikes();
     const renderWhoLiked = showWhoLiked();
+    const sharedPost = false;
 
     return (
-        <>
+        <Container>
             <Post>
                 <AvatarLinkContainer>
                     <Avatar onClick={redirectToUserPage} src={userImage} alt="User" />
-                    <FiHeart onClick={likePost} size={20} color={liked?"red":"white"} fill={liked?"red":""}/>
-                    <>
-                    <Likes data-tip={renderWhoLiked} data-for="likes">{renderAmountlikes}</Likes>
-                    <ReactTooltip place="bottom" type="light" id="likes" />
-                    </>
+                    <Buttons disabled={sharedPost}>
+                        <FiHeart onClick={sharedPost ? null : likePost} size={20} color={liked?"red":"white"} fill={liked?"red":"#171717"}/>
+                        <Text data-tip={renderWhoLiked} data-for="likes">{renderAmountlikes}</Text>
+                        <ReactTooltip place="bottom" type="light" id="likes" />
+                    </Buttons>
+                    <Buttons >
+                        <AiOutlineComment onClick={sharedPost ? null : () => setCommenting(!commenting)} size={20} color={"white"} />
+                        <Text>comments</Text>
+                    </Buttons>
                 </AvatarLinkContainer>
                 <ContentContainer>
                     <PostTitle>
@@ -220,20 +228,28 @@ export default function Publication({
                     </LinkContainer>
                 </ContentContainer>
             </Post>
+            {commenting ? <CommentSection postId={postId} /> : <></>}
             <DeleteModal deleteModalIsOpen={deleteModalIsOpen} setDeleteModalIsOpen={setDeleteModalIsOpen} postId={postId} />
-        </>                
+        </Container>                
     );
 };
+
+const Container = styled.div`
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    margin-bottom: 30px;
+    border-radius: 16px;
+    background-color: #1E1E1E;
+`;
+
 const Post = styled.div`
     background: #171717;
     display:flex;
-    margin: 40px auto 30px auto;
-    position: relative;
+    gap:20px;
+    margin: 40px auto 0 auto;
     width:611px;
     padding: 16px 18px;
     border-radius: 16px;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    gap:20px;
+
     @media(max-width: 611px ){
         border-radius: 0;
         width:100vw;
@@ -245,6 +261,13 @@ const AvatarLinkContainer = styled.div`
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    gap: 18px;
+    div{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items:center;
+    };
 `;
 
 const Avatar = styled.img`
@@ -256,7 +279,7 @@ const Avatar = styled.img`
     cursor: pointer;
 `;
 
-const Likes = styled.div`
+const Text = styled.p`
     margin-top:5px;
     font: 400 10px 'Lato', sans-serif;
     color: #FFFFFF;

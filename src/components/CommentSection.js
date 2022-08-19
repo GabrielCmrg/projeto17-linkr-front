@@ -8,7 +8,7 @@ import { sendCommentRequest, getPostComments } from "../services/api";
 
 import Comment from './Comment';
 
-export default function CommentSection({ postId }) {
+export default function CommentSection({ postId, totalComments, setTotalComments }) {
     const { userImage, userToken } = React.useContext(ApplicationContext);
     const [comments, setComments] = React.useState([]);
     const [comment, setComment] = React.useState("");
@@ -38,6 +38,7 @@ export default function CommentSection({ postId }) {
         const response = await sendCommentRequest(postId, comment, config);
         if (response.status === 201) {
             populateComments();
+            setTotalComments(totalComments + 1);
             return;
         }
 

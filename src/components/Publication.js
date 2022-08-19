@@ -33,7 +33,8 @@ export default function Publication({
     userauthorship,
     authorId,
     data,
-    repostAmount    
+    repostAmount,
+    commentsAmount
 }) {
     const [ModalIsOpen, setModalIsOpen] = React.useState(false);
     const [action, setAction] = React.useState("");
@@ -46,6 +47,7 @@ export default function Publication({
     const [liked, setLiked] = React.useState(userLiked);
     const [totalLikes, setTotalLikes] = React.useState(parseInt(likesAmount));
     const [commenting, setCommenting] = React.useState(false);
+    const [totalComments, setTotalComments] = React.useState(commentsAmount);
 
     React.useEffect(() => {
         if (editing) {
@@ -226,7 +228,7 @@ export default function Publication({
                     </Buttons>
                     <Buttons >
                         <AiOutlineComment onClick={sharedPost ? null : () => setCommenting(!commenting)} size={20} color={"white"} />
-                        <Text>comments</Text>
+                        <Text>{totalComments} comments</Text>
                     </Buttons>
                     <Buttons >
                         <IoMdRepeat onClick={sharedPost ? null : ()=> actionModal("repost")} size={20} color="white"/>
@@ -256,7 +258,7 @@ export default function Publication({
                     </LinkContainer>
                 </ContentContainer>
             </Post>
-            {commenting ? <CommentSection postId={postId} /> : <></>}
+            {commenting ? <CommentSection postId={postId} totalComments={totalComments} setTotalComments={setTotalComments} /> : <></>}
             <ModalAction ModalIsOpen={ModalIsOpen} setModalIsOpen={setModalIsOpen} postId={postId} action={action} data={data}/>
         </Container>          
    );

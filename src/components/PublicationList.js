@@ -38,6 +38,7 @@ export default function PublicationList({ posts, numberVisiblePosts, setNumberVi
                         LinkSummary={item.link_description}
                         LinkImg={item.link_image}
                         userauthorship={item.userauthorship}
+                        commentsAmount={item.comments_amount}
                     />))
             );
         };

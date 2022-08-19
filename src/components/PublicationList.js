@@ -26,8 +26,11 @@ export default function PublicationList({ posts, numberVisiblePosts, setNumberVi
                         secondLike={item.secondlike}
                         likesAmount={item.likes_amount}
                         postId={item.id}
+                        originalPostId={item.original_post_id}
                         userImage={item.pic_url}
-                        userName={item.name}
+                        authorName={item.name}
+                        authorSharedName={item.name_author_shared}
+                        repostAmount={item.reposts}
                         authorId={item.author_id}
                         postTitle={item.content}
                         postLink={item.link_url}

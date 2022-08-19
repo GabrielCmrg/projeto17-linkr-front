@@ -147,7 +147,6 @@ const TimelineContainer = styled.div`
     max-width: 100vw;
     margin: auto;
     position: relative;
-
     > h1 {
         margin-top: 100px;
         font: 700 42px 'Oswald', sans-serif;
@@ -175,7 +174,6 @@ const Title = styled.h1`
     display: flex;
     align-items: center;
     min-width: 30vw;
-
     img {
         height: 53px;
         width: 53px;
@@ -216,7 +214,6 @@ const FollowButton = styled.button`
     font-weight: 700;
     font-size: 14px;
     line-height: 17px;
-
     :disabled {
         opacity: 0.6;
     }
